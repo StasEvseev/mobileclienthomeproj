@@ -37,7 +37,7 @@
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Email"/>
+                android:text="Логин"/>
             <EditText android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
@@ -47,7 +47,7 @@
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Password"/>
+                android:text="Пароль"/>
             <EditText android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
@@ -58,14 +58,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
-                android:text="Login"/>
+                android:text="Войти"/>
             <!-- Link to Registration Screen -->
             <TextView android:id="@+id/link_to_register"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dip"
                 android:layout_marginBottom="40dip"
-                android:text="New to Twitter? Register here"
+                android:text="Нет аккаунта? Регистрация"
                 android:gravity="center"
                 android:textSize="20dip"
                 android:textColor="#0b84aa"/>
