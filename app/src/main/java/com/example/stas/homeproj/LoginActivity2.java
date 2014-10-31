@@ -26,8 +26,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+<<<<<<< Updated upstream
+=======
+
+import com.example.stas.homeproj.models.Book;
+import com.example.stas.homeproj.resources.IBookSetRestAPI;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.SignInButton;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.RestAdapter;
 
 
 /**
@@ -267,6 +278,10 @@ public class LoginActivity2 extends Activity implements LoaderCallbacks<Cursor>{
             // TODO: attempt authentication against a network service.
 
             try {
+                RestAdapter.Builder restAdapter = new RestAdapter.Builder();
+                RestAdapter adapter = restAdapter.setEndpoint("http://192.168.0.107:5000").build();
+                IBookSetRestAPI rest_api = adapter.create(IBookSetRestAPI.class);
+                Book book = rest_api.getBook(136);
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
