@@ -26,15 +26,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-<<<<<<< Updated upstream
-=======
 
 import com.example.stas.homeproj.models.Book;
 import com.example.stas.homeproj.resources.IBookSetRestAPI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
->>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.List;
 
