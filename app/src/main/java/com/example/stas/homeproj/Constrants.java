@@ -1,7 +1,8 @@
 package com.example.stas.homeproj;
 
 /**
- * Created by user on 07.11.14.
+ * @author StasEvseev
+ * Класс констант.
  */
 public final class Constrants {
     public static final String URL_BUY_API = "http://192.168.3.18:5000";

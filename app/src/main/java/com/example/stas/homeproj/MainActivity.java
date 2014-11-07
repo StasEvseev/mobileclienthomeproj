@@ -1,13 +1,13 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
+/**
+ * @author StasEvseev
+ * Активити запрашивающее авторизацию, и при наличии ее перенаправляет на ActionsActivity.
+ * */
 
 public class MainActivity extends Activity {
 
@@ -17,15 +17,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         AuthHelper auth = new AuthHelper(getApplicationContext());
 
         if (auth.checkAuth()) {
             startActivity(new Intent(this, ActionsActivity.class));
             finish();
         } else {
-            startActivityForResult(new Intent(this, LoginActivity2.class), REQUEST_LOGIN);
+            startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_LOGIN);
         }
     }
 
@@ -35,6 +33,7 @@ public class MainActivity extends Activity {
             case REQUEST_LOGIN:
                 if (resultCode == RESULT_OK) {
                     startActivity(new Intent(this, ActionsActivity.class));
+                    finish();
                 } else {
                     finish();
                 }
@@ -42,23 +41,4 @@ public class MainActivity extends Activity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

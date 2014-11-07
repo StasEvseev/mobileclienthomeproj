@@ -1,7 +1,8 @@
 package com.example.stas.homeproj.models;
 
 /**
- * Created by user on 07.11.14.
+ * @author StasEvseev
+ * Класс-данные введенных имени и пароля
  */
 public class User {
     public String username;

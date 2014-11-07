@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by user on 07.11.14.
+ * @author StasEvseev
+ * Класс помощник работы с авторизацией в системе.
  */
 public final class AuthHelper {
 
@@ -16,13 +17,9 @@ public final class AuthHelper {
         this.context = context;
     }
 
-//    AuthHelper getSession(Context context) {
-//        return new AuthHelper();
-//    }
-
     public void setToken(String token) {
         SharedPreferences.Editor editor = context.getSharedPreferences(KEY, Context.MODE_PRIVATE).edit();
-        editor.putString(Constrants.TOKEN_NAME, token);
+        editor.putString(Constrants.TOKEN_NAME, token).apply();
     }
 
     public String getToken() {

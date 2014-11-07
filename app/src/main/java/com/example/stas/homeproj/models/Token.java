@@ -1,7 +1,8 @@
 package com.example.stas.homeproj.models;
 
 /**
- * Created by user on 07.11.14.
+ * @author StasEvseev
+ * Класс-данные ответа IAuthSetRestAPI.
  */
 public class Token {
     public String token;

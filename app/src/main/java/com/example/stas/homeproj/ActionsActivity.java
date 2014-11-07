@@ -1,10 +1,15 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * @author StasEvseev
+ * Активити меню действий пользователя(Прием почты и прочее).
+ **/
 
 public class ActionsActivity extends Activity {
 
@@ -30,7 +35,17 @@ public class ActionsActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            logout();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void logout() {
+        AuthHelper auth = new AuthHelper(getApplicationContext());
+        auth.setToken("");
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

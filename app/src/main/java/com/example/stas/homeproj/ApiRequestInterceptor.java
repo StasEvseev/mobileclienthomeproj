@@ -7,9 +7,11 @@ import com.example.stas.homeproj.models.User;
 import retrofit.RequestInterceptor;
 
 /**
- * Created by user on 07.11.14.
+ * @author StasEvseev
+ * Интерцептор для авторизации.
  */
 public class ApiRequestInterceptor implements RequestInterceptor {
+
 
     private User user;
 
