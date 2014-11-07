@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +29,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.stas.homeproj.models.Book;
-import com.example.stas.homeproj.resources.IBookSetRestAPI;
+import com.example.stas.homeproj.models.Token;
+import com.example.stas.homeproj.models.User;
+import com.example.stas.homeproj.resources.IAuthSetRestAPI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -36,25 +39,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 
 
-/**
- * A login screen that offers login via email/password and via Google+ sign in.
- * <p/>
- * ************ IMPORTANT SETUP NOTES: ************
- * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
- */
 public class LoginActivity2 extends Activity implements LoaderCallbacks<Cursor>{
+    
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -158,12 +148,12 @@ public class LoginActivity2 extends Activity implements LoaderCallbacks<Cursor>{
     }
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;
     }
 
     /**
@@ -274,24 +264,27 @@ public class LoginActivity2 extends Activity implements LoaderCallbacks<Cursor>{
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            User user = new User();
+            user.username = mEmail;
+            user.password = mPassword;
+
+            ApiRequestInterceptor requestInterceptor = new ApiRequestInterceptor();
+            requestInterceptor.setUser(user); // I pass the user from my model
+
+            RestAdapter.Builder restAdapter = new RestAdapter.Builder();
+            restAdapter.setRequestInterceptor(requestInterceptor);
+            RestAdapter adapter = restAdapter.setEndpoint(Constrants.URL_BUY_API).build();
+            IAuthSetRestAPI rest_api = adapter.create(IAuthSetRestAPI.class);
+            Token token;
+
             try {
-                RestAdapter.Builder restAdapter = new RestAdapter.Builder();
-                RestAdapter adapter = restAdapter.setEndpoint("http://192.168.0.107:5000").build();
-                IBookSetRestAPI rest_api = adapter.create(IBookSetRestAPI.class);
-                Book book = rest_api.getBook(136);
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                token = rest_api.auth();
+            } catch (RetrofitError er) {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            AuthHelper auth = new AuthHelper(getApplicationContext());
+            auth.setToken(token.token);
 
             // TODO: register the new account here.
             return true;
@@ -303,6 +296,7 @@ public class LoginActivity2 extends Activity implements LoaderCallbacks<Cursor>{
             showProgress(false);
 
             if (success) {
+                setResult(RESULT_OK);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

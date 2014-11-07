@@ -17,18 +17,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context context = getApplicationContext();
-        SharedPreferences spref = context.getSharedPreferences("homeproj.session", Context.MODE_PRIVATE);
 
-        String token = spref.getString("BUY_API_TOKEN", "");
 
-        if ("".equals(token)) {
-            startActivityForResult(new Intent(this, LoginActivity2.class), REQUEST_LOGIN);
-        } else {
+        AuthHelper auth = new AuthHelper(getApplicationContext());
+
+        if (auth.checkAuth()) {
             startActivity(new Intent(this, ActionsActivity.class));
             finish();
+        } else {
+            startActivityForResult(new Intent(this, LoginActivity2.class), REQUEST_LOGIN);
         }
-//        setContentView(R.layout.activity_main);
     }
 
     @Override
