@@ -1,4 +1,4 @@
-package com.example.stas.homeproj;
+package com.example.stas.homeproj.resources;
 
 import android.util.Base64;
 

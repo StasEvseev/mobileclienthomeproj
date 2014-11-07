@@ -1,7 +1,9 @@
-package com.example.stas.homeproj;
+package com.example.stas.homeproj.library;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.example.stas.homeproj.Constrants;
 
 /**
  * @author StasEvseev

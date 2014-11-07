@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.stas.homeproj.library.AuthHelper;
+
 /**
  * @author StasEvseev
  * Активити запрашивающее авторизацию, и при наличии ее перенаправляет на ActionsActivity.

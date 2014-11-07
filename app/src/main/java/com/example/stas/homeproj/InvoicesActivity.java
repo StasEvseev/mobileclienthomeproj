@@ -1,31 +1,24 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.stas.homeproj.library.AuthHelper;
 
-/**
- * @author StasEvseev
- * Активити меню действий пользователя(Прием почты и прочее).
- **/
-
-public class ActionsActivity extends Activity {
+public class InvoicesActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_actions);
+        setContentView(R.layout.activity_invoices);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.actions, menu);
+        getMenuInflater().inflate(R.menu.invoices, menu);
         return true;
     }
 
@@ -37,17 +30,7 @@ public class ActionsActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_logout) {
-            logout();
-            return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void logout() {
-        AuthHelper auth = new AuthHelper(getApplicationContext());
-        auth.setToken("");
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
     }
 }
