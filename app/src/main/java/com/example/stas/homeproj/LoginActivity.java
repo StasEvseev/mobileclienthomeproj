@@ -283,7 +283,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             AuthHelper auth = new AuthHelper(getApplicationContext());
             auth.setToken(token.token);
 
-            // TODO: register the new account here.
             return true;
         }
 
