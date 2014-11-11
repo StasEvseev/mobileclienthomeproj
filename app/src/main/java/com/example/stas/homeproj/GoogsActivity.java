@@ -6,24 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.stas.homeproj.library.AuthHelper;
-import com.example.stas.homeproj.models.Invoice;
+import com.example.stas.homeproj.models.Goods;
 import com.example.stas.homeproj.models.Invoices;
 import com.example.stas.homeproj.models.Token;
-import com.example.stas.homeproj.models.User;
 import com.example.stas.homeproj.resources.ApiRequestInterceptor;
-import com.example.stas.homeproj.resources.IAuthSetRestAPI;
+import com.example.stas.homeproj.resources.IGoodRestAPI;
 import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit.Callback;
@@ -33,44 +29,25 @@ import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 
-public class InvoicesActivity extends Activity {
-
-    String[] names = { "Иван", "Марья", "Петр", "Антон", "Даша", "Борис",
-            "Костя", "Игорь", "Анна", "Денис", "Андрей" };
+public class GoogsActivity extends Activity {
 
     public ArrayAdapter<String> adapter;
     public ListView lv;
     public List<String> lstr;
-    public HashMap<Integer, Invoice> hInv = new HashMap<Integer, Invoice>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invoices);
+        setContentView(R.layout.activity_googs);
 
-        lstr = new ArrayList<String>();
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("ID");
 
-        lv = (ListView)findViewById(R.id.listView);
+        lv = (ListView)findViewById(R.id.listGoods);
         adapter = new ArrayAdapter<String>(
                 this , android.R.layout.simple_list_item_1);
-
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                Log.d("DEBUG!!!", String.valueOf(position));
-                Log.d("DEBUG!!!", item);
-
-                Intent intent = new Intent(InvoicesActivity.this, GoogsActivity.class);
-                intent.putExtra("ID", item);
-
-                startActivity(intent);
-//                adapter.remove(item);
-            }
-        });
+        lstr = new ArrayList<String>();
 
         AuthHelper auth = new AuthHelper(this);
 
@@ -82,14 +59,14 @@ public class InvoicesActivity extends Activity {
         RestAdapter.Builder restAdapterBuilder = new RestAdapter.Builder();
         restAdapterBuilder.setRequestInterceptor(requestInterceptor);
         RestAdapter restAdapter = restAdapterBuilder.setEndpoint(Constrants.URL_BUY_API).setConverter(new GsonConverter(gson)).build();
-        IInvoiceRestAPI invoice_api = restAdapter.create(IInvoiceRestAPI.class);
+        IGoodRestAPI good_api = restAdapter.create(IGoodRestAPI.class);
 
-        invoice_api.invoices(new Callback<Invoices>() {
+        good_api.goods(id, new Callback<Goods>() {
             @Override
-            public void success(Invoices invs, Response response) {
-
-                for(int i = 0; i < invs.items.size(); i++) {
-                    lstr.add(String.valueOf(invs.items.get(i).id));
+            public void success(Goods goods, Response response) {
+                Log.d("DEBUGGG!!!", "SUCCESS");
+                for (int i = 0; i < goods.items.size(); i++) {
+                    lstr.add(goods.items.get(i).full_name);
                 }
                 adapter.addAll(lstr);
             }
@@ -105,7 +82,7 @@ public class InvoicesActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.invoices, menu);
+        getMenuInflater().inflate(R.menu.googs, menu);
         return true;
     }
 
