@@ -64,7 +64,7 @@ public class InvoicesActivity extends Activity {
                 Log.d("DEBUG!!!", String.valueOf(position));
                 Log.d("DEBUG!!!", item);
 
-                Intent intent = new Intent(InvoicesActivity.this, GoogsActivity.class);
+                Intent intent = new Intent(InvoicesActivity.this, ItemListActivity.class);
                 intent.putExtra("ID", item);
 
                 startActivity(intent);
