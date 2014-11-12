@@ -21,4 +21,9 @@ public class Good {
     public Double sum_with_NDS;
     public Double sum_without_NDS;
     public String thematic;
+
+    @Override
+    public String toString() {
+        return full_name;
+    }
 }

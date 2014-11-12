@@ -61,7 +61,7 @@ public class GoogsActivity extends Activity {
         RestAdapter restAdapter = restAdapterBuilder.setEndpoint(Constrants.URL_BUY_API).setConverter(new GsonConverter(gson)).build();
         IGoodRestAPI good_api = restAdapter.create(IGoodRestAPI.class);
 
-        good_api.goods(id, new Callback<Goods>() {
+        good_api.goods(Integer.parseInt(id), new Callback<Goods>() {
             @Override
             public void success(Goods goods, Response response) {
                 Log.d("DEBUGGG!!!", "SUCCESS");

@@ -1,14 +1,29 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
 import com.example.stas.homeproj.dummy.DummyContent;
+import com.example.stas.homeproj.library.RestApiHelper;
+import com.example.stas.homeproj.models.Good;
+import com.example.stas.homeproj.models.Goods;
+import com.example.stas.homeproj.models.Invoice;
+import com.example.stas.homeproj.resources.IGoodRestAPI;
+import com.example.stas.homeproj.resources.IInvoiceRestAPI;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -19,7 +34,14 @@ import com.example.stas.homeproj.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ItemListFragment extends ListFragment {
+public class GoodListFragment extends ListFragment {
+
+    private List<Good> lgood;
+//    private ArrayAdapter<Good> adapter;
+
+
+    public int id_invoice;
+
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -64,19 +86,49 @@ public class ItemListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemListFragment() {
+    public GoodListFragment() {
+    }
+
+    public void loadGood(int id) {
+
+        Log.d("loadGood", String.valueOf(id));
+
+        IGoodRestAPI good_api = RestApiHelper.createResource(IGoodRestAPI.class, getActivity());
+
+        good_api.goods(id, new Callback<Goods>() {
+            @Override
+            public void success(Goods goods, Response response) {
+                Log.d("DEBUGGG!!!", "SUCCESS");
+                for (int i = 0; i < goods.items.size(); i++) {
+                    lgood.add(goods.items.get(i));
+                }
+
+                setListAdapter(new ArrayAdapter<Good>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_activated_1,
+                        lgood));
+
+//                adapter.addAll(lgood);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("DEBUGGG!!!", retrofitError.toString());
+            }
+        });
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        lgood = new ArrayList<Good>();
+
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        setListAdapter(new ArrayAdapter<Good>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+                lgood));
     }
 
     @Override

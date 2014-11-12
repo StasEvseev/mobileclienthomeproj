@@ -3,8 +3,7 @@ package com.example.stas.homeproj;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-
-
+import android.util.Log;
 
 
 /**
@@ -16,15 +15,15 @@ import android.app.Activity;
  * item details side-by-side using two vertical panes.
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link ItemListFragment} and the item details
+ * {@link GoodListFragment} and the item details
  * (if present) is a {@link ItemDetailFragment}.
  * <p>
  * This activity also implements the required
- * {@link ItemListFragment.Callbacks} interface
+ * {@link GoodListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class ItemListActivity extends Activity
-        implements ItemListFragment.Callbacks {
+public class GoodListActivity extends Activity
+        implements GoodListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -32,10 +31,19 @@ public class ItemListActivity extends Activity
      */
     private boolean mTwoPane;
 
+    private int id_invoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.activity_good_list);
+
+        Intent intent = getIntent();
+        id_invoice = intent.getIntExtra("ID", 0);
+        Log.d("ID_INVOICE", String.valueOf(id_invoice));
+
+        GoodListFragment glf = ((GoodListFragment) getFragmentManager()
+                .findFragmentById(R.id.item_list));
 
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
@@ -46,16 +54,18 @@ public class ItemListActivity extends Activity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((ItemListFragment) getFragmentManager()
-                    .findFragmentById(R.id.item_list))
-                    .setActivateOnItemClick(true);
+
+            glf.setActivateOnItemClick(true);
+
         }
+
+        glf.loadGood(id_invoice);
 
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
     /**
-     * Callback method from {@link ItemListFragment.Callbacks}
+     * Callback method from {@link GoodListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override

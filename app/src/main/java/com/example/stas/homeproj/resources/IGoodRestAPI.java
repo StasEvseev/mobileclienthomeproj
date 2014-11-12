@@ -12,5 +12,5 @@ import retrofit.http.Path;
  */
 public interface IGoodRestAPI {
     @GET("/api/invoice/{id}/goods")
-    void goods(@Path("id") String invId, Callback<Goods> cb);
+    void goods(@Path("id") int invId, Callback<Goods> cb);
 }

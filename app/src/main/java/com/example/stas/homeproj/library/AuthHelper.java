@@ -30,7 +30,6 @@ public final class AuthHelper {
     }
 
     public boolean checkAuth() {
-//        Context context = getApplicationContext();
         String token = getToken();
         return !"".equals(token);
     }
