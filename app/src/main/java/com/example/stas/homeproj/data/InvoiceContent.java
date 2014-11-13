@@ -4,23 +4,23 @@ import android.util.SparseArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.stas.homeproj.models.Invoice;
+import com.example.stas.homeproj.models.InvoiceBuyApi;
 
 /**
  * @author StasEvseev
  * Класс для хранения накладных
  */
 public class InvoiceContent {
-    private static List<Invoice> invoiceList = new ArrayList<Invoice>();
+    private static List<InvoiceBuyApi> invoiceBuyApiList = new ArrayList<InvoiceBuyApi>();
 
-    private static SparseArray<Invoice> invoiceMap = new SparseArray<Invoice>();
+    private static SparseArray<InvoiceBuyApi> invoiceMap = new SparseArray<InvoiceBuyApi>();
 
-    public static void addItem(Invoice item) {
-        invoiceList.add(item);
+    public static void addItem(InvoiceBuyApi item) {
+        invoiceBuyApiList.add(item);
         invoiceMap.put(item.id, item);
     }
 
-    public static Invoice getItem(int key) {
+    public static InvoiceBuyApi getItem(int key) {
         return invoiceMap.get(key);
     }
 }

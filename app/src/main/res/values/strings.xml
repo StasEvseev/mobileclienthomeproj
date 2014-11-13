@@ -10,6 +10,6 @@
     <string name="title_activity_invoices">Выбери накладную</string>
     <string name="title_activity_googs">GoogsActivity</string>
     <string name="title_item_list">Накладная</string>
-    <string name="title_item_detail">Item Detail</string>
+    <string name="title_item_detail">Детали товара</string>
 
 </resources>

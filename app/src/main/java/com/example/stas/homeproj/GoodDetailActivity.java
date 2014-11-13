@@ -1,11 +1,16 @@
 package com.example.stas.homeproj;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.models.Good;
+import com.example.stas.homeproj.models.GoodBuyApi;
 
 
 /**
@@ -17,7 +22,7 @@ import com.example.stas.homeproj.models.Good;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link GoodDetailFragment}.
  */
-public class GoodDetailActivity extends Activity {
+public class GoodDetailActivity extends Activity implements GoodDetailFragment.CallbacksSave {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,5 +74,15 @@ public class GoodDetailActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSuccess() {
+        finish();
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 }

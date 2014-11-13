@@ -12,7 +12,8 @@ import android.widget.ListView;
 import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.Good;
-import com.example.stas.homeproj.models.Goods;
+import com.example.stas.homeproj.models.GoodBuyApi;
+import com.example.stas.homeproj.models.GoodsBuyApi;
 import com.example.stas.homeproj.resources.IGoodRestAPI;
 
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ import retrofit.client.Response;
  */
 public class GoodListFragment extends ListFragment {
 
-    private List<Good> lgood;
+    private List<GoodBuyApi> lgood;
 
-//    private HashMap<Integer, Good> keyV;
+//    private HashMap<Integer, GoodBuyApi> keyV;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -89,19 +90,19 @@ public class GoodListFragment extends ListFragment {
 
         IGoodRestAPI good_api = RestApiHelper.createResource(IGoodRestAPI.class, getActivity());
 
-        good_api.goods(id, new Callback<Goods>() {
+        good_api.goods(id, new Callback<GoodsBuyApi>() {
             @Override
-            public void success(Goods lgoods, Response response) {
+            public void success(GoodsBuyApi lgoods, Response response) {
                 Log.d("DEBUGGG!!!", "SUCCESS");
                 for (int i = 0; i < lgoods.items.size(); i++) {
-                    Good good = lgoods.items.get(i);
-                    lgood.add(good);
+                    GoodBuyApi goodBuyApi = lgoods.items.get(i);
+                    lgood.add(goodBuyApi);
 
-                    GoodContent.addItem(good);
-//                    keyV.put(good.id, good);
+                    GoodContent.addItem(new Good(goodBuyApi));
+//                    keyV.put(goodBuyApi.id, goodBuyApi);
                 }
 
-                setListAdapter(new ArrayAdapter<Good>(
+                setListAdapter(new ArrayAdapter<GoodBuyApi>(
                         getActivity(),
                         android.R.layout.simple_list_item_activated_1,
                         lgood));
@@ -120,12 +121,12 @@ public class GoodListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lgood = new ArrayList<Good>();
+        lgood = new ArrayList<GoodBuyApi>();
 
-//        keyV = new HashMap<Integer, Good>();
+//        keyV = new HashMap<Integer, GoodBuyApi>();
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<Good>(
+        setListAdapter(new ArrayAdapter<GoodBuyApi>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 lgood));
@@ -168,9 +169,9 @@ public class GoodListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        Good good = lgood.get(position);
+        GoodBuyApi goodBuyApi = lgood.get(position);
 
-        mCallbacks.onItemSelected(good.id);
+        mCallbacks.onItemSelected(goodBuyApi.id);
     }
 
     @Override

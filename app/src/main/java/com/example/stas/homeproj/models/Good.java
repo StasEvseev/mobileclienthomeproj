@@ -2,29 +2,33 @@ package com.example.stas.homeproj.models;
 
 /**
  * @author StasEvseev
- * Домен модель товара из BUY_API
+ * Домейн для товаров
  */
 public class Good {
-    public int count;
-    public int count_order;
-    public int count_postorder;
-    public int count_whole_pack;
-    public String full_name;
-    public int id;
-    public String name;
-    public String number_global;
-    public String number_local;
-    public int placer;
-    public Double price_with_NDS;
-    public Double price_without_NDS;
-    public Double rate_NDS;
-    public Double sum_NDS;
-    public Double sum_with_NDS;
-    public Double sum_without_NDS;
-    public String thematic;
+    public GoodBuyApi good;
+    public int factCount;
+    public int barcode;
+
+    public Good(GoodBuyApi goodapi) {
+        good = goodapi;
+        factCount = 0;
+        barcode = 0;
+    }
+
+    public int getId() {
+        return good.id;
+    }
 
     @Override
     public String toString() {
-        return full_name;
+        return good.toString();
+    }
+
+    public String getFullname() {
+        return good.full_name;
+    }
+
+    public int getCount() {
+        return good.count;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.stas.homeproj.resources;
 
-import com.example.stas.homeproj.models.Goods;
-import com.example.stas.homeproj.models.Invoices;
+import com.example.stas.homeproj.models.GoodsBuyApi;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -13,5 +12,5 @@ import retrofit.http.Path;
  */
 public interface IGoodRestAPI {
     @GET("/api/invoice/{id}/goods")
-    void goods(@Path("id") int invId, Callback<Goods> cb);
+    void goods(@Path("id") int invId, Callback<GoodsBuyApi> cb);
 }

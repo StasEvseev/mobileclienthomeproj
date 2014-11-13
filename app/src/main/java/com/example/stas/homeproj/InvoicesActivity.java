@@ -13,8 +13,8 @@ import android.widget.ListView;
 
 import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.library.RestApiHelper;
-import com.example.stas.homeproj.models.Invoice;
-import com.example.stas.homeproj.models.Invoices;
+import com.example.stas.homeproj.models.InvoiceBuyApi;
+import com.example.stas.homeproj.models.InvoicesBuyApi;
 import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 
 import java.util.ArrayList;
@@ -31,31 +31,31 @@ import retrofit.client.Response;
 
 public class InvoicesActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    public ArrayAdapter<Invoice> adapter;
+    public ArrayAdapter<InvoiceBuyApi> adapter;
     public ListView lv;
-    public List<Invoice> lstr;
+    public List<InvoiceBuyApi> lstr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoices);
 
-        lstr = new ArrayList<Invoice>();
+        lstr = new ArrayList<InvoiceBuyApi>();
 
         lv = (ListView)findViewById(R.id.listView);
-        adapter = new ArrayAdapter<Invoice>(
+        adapter = new ArrayAdapter<InvoiceBuyApi>(
                 this , android.R.layout.simple_list_item_1);
 
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
 
         IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
-        invoice_api.invoices(new Callback<Invoices>() {
+        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
             @Override
-            public void success(Invoices invs, Response response) {
+            public void success(InvoicesBuyApi invs, Response response) {
 
                 for(int i = 0; i < invs.items.size(); i++) {
-                    Invoice inv = invs.items.get(i);
+                    InvoiceBuyApi inv = invs.items.get(i);
                     lstr.add(inv);
                     InvoiceContent.addItem(inv);
                 }
@@ -95,7 +95,7 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
     * */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Invoice inv = (Invoice) parent.getItemAtPosition(position);
+        final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
         Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
         intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
         startActivity(intent);

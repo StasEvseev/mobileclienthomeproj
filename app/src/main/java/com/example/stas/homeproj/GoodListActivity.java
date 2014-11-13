@@ -3,8 +3,13 @@ package com.example.stas.homeproj;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.EditText;
 
+import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.data.InvoiceContent;
+import com.example.stas.homeproj.models.Good;
 
 
 /**
@@ -24,7 +29,7 @@ import com.example.stas.homeproj.data.InvoiceContent;
  * to listen for item selections.
  */
 public class GoodListActivity extends Activity
-        implements GoodListFragment.Callbacks {
+        implements GoodListFragment.Callbacks, GoodDetailFragment.CallbacksSave {
 
     public final static String KEY_INVOICE_ID = "invoice_id";
 
@@ -90,5 +95,15 @@ public class GoodListActivity extends Activity
             detailIntent.putExtra(GoodDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 }

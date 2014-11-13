@@ -1,15 +1,22 @@
 package com.example.stas.homeproj;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
 import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.models.Good;
+import com.example.stas.homeproj.models.GoodBuyApi;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -17,7 +24,7 @@ import com.example.stas.homeproj.models.Good;
  * in two-pane mode (on tablets) or a {@link GoodDetailActivity}
  * on handsets.
  */
-public class GoodDetailFragment extends Fragment {
+public class GoodDetailFragment extends Fragment implements View.OnClickListener {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -29,6 +36,31 @@ public class GoodDetailFragment extends Fragment {
      * Моделька товара
      */
     private Good mItem;
+
+    private CallbacksSave defaultCallback = new CallbacksSave() {
+
+        @Override
+        public void onSuccess() {
+
+        }
+
+        @Override
+        public void onFailure() {
+
+        }
+    };
+
+    private CallbacksSave dCallback = defaultCallback;
+
+    public interface CallbacksSave {
+        /**
+         * Колбэк для кнопки сохранить
+         */
+
+        public void onSuccess();
+
+        public void onFailure();
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,10 +85,56 @@ public class GoodDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_good_detail, container, false);
 
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.full_name);
-            ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.count));
+            ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.getFullname());
+            ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.getCount()));
+            if(mItem.factCount != 0) {
+                ((EditText) rootView.findViewById(R.id.good_factcount)).setText(String.valueOf(mItem.factCount));
+            }
+            if(mItem.barcode != 0) {
+                ((EditText) rootView.findViewById(R.id.good_barcode)).setText(String.valueOf(mItem.barcode));
+            }
         }
 
+        rootView.findViewById(R.id.good_item_save).setOnClickListener(this);
+
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        dCallback = (CallbacksSave)activity;
+
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        dCallback = defaultCallback;
+
+        super.onDetach();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        Activity act = getActivity();
+
+        EditText gfc_field = (EditText)act.findViewById(R.id.good_factcount);
+        EditText bc_field = (EditText)act.findViewById(R.id.good_barcode);
+
+        gfc_field.setError(null);
+
+        String rawFactCount = gfc_field.getText().toString();
+        String rawBarcode = bc_field.getText().toString();
+
+        if(TextUtils.isEmpty(rawFactCount)) {
+            gfc_field.setError("Поле обязательное");
+            dCallback.onFailure();
+        } else {
+            GoodContent.update(mItem, rawFactCount, rawBarcode);
+            dCallback.onSuccess();
+        }
+
+
     }
 }

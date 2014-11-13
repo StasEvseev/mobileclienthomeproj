@@ -6,6 +6,6 @@ import java.util.List;
  * @author StasEvseev
  * Класс ответа {@link com.example.stas.homeproj.resources.IGoodRestAPI}
  */
-public class Goods {
-    public List<Good> items;
+public class GoodsBuyApi {
+    public List<GoodBuyApi> items;
 }
