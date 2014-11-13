@@ -8,7 +8,8 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 
 /**
- * Created by user on 11.11.14.
+ * @author StasEvseev
+ * Ресурс для работы с товаром.
  */
 public interface IGoodRestAPI {
     @GET("/api/invoice/{id}/goods")

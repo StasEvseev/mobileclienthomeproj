@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.Invoice;
 import com.example.stas.homeproj.models.Invoices;
@@ -23,8 +24,12 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * @author StasEvseev
+ * Активити выбора накладной
+ **/
 
-public class InvoicesActivity extends Activity {
+public class InvoicesActivity extends Activity implements AdapterView.OnItemClickListener {
 
     public ArrayAdapter<Invoice> adapter;
     public ListView lv;
@@ -42,21 +47,7 @@ public class InvoicesActivity extends Activity {
                 this , android.R.layout.simple_list_item_1);
 
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final Invoice inv = (Invoice) parent.getItemAtPosition(position);
-                Log.d("DEBUG!!!", String.valueOf(position));
-                Log.d("DEBUG!!!", String.valueOf(inv.id));
-
-                Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
-                intent.putExtra("ID", inv.id);
-
-                startActivity(intent);
-            }
-        });
+        lv.setOnItemClickListener(this);
 
         IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
         invoice_api.invoices(new Callback<Invoices>() {
@@ -64,9 +55,12 @@ public class InvoicesActivity extends Activity {
             public void success(Invoices invs, Response response) {
 
                 for(int i = 0; i < invs.items.size(); i++) {
-                    lstr.add(invs.items.get(i));
+                    Invoice inv = invs.items.get(i);
+                    lstr.add(inv);
+                    InvoiceContent.addItem(inv);
                 }
                 adapter.addAll(lstr);
+
             }
 
             @Override
@@ -94,5 +88,16 @@ public class InvoicesActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    * При выборе накладной -> активити товара
+    * */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Invoice inv = (Invoice) parent.getItemAtPosition(position);
+        Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
+        intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
+        startActivity(intent);
     }
 }

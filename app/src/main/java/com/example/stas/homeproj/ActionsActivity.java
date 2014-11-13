@@ -52,6 +52,9 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    * Логаут из системы
+    * */
     public void logout() {
         AuthHelper auth = new AuthHelper(getApplicationContext());
         auth.setToken("");
@@ -62,6 +65,9 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == btnGood) {
+            /*
+            * Принимаем присланный товар
+            * */
             startActivity(new Intent(this, InvoicesActivity.class));
         }
     }

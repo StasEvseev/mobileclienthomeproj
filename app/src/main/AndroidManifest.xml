@@ -41,15 +41,11 @@
             android:label="@string/title_activity_invoices" >
         </activity>
         <activity
-            android:name=".GoogsActivity"
-            android:label="@string/title_activity_googs" >
-        </activity>
-        <activity
             android:name=".GoodListActivity"
             android:label="@string/title_item_list" >
         </activity>
         <activity
-            android:name=".ItemDetailActivity"
+            android:name=".GoodDetailActivity"
             android:label="@string/title_item_detail"
             android:parentActivityName=".GoodListActivity" >
             <meta-data

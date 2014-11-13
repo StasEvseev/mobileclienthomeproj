@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 
         AuthHelper auth = new AuthHelper(getApplicationContext());
 
+        //Если пользователь на авторизован, вежливо попросим сделать это
         if (auth.checkAuth()) {
             startActivity(new Intent(this, ActionsActivity.class));
             finish();

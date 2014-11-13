@@ -6,10 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_actions">ActionsActivity</string>
-    <string name="title_activity_invoices">InvoicesActivity</string>
+    <string name="title_activity_actions">Выберите действие</string>
+    <string name="title_activity_invoices">Выбери накладную</string>
     <string name="title_activity_googs">GoogsActivity</string>
-    <string name="title_item_list">Items</string>
+    <string name="title_item_list">Накладная</string>
     <string name="title_item_detail">Item Detail</string>
 
 </resources>

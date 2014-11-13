@@ -1,10 +1,11 @@
 package com.example.stas.homeproj;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import com.example.stas.homeproj.data.GoodContent;
+import com.example.stas.homeproj.models.Good;
 
 
 /**
@@ -14,14 +15,14 @@ import android.view.MenuItem;
  * in a {@link GoodListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link ItemDetailFragment}.
+ * more than a {@link GoodDetailFragment}.
  */
-public class ItemDetailActivity extends Activity {
+public class GoodDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_detail);
+        setContentView(R.layout.activity_good_detail);
 
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,13 +39,16 @@ public class ItemDetailActivity extends Activity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+            int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
+            Good good = GoodContent.getItem(id_good);
+            setTitle(good.toString());
             Bundle arguments = new Bundle();
-            arguments.putString(ItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));
-            ItemDetailFragment fragment = new ItemDetailFragment();
+            arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,
+                    id_good);
+            GoodDetailFragment fragment = new GoodDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
+                    .add(R.id.good_detail_container, fragment)
                     .commit();
         }
     }
@@ -60,7 +64,8 @@ public class ItemDetailActivity extends Activity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, GoodListActivity.class));
+            finish();
+//            NavUtils.navigateUpTo(this, new Intent(this, GoodListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

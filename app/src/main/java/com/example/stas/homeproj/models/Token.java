@@ -2,7 +2,7 @@ package com.example.stas.homeproj.models;
 
 /**
  * @author StasEvseev
- * Класс-данные ответа IAuthSetRestAPI.
+ * Класс-данные ответа {@link com.example.stas.homeproj.resources.IAuthSetRestAPI}
  */
 public class Token {
 

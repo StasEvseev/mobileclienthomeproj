@@ -1,7 +1,6 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -10,13 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.example.stas.homeproj.dummy.DummyContent;
+import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.Good;
 import com.example.stas.homeproj.models.Goods;
-import com.example.stas.homeproj.models.Invoice;
 import com.example.stas.homeproj.resources.IGoodRestAPI;
-import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,7 @@ import retrofit.client.Response;
  * A list fragment representing a list of Items. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link ItemDetailFragment}.
+ * currently being viewed in a {@link GoodDetailFragment}.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
@@ -37,11 +34,8 @@ import retrofit.client.Response;
 public class GoodListFragment extends ListFragment {
 
     private List<Good> lgood;
-//    private ArrayAdapter<Good> adapter;
 
-
-    public int id_invoice;
-
+//    private HashMap<Integer, Good> keyV;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -69,7 +63,7 @@ public class GoodListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(int id);
     }
 
     /**
@@ -78,7 +72,7 @@ public class GoodListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(int id) {
         }
     };
 
@@ -97,10 +91,14 @@ public class GoodListFragment extends ListFragment {
 
         good_api.goods(id, new Callback<Goods>() {
             @Override
-            public void success(Goods goods, Response response) {
+            public void success(Goods lgoods, Response response) {
                 Log.d("DEBUGGG!!!", "SUCCESS");
-                for (int i = 0; i < goods.items.size(); i++) {
-                    lgood.add(goods.items.get(i));
+                for (int i = 0; i < lgoods.items.size(); i++) {
+                    Good good = lgoods.items.get(i);
+                    lgood.add(good);
+
+                    GoodContent.addItem(good);
+//                    keyV.put(good.id, good);
                 }
 
                 setListAdapter(new ArrayAdapter<Good>(
@@ -123,6 +121,8 @@ public class GoodListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         lgood = new ArrayList<Good>();
+
+//        keyV = new HashMap<Integer, Good>();
 
         // TODO: replace with a real list adapter.
         setListAdapter(new ArrayAdapter<Good>(
@@ -168,7 +168,9 @@ public class GoodListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        Good good = lgood.get(position);
+
+        mCallbacks.onItemSelected(good.id);
     }
 
     @Override

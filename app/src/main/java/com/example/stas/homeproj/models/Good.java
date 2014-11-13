@@ -2,6 +2,7 @@ package com.example.stas.homeproj.models;
 
 /**
  * @author StasEvseev
+ * Домен модель товара из BUY_API
  */
 public class Good {
     public int count;

@@ -6,6 +6,7 @@ import java.util.Locale;
 
 /**
  * @author StasEvseev
+ * Домен модель накладной из BUY_API
  */
 public class Invoice {
     public int id;

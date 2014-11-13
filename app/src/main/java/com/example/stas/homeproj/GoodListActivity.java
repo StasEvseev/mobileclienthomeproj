@@ -3,20 +3,21 @@ package com.example.stas.homeproj;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
+
+import com.example.stas.homeproj.data.InvoiceContent;
 
 
 /**
  * An activity representing a list of Items. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link ItemDetailActivity} representing
+ * lead to a {@link GoodDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link GoodListFragment} and the item details
- * (if present) is a {@link ItemDetailFragment}.
+ * (if present) is a {@link GoodDetailFragment}.
  * <p>
  * This activity also implements the required
  * {@link GoodListFragment.Callbacks} interface
@@ -24,6 +25,8 @@ import android.util.Log;
  */
 public class GoodListActivity extends Activity
         implements GoodListFragment.Callbacks {
+
+    public final static String KEY_INVOICE_ID = "invoice_id";
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -38,14 +41,14 @@ public class GoodListActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_list);
 
-        Intent intent = getIntent();
-        id_invoice = intent.getIntExtra("ID", 0);
-        Log.d("ID_INVOICE", String.valueOf(id_invoice));
+        id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
+
+        setTitle("Накладная №" + InvoiceContent.getItem(id_invoice).toString());
 
         GoodListFragment glf = ((GoodListFragment) getFragmentManager()
                 .findFragmentById(R.id.item_list));
 
-        if (findViewById(R.id.item_detail_container) != null) {
+        if (findViewById(R.id.good_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
@@ -69,24 +72,22 @@ public class GoodListActivity extends Activity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(int id) {
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
+            //В режиме двух панелей заменяем фрагмент
             Bundle arguments = new Bundle();
-            arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
-            ItemDetailFragment fragment = new ItemDetailFragment();
+            arguments.putInt(GoodDetailFragment.ARG_ITEM_ID, id);
+            GoodDetailFragment fragment = new GoodDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.item_detail_container, fragment)
+                    .replace(R.id.good_detail_container, fragment)
                     .commit();
 
         } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, ItemDetailActivity.class);
-            detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
+            //В режиме одной панели открываем новое активити для детального просмотра товара с
+            //переданным id в Intent
+            Intent detailIntent = new Intent(this, GoodDetailActivity.class);
+            detailIntent.putExtra(GoodDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
     }
