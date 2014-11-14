@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 /*
  * Define an implementation of ContentProvider that stubs out
@@ -16,6 +17,7 @@ public class StubProvider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
+        Log.d(StubProvider.class.getName(), "onCreate");
         return true;
     }
     /*
@@ -23,6 +25,7 @@ public class StubProvider extends ContentProvider {
      */
     @Override
     public String getType(Uri uri) {
+        Log.d(StubProvider.class.getName(), "getType");
         return new String();
     }
     /*
@@ -36,6 +39,7 @@ public class StubProvider extends ContentProvider {
             String selection,
             String[] selectionArgs,
             String sortOrder) {
+        Log.d(StubProvider.class.getName(), "query");
         return null;
     }
     /*
@@ -43,6 +47,7 @@ public class StubProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.d(StubProvider.class.getName(), "insert");
         return null;
     }
     /*
@@ -50,6 +55,7 @@ public class StubProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        Log.d(StubProvider.class.getName(), "delete");
         return 0;
     }
     /*
@@ -60,6 +66,7 @@ public class StubProvider extends ContentProvider {
             ContentValues values,
             String selection,
             String[] selectionArgs) {
+        Log.d(StubProvider.class.getName(), "update");
         return 0;
     }
 }

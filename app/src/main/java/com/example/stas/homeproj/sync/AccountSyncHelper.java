@@ -12,7 +12,7 @@ public class AccountSyncHelper {
 
     // Constants
     // The authority for the sync adapter's content provider
-    public static final String AUTHORITY = "com.example.android.datasync.provider";
+    public static final String AUTHORITY = "com.example.stas.homeproj.sync";
     // An account type, in the form of a domain name
     public static final String ACCOUNT_TYPE = "example.com";
     // The account name
@@ -37,6 +37,7 @@ public class AccountSyncHelper {
              * then call context.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
+//            newAccount = accountManager.getAccountsByType(ACCOUNT_TYPE)[0];
             Log.d("CreateSyncAccount", "It's OK.");
         } else {
             /*

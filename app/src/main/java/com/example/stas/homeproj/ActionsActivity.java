@@ -26,20 +26,19 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
 
     // Constants
     // Content provider authority
-    public static final String AUTHORITY = "com.example.android.datasync.provider";
+//    public static final String AUTHORITY = "com.example.android.datasync.provider";
     // Account
-    public static final String ACCOUNT = "default_account";
+//    public static final String ACCOUNT = "default_account";
     // Sync interval constants
     public static final long MILLISECONDS_PER_SECOND = 1000L;
     public static final long SECONDS_PER_MINUTE = 60L;
     public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
     public static final long SYNC_INTERVAL =
-            SYNC_INTERVAL_IN_MINUTES *
-                    SECONDS_PER_MINUTE *
-                    MILLISECONDS_PER_SECOND;
+            1000L * 3;
 
     // Instance fields
     Account mAccount;
+//    ContentResolver mResolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,34 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
         btnSync.setOnClickListener(this);
 
         mAccount = AccountSyncHelper.CreateSyncAccount(this);
+
+        // Get the content resolver for your app
+//        mResolver = getContentResolver();
+        /*
+         * Turn on periodic syncing
+         */
+
+        Bundle settingsBundle = new Bundle();
+//        settingsBundle.putBoolean(
+//                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+//        settingsBundle.putBoolean(
+//                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+//        ContentResolver.setIsSyncable(mAccount, AccountSyncHelper.AUTHORITY, 1);
+//        ContentResolver.addPeriodicSync(
+//                mAccount,
+//                AccountSyncHelper.AUTHORITY,
+//                settingsBundle,
+//                SYNC_INTERVAL);
+//
+//
+//        getContentResolver().setIsSyncable(mAccount, AccountSyncHelper.AUTHORITY, 0);
+//        getContentResolver().addPeriodicSync(
+//                mAccount,
+//                AccountSyncHelper.AUTHORITY,
+//                settingsBundle,
+//                SYNC_INTERVAL);
+//        ContentResolver.setSyncAutomatically(mAccount, AccountSyncHelper.AUTHORITY, false);
+//        getContentResolver().setSyncAutomatically(mAccount, AccountSyncHelper.AUTHORITY, true);
     }
 
 
@@ -99,15 +126,18 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
             Log.d("BtnSync", "Click");
             // Pass the settings flags by inserting them in a bundle
             Bundle settingsBundle = new Bundle();
-//            settingsBundle.putBoolean(
-//                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
-//            settingsBundle.putBoolean(
-//                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         /*
          * Request the sync for the default account, authority, and
          * manual sync settings
          */
-            ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+//            mResolver = getContentResolver();
+//            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
+
+            ContentResolver.requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
         }
     }
 }
