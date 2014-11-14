@@ -1,10 +1,15 @@
 package com.example.stas.homeproj;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.stas.homeproj.library.AuthHelper;
+import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
  * @author StasEvseev
@@ -14,6 +19,8 @@ import com.example.stas.homeproj.library.AuthHelper;
 public class MainActivity extends Activity {
 
     static final int REQUEST_LOGIN = 99;
+    // Instance fields
+    Account mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,7 @@ public class MainActivity extends Activity {
 
         //Если пользователь на авторизован, вежливо попросим сделать это
         if (auth.checkAuth()) {
+//            mAccount = AccountSyncHelper.CreateSyncAccount(this);
             startActivity(new Intent(this, ActionsActivity.class));
             finish();
         } else {

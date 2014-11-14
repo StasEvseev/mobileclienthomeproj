@@ -10,20 +10,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Сохранить"
-                android:id="@+id/button"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentStart="false" />
-        </RelativeLayout>
+                android:id="@+id/btn_save_invoice"
+                 />
+
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

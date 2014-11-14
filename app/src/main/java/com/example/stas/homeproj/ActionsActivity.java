@@ -1,15 +1,19 @@
 package com.example.stas.homeproj;
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.stas.homeproj.library.AuthHelper;
+import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
  * @author StasEvseev
@@ -18,15 +22,37 @@ import com.example.stas.homeproj.library.AuthHelper;
 
 public class ActionsActivity extends Activity implements View.OnClickListener {
 
-    Button btnGood;
+    Button btnGood, btnSync;
+
+    // Constants
+    // Content provider authority
+    public static final String AUTHORITY = "com.example.android.datasync.provider";
+    // Account
+    public static final String ACCOUNT = "default_account";
+    // Sync interval constants
+    public static final long MILLISECONDS_PER_SECOND = 1000L;
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
+    public static final long SYNC_INTERVAL =
+            SYNC_INTERVAL_IN_MINUTES *
+                    SECONDS_PER_MINUTE *
+                    MILLISECONDS_PER_SECOND;
+
+    // Instance fields
+    Account mAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actions);
 
         btnGood = (Button)findViewById(R.id.goods);
+        btnSync = (Button)findViewById(R.id.btn_sync);
 
         btnGood.setOnClickListener(this);
+        btnSync.setOnClickListener(this);
+
+        mAccount = AccountSyncHelper.CreateSyncAccount(this);
     }
 
 
@@ -69,6 +95,19 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
             * Принимаем присланный товар
             * */
             startActivity(new Intent(this, InvoicesActivity.class));
+        } else if (view == btnSync) {
+            Log.d("BtnSync", "Click");
+            // Pass the settings flags by inserting them in a bundle
+            Bundle settingsBundle = new Bundle();
+//            settingsBundle.putBoolean(
+//                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+//            settingsBundle.putBoolean(
+//                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        /*
+         * Request the sync for the default account, authority, and
+         * manual sync settings
+         */
+            ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
         }
     }
 }

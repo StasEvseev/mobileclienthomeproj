@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.stas.homeproj.data.GoodContent;
@@ -29,7 +31,7 @@ import com.example.stas.homeproj.models.Good;
  * to listen for item selections.
  */
 public class GoodListActivity extends Activity
-        implements GoodListFragment.Callbacks, GoodDetailFragment.CallbacksSave {
+        implements GoodListFragment.Callbacks, GoodDetailFragment.CallbacksSave, View.OnClickListener {
 
     public final static String KEY_INVOICE_ID = "invoice_id";
 
@@ -41,10 +43,15 @@ public class GoodListActivity extends Activity
 
     private int id_invoice;
 
+    private Button btnSaveInvoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_list);
+
+        btnSaveInvoice = (Button)findViewById(R.id.btn_save_invoice);
+        btnSaveInvoice.setOnClickListener(this);
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
 
@@ -104,6 +111,11 @@ public class GoodListActivity extends Activity
 
     @Override
     public void onFailure() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }
