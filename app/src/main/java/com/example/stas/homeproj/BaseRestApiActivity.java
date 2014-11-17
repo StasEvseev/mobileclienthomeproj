@@ -2,16 +2,6 @@ package com.example.stas.homeproj;
 
 import android.app.Activity;
 
-import com.example.stas.homeproj.library.AuthHelper;
-import com.example.stas.homeproj.models.Token;
-import com.example.stas.homeproj.resources.ApiRequestInterceptor;
-import com.example.stas.homeproj.resources.IGoodRestAPI;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
-
 /**
  *
  */

@@ -1,22 +1,18 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 
 import com.example.stas.homeproj.data.GoodContent;
-import com.example.stas.homeproj.models.Good;
-import com.example.stas.homeproj.models.GoodBuyApi;
+import com.example.stas.homeproj.models.GoodLocal;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -35,7 +31,7 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
     /**
      * Моделька товара
      */
-    private Good mItem;
+    private GoodLocal mItem;
 
     private CallbacksSave defaultCallback = new CallbacksSave() {
 

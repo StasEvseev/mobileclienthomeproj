@@ -1,16 +1,11 @@
 package com.example.stas.homeproj;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.app.Activity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.example.stas.homeproj.data.GoodContent;
-import com.example.stas.homeproj.models.Good;
-import com.example.stas.homeproj.models.GoodBuyApi;
+import com.example.stas.homeproj.models.GoodLocal;
 
 
 /**
@@ -45,8 +40,8 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
-            Good good = GoodContent.getItem(id_good);
-            setTitle(good.toString());
+            GoodLocal goodLocal = GoodContent.getItem(id_good);
+            setTitle(goodLocal.toString());
             Bundle arguments = new Bundle();
             arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,
                     id_good);

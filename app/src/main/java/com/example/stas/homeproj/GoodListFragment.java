@@ -11,10 +11,10 @@ import android.widget.ListView;
 
 import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.library.RestApiHelper;
-import com.example.stas.homeproj.models.Good;
+import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodsBuyApi;
-import com.example.stas.homeproj.resources.IGoodRestAPI;
+import com.example.stas.homeproj.resources.IInvoiceItemRestAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +88,7 @@ public class GoodListFragment extends ListFragment {
 
         Log.d("loadGood", String.valueOf(id));
 
-        IGoodRestAPI good_api = RestApiHelper.createResource(IGoodRestAPI.class, getActivity());
+        IInvoiceItemRestAPI good_api = RestApiHelper.createResource(IInvoiceItemRestAPI.class, getActivity());
 
         good_api.goods(id, new Callback<GoodsBuyApi>() {
             @Override
@@ -98,7 +98,7 @@ public class GoodListFragment extends ListFragment {
                     GoodBuyApi goodBuyApi = lgoods.items.get(i);
                     lgood.add(goodBuyApi);
 
-                    GoodContent.addItem(new Good(goodBuyApi));
+                    GoodContent.addItem(new GoodLocal(goodBuyApi));
 //                    keyV.put(goodBuyApi.id, goodBuyApi);
                 }
 

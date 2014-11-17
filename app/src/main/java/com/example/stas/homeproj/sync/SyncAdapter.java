@@ -9,6 +9,8 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.stas.homeproj.data.GoodContent;
+
 /**
  * Handle the transfer of data between a server and an
  * app, using the Android sync adapter framework.
@@ -52,6 +54,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.d("onPerformSync", "SYNC! SYNC! SYNC!");
+
+        Log.d("onPerformSync", "SYNC! SYNC! SYNC!" + String.valueOf(GoodContent.getItems().size()));
+        GoodsSync.sync(getContext(), GoodContent.getItems());
+
+//        provider.query();
     }
 }

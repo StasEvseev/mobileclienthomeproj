@@ -22,6 +22,7 @@ public class GoodBuyApi {
     public Double sum_with_NDS;
     public Double sum_without_NDS;
     public String thematic;
+    public int good_id;
 
     @Override
     public String toString() {

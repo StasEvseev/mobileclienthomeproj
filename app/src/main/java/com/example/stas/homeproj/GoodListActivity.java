@@ -1,17 +1,16 @@
 package com.example.stas.homeproj;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.stas.homeproj.data.GoodContent;
 import com.example.stas.homeproj.data.InvoiceContent;
-import com.example.stas.homeproj.models.Good;
+import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 
 /**
@@ -116,6 +115,21 @@ public class GoodListActivity extends Activity
 
     @Override
     public void onClick(View v) {
+        Log.d("GoodListActivity", "Click");
+        Account mAccount = AccountSyncHelper.CreateSyncAccount(this);
+        // Pass the settings flags by inserting them in a bundle
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        /*
+         * Request the sync for the default account, authority, and
+         * manual sync settings
+         */
+//            mResolver = getContentResolver();
+//            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
 
+        ContentResolver.requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
     }
 }
