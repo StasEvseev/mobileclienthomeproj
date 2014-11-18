@@ -4,12 +4,16 @@ import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.example.stas.homeproj.data.GoodContent;
+import com.example.stas.homeproj.db.GoodDBHelper;
 
 /**
  * Handle the transfer of data between a server and an
@@ -55,9 +59,32 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
 
-        Log.d("onPerformSync", "SYNC! SYNC! SYNC!" + String.valueOf(GoodContent.getItems().size()));
-        GoodsSync.sync(getContext(), GoodContent.getItems());
+        Log.d("onPerformSync", "SYNC! SYNC! SYNC!");
+//        GoodsSync.sync(getContext(), GoodContent.getItems());
 
+        try {
+
+            ContentValues cv = new ContentValues();
+            cv.put(GoodDBHelper.COL_ID, 1);
+            cv.put(GoodDBHelper.COL_NAME, "Stas");
+            cv.put(GoodDBHelper.COL_YEAR, 2014);
+            provider.insert(GoodContentProvider.CONTENT_URI, cv);
+
+            Cursor curTvShows = provider.query(GoodContentProvider.CONTENT_URI, null, null, null, null);
+
+            if(curTvShows!= null) {
+                while(curTvShows.moveToNext()) {
+                    Log.d(SyncAdapter.class.getName(), curTvShows.getString(curTvShows.getColumnIndex(GoodDBHelper.COL_NAME)));
+                }
+            }
+
+        } catch (RemoteException e) {
+            Log.d(this.getClass().getName(), "onPerformSync EXCEPTION");
+            e.printStackTrace();
+        }
+
+
+//        provider.query();
 //        provider.query();
     }
 }

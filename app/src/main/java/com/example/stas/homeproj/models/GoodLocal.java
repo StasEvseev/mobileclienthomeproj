@@ -6,13 +6,19 @@ package com.example.stas.homeproj.models;
  */
 public class GoodLocal {
     public GoodBuyApi good;
+    public int id;
     public int factCount;
     public int barcode;
 
     public GoodLocal(GoodBuyApi goodapi) {
         good = goodapi;
+        id = getId();
         factCount = 0;
         barcode = 0;
+    }
+
+    public GoodLocal() {
+
     }
 
     public int getId() {

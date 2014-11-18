@@ -32,11 +32,16 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
-        <provider
-            android:name="com.example.stas.homeproj.sync.StubProvider"
-            android:authorities="com.example.stas.homeproj.sync"
-            android:exported="false"
-            android:syncable="true"/>
+        <!--<provider-->
+            <!--android:name=".sync.StubProvider"-->
+            <!--android:authorities="com.example.stas.homeproj.sync"-->
+            <!--android:exported="false"-->
+            <!--android:syncable="true"/>-->
+
+        <provider android:authorities="com.example.stas.homeproj.sync"
+            android:name=".sync.GoodContentProvider"
+            android:label="BLABAL MY CONTENT PROVIDER"
+            android:exported="false"/>
 
         <activity
             android:name=".RegisterActivity"

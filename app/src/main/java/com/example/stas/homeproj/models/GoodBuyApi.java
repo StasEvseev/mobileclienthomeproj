@@ -1,10 +1,12 @@
 package com.example.stas.homeproj.models;
 
+import java.io.Serializable;
+
 /**
  * @author StasEvseev
  * Домен модель товара из BUY_API
  */
-public class GoodBuyApi {
+public class GoodBuyApi implements Serializable {
     public int count;
     public int count_order;
     public int count_postorder;
