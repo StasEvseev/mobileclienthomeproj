@@ -32,14 +32,24 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
-        <!--<provider-->
-            <!--android:name=".sync.StubProvider"-->
-            <!--android:authorities="com.example.stas.homeproj.sync"-->
-            <!--android:exported="false"-->
-            <!--android:syncable="true"/>-->
+        <provider
+            android:name=".sync.StubProvider"
+            android:authorities="com.example.stas.homeproj.sync"
+            android:exported="false"
+            android:syncable="true"/>
 
-        <provider android:authorities="com.example.stas.homeproj.sync"
-            android:name=".sync.GoodContentProvider"
+        <provider
+            android:authorities="com.example.stas.homeproj.sync.invoice"
+            android:name=".provider.InvoiceContentProvider"
+            android:exported="false"/>
+
+        <provider
+            android:authorities="com.example.stas.homeproj.sync.good_local"
+            android:name=".provider.GoodLocalContentProvider"
+            android:exported="false"/>
+
+        <provider android:authorities="com.example.stas.homeproj.sync.good"
+            android:name=".provider.GoodContentProvider"
             android:label="BLABAL MY CONTENT PROVIDER"
             android:exported="false"/>
 

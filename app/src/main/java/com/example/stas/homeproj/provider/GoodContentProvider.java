@@ -1,4 +1,4 @@
-package com.example.stas.homeproj.sync;
+package com.example.stas.homeproj.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.stas.homeproj.db.GoodDBHelper;
+import com.example.stas.homeproj.db.GoodBuyApiDBHelper;
+import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
+import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
  * Created by user on 18.11.14.
@@ -20,41 +22,33 @@ public class GoodContentProvider extends ContentProvider {
 
     public static String LOG_TAG = GoodContentProvider.class.getName();
 
-//    // Таблица
-//    static final String TABLE = "goods";
-//
-//    // Поля
-//    static final String CONTACT_ID = "_id";
-//    static final String CONTACT_NAME = "name";
-//    static final String CONTACT_EMAIL = "email";
-
     public static String PATH = "good";
-    public static String AUTHORITY = AccountSyncHelper.AUTHORITY;
-    public static String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + PATH;
-    public static String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY + PATH;
+    public static String AUTHORITY = AccountSyncHelper.AUTHORITY + '.' + PATH;
+    public static String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY;
+    public static String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY;
 
     public static final Uri CONTENT_URI = Uri.parse("content://"
             + AUTHORITY + "/" + PATH);
 
     //// UriMatcher
     // общий Uri
-    static final int URI_CONTACTS = 1;
+    static final int URI_GOODS = 1;
 
     // Uri с указанным ID
-    static final int URI_CONTACTS_ID = 2;
+    static final int URI_GOOD_BY_ID = 2;
     // описание и создание UriMatcher
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, PATH, URI_CONTACTS);
-        uriMatcher.addURI(AUTHORITY, PATH + "/#", URI_CONTACTS_ID);
+        uriMatcher.addURI(AUTHORITY, PATH, URI_GOODS);
+        uriMatcher.addURI(AUTHORITY, PATH + "/#", URI_GOOD_BY_ID);
     }
 
-    private GoodDBHelper dbHelper;
+    private GoodBuyApiDBHelper dbHelper;
 
     @Override
     public boolean onCreate() {
-        dbHelper = new GoodDBHelper(getContext());
+        dbHelper = new GoodBuyApiDBHelper(getContext());
         return true;
     }
 
@@ -65,16 +59,16 @@ public class GoodContentProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             // retrieve tv shows list
-            case URI_CONTACTS: {
+            case URI_GOODS: {
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(GoodDBHelper.TABLE_NAME);
+                builder.setTables(GoodBuyApiDBHelper.TABLE_NAME);
                 return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
             }
-            case URI_CONTACTS_ID: {
-                int tvShowId = (int) ContentUris.parseId(uri);
+            case URI_GOOD_BY_ID: {
+                int id = (int) ContentUris.parseId(uri);
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(GoodDBHelper.TABLE_NAME);
-                builder.appendWhere(GoodDBHelper.COL_ID + "=" + tvShowId);
+                builder.setTables(GoodBuyApiDBHelper.TABLE_NAME);
+                builder.appendWhere(GoodBuyApiHolder.COL_ID + "=" + id);
                 return builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
             }
             default:
@@ -86,9 +80,9 @@ public class GoodContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         Log.d(LOG_TAG, "getType, " + uri.toString());
         switch (uriMatcher.match(uri)) {
-            case URI_CONTACTS:
+            case URI_GOODS:
                 return CONTENT_TYPE;
-            case URI_CONTACTS_ID:
+            case URI_GOOD_BY_ID:
                 return CONTENT_TYPE_ITEM;
         }
         return null;
@@ -96,12 +90,13 @@ public class GoodContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d(LOG_TAG, "insert, " + uri.toString() + values.toString());
+        Log.d(LOG_TAG, "insert, " + uri.toString() + " { " + values.toString() + " } ");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int token = uriMatcher.match(uri);
+        Log.d(LOG_TAG, "TOKEN - " + token);
         switch (token) {
-            case URI_CONTACTS: {
-                long id = db.insert(GoodDBHelper.TABLE_NAME, null, values);
+            case URI_GOODS: {
+                long id = db.insert(GoodBuyApiDBHelper.TABLE_NAME, null, values);
                 if (id != -1)
                     getContext().getContentResolver().notifyChange(uri, null);
                 return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
@@ -118,14 +113,14 @@ public class GoodContentProvider extends ContentProvider {
         int token = uriMatcher.match(uri);
         int rowsDeleted = -1;
         switch (token) {
-            case (URI_CONTACTS):
-                rowsDeleted = db.delete(GoodDBHelper.TABLE_NAME, selection, selectionArgs);
+            case (URI_GOODS):
+                rowsDeleted = db.delete(GoodBuyApiDBHelper.TABLE_NAME, selection, selectionArgs);
                 break;
-            case (URI_CONTACTS_ID):
-                String tvShowIdWhereClause = GoodDBHelper.COL_ID + "=" + uri.getLastPathSegment();
+            case (URI_GOOD_BY_ID):
+                String tvShowIdWhereClause = GoodBuyApiHolder.COL_ID + "=" + uri.getLastPathSegment();
                 if (!TextUtils.isEmpty(selection))
                     tvShowIdWhereClause += " AND " + selection;
-                rowsDeleted = db.delete(GoodDBHelper.TABLE_NAME, tvShowIdWhereClause, selectionArgs);
+                rowsDeleted = db.delete(GoodBuyApiDBHelper.TABLE_NAME, tvShowIdWhereClause, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);

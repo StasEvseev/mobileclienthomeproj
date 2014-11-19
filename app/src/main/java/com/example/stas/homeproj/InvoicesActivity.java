@@ -2,6 +2,7 @@ package com.example.stas.homeproj;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,12 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.stas.homeproj.data.InvoiceContent;
+import com.example.stas.homeproj.db.InvoiceBuyApiDBHelper;
+import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.models.InvoicesBuyApi;
+import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 
 import java.util.ArrayList;
@@ -29,16 +34,20 @@ import retrofit.client.Response;
  * Активити выбора накладной
  **/
 
-public class InvoicesActivity extends Activity implements AdapterView.OnItemClickListener {
+public class InvoicesActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     public ArrayAdapter<InvoiceBuyApi> adapter;
     public ListView lv;
     public List<InvoiceBuyApi> lstr;
+    private Button btnSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoices);
+
+        btnSync = (Button)findViewById(R.id.btn_sync);
+        btnSync.setOnClickListener(this);
 
         lstr = new ArrayList<InvoiceBuyApi>();
 
@@ -49,25 +58,15 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
 
-        IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
-        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
-            @Override
-            public void success(InvoicesBuyApi invs, Response response) {
+        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null, null, null, null);
 
-                for(int i = 0; i < invs.items.size(); i++) {
-                    InvoiceBuyApi inv = invs.items.get(i);
-                    lstr.add(inv);
-                    InvoiceContent.addItem(inv);
-                }
-                adapter.addAll(lstr);
-
+        if (cur != null) {
+            while(cur.moveToNext()) {
+                InvoiceBuyApi invoice = new InvoiceBuyApiHolder().fromCursor(cur);
+                lstr.add(invoice);
             }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d("DEBUGGG!!!", retrofitError.toString());
-            }
-        });
+            adapter.addAll(lstr);
+        }
     }
 
 
@@ -99,5 +98,29 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
         Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
         intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+                IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
+        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
+            @Override
+            public void success(InvoicesBuyApi invs, Response response) {
+
+                for(int i = 0; i < invs.items.size(); i++) {
+                    InvoiceBuyApi inv = invs.items.get(i);
+                    getContentResolver().insert(InvoiceContentProvider.CONTENT_URI, new InvoiceBuyApiHolder().toCursor(inv));
+                    lstr.add(inv);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.d("DEBUGGG!!!", retrofitError.toString());
+            }
+        });
+
     }
 }

@@ -13,9 +13,9 @@ import java.util.Date;
  * Created by user on 18.11.14.
  */
 public class InvoiceBuyApiHolder implements BaseHolder<InvoiceBuyApi> {
-    public String COL_ID = "id";
-    public String COL_NUMBER = "number";
-    public String COL_DATE = "date";
+    public static final String COL_ID = "id";
+    public static final String COL_NUMBER = "number";
+    public static final String COL_DATE = "date";
 
     private static SimpleDateFormat formatter;
 

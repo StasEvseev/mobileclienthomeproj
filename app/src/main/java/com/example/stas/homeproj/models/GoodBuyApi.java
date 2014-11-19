@@ -13,6 +13,7 @@ public class GoodBuyApi implements Serializable {
     public int count_whole_pack;
     public String full_name;
     public int id;
+    public int invoice_id;
     public String name;
     public String number_global;
     public String number_local;

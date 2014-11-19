@@ -7,15 +7,14 @@ import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
 
 /**
- * Created by user on 18.11.14.
+ * @author StasEvseev
+ * Класс для работы с GoodLocal в SQLite
  */
 public class GoodLocalHolder implements BaseHolder<GoodLocal> {
 
-    public String COL_ID = "id";
-
-//    public String COL_GOOD_BUY_ID = "id_good_buy";
-    public String COL_FACT_COUNT = "fact_count";
-    public String COL_BARCODE = "barcode";
+    public static final String COL_ID = "id";
+    public static final String COL_FACT_COUNT = "fact_count";
+    public static final String COL_BARCODE = "barcode";
 
     public GoodLocal fromCursor(Cursor cur) {
 

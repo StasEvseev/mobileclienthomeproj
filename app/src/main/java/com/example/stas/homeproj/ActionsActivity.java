@@ -22,7 +22,7 @@ import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 public class ActionsActivity extends Activity implements View.OnClickListener {
 
-    Button btnGood, btnSync;
+    Button btnGood;
 
     // Constants
     // Content provider authority
@@ -46,10 +46,10 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_actions);
 
         btnGood = (Button)findViewById(R.id.goods);
-        btnSync = (Button)findViewById(R.id.btn_sync);
+//        btnSync = (Button)findViewById(R.id.btn_sync);
 
         btnGood.setOnClickListener(this);
-        btnSync.setOnClickListener(this);
+//        btnSync.setOnClickListener(this);
 
         mAccount = AccountSyncHelper.CreateSyncAccount(this);
 
@@ -122,22 +122,23 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
             * Принимаем присланный товар
             * */
             startActivity(new Intent(this, InvoicesActivity.class));
-        } else if (view == btnSync) {
-            Log.d("BtnSync", "Click");
-            // Pass the settings flags by inserting them in a bundle
-            Bundle settingsBundle = new Bundle();
-            settingsBundle.putBoolean(
-                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
-            settingsBundle.putBoolean(
-                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        /*
-         * Request the sync for the default account, authority, and
-         * manual sync settings
-         */
-//            mResolver = getContentResolver();
-//            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
-
-            ContentResolver.requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
         }
+//        else if (view == btnSync) {
+//            Log.d("BtnSync", "Click");
+//            // Pass the settings flags by inserting them in a bundle
+//            Bundle settingsBundle = new Bundle();
+//            settingsBundle.putBoolean(
+//                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+//            settingsBundle.putBoolean(
+//                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+//        /*
+//         * Request the sync for the default account, authority, and
+//         * manual sync settings
+//         */
+////            mResolver = getContentResolver();
+////            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
+//
+//            ContentResolver.requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
+//        }
     }
 }
