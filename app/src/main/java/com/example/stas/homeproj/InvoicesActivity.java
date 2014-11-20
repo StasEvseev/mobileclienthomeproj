@@ -1,6 +1,7 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,21 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.stas.homeproj.data.InvoiceContent;
-import com.example.stas.homeproj.db.InvoiceBuyApiDBHelper;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
-import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
-import com.example.stas.homeproj.models.InvoicesBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
-import com.example.stas.homeproj.resources.IInvoiceRestAPI;
+import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * @author StasEvseev
@@ -103,24 +96,30 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
     @Override
     public void onClick(View v) {
 
-                IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
-        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
-            @Override
-            public void success(InvoicesBuyApi invs, Response response) {
-
-                for(int i = 0; i < invs.items.size(); i++) {
-                    InvoiceBuyApi inv = invs.items.get(i);
-                    getContentResolver().insert(InvoiceContentProvider.CONTENT_URI, new InvoiceBuyApiHolder().toCursor(inv));
-                    lstr.add(inv);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d("DEBUGGG!!!", retrofitError.toString());
-            }
-        });
+//                IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
+//        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
+//            @Override
+//            public void success(InvoicesBuyApi invs, Response response) {
+//
+//                for(int i = 0; i < invs.items.size(); i++) {
+//                    InvoiceBuyApi inv = invs.items.get(i);
+//                    getContentResolver().insert(InvoiceContentProvider.CONTENT_URI, new InvoiceBuyApiHolder().toCursor(inv));
+//                    lstr.add(inv);
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError retrofitError) {
+//                Log.d("DEBUGGG!!!", retrofitError.toString());
+//            }
+//        });
+                    Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, settingsBundle);
 
     }
 }

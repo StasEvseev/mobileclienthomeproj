@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 //import com.example.stas.homeproj.db.GoodBuyApiDBHelper;
-import com.example.stas.homeproj.db.InvoiceBuyApiDBHelper;
+import com.example.stas.homeproj.db.DBHelper;
 //import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 //import com.example.stas.homeproj.models.InvoiceBuyApi;
@@ -47,11 +47,11 @@ public class InvoiceContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, PATH + "/#", URI_INVOICE_BY_ID);
     }
 
-    InvoiceBuyApiDBHelper dbHelper;
+    DBHelper dbHelper;
 
     @Override
     public boolean onCreate() {
-        dbHelper = new InvoiceBuyApiDBHelper(getContext());
+        dbHelper = new DBHelper(getContext());
         return true;
     }
 
@@ -64,13 +64,13 @@ public class InvoiceContentProvider extends ContentProvider {
             // retrieve tv shows list
             case URI_INVOICES: {
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(InvoiceBuyApiDBHelper.TABLE_NAME);
+                builder.setTables(DBHelper.INVOICE_TABLE_NAME);
                 return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
             }
             case URI_INVOICE_BY_ID: {
                 int id = (int) ContentUris.parseId(uri);
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(InvoiceBuyApiDBHelper.TABLE_NAME);
+                builder.setTables(DBHelper.INVOICE_TABLE_NAME);
                 builder.appendWhere(InvoiceBuyApiHolder.COL_ID + "=" + id);
                 return builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
             }
@@ -98,7 +98,7 @@ public class InvoiceContentProvider extends ContentProvider {
         int token = uriMatcher.match(uri);
         switch (token) {
             case URI_INVOICES: {
-                long id = db.insert(InvoiceBuyApiDBHelper.TABLE_NAME, null, values);
+                long id = db.insert(DBHelper.INVOICE_TABLE_NAME, null, values);
                 if (id != -1)
                     getContext().getContentResolver().notifyChange(uri, null);
                 return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
@@ -116,13 +116,13 @@ public class InvoiceContentProvider extends ContentProvider {
         int rowsDeleted = -1;
         switch (token) {
             case (URI_INVOICES):
-                rowsDeleted = db.delete(InvoiceBuyApiDBHelper.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(DBHelper.INVOICE_TABLE_NAME, selection, selectionArgs);
                 break;
             case (URI_INVOICE_BY_ID):
                 String tvShowIdWhereClause = InvoiceBuyApiHolder.COL_ID + "=" + uri.getLastPathSegment();
                 if (!TextUtils.isEmpty(selection))
                     tvShowIdWhereClause += " AND " + selection;
-                rowsDeleted = db.delete(InvoiceBuyApiDBHelper.TABLE_NAME, tvShowIdWhereClause, selectionArgs);
+                rowsDeleted = db.delete(DBHelper.INVOICE_TABLE_NAME, tvShowIdWhereClause, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);

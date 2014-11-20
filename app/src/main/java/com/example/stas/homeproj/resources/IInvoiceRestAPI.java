@@ -1,9 +1,13 @@
 package com.example.stas.homeproj.resources;
 
+import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.models.InvoicesBuyApi;
+
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.QueryMap;
 
 /**
  * @author StasEvseev
@@ -11,5 +15,5 @@ import retrofit.http.GET;
  */
 public interface IInvoiceRestAPI {
     @GET("/api/invoice")
-    void invoices(Callback<InvoicesBuyApi> cb);
+    InvoicesBuyApi invoices(@QueryMap Map<String, String> options);
 }

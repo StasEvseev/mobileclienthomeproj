@@ -6,14 +6,14 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 
-import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
-import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.provider.GoodContentProvider;
+import com.example.stas.homeproj.models.InvoiceBuyApi;
+import com.example.stas.homeproj.sync.model.GoodsSync;
+import com.example.stas.homeproj.sync.model.InvoiceSync;
+
+import java.util.List;
 
 /**
  * Handle the transfer of data between a server and an
@@ -60,7 +60,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
 
         Log.d("onPerformSync", "SYNC! SYNC! SYNC!");
-//        GoodsSync.sync(getContext());
+
+        InvoiceSync.sync(getContext());
+
+        List<InvoiceBuyApi> list = InvoiceSync.getInvoices(getContext());
+
+        for (InvoiceBuyApi item : list) {
+            GoodsSync.sync(getContext(), item);
+        }
+
+
+
 
 //        try {
 //

@@ -11,7 +11,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.stas.homeproj.db.GoodLocalDBHelper;
+//import com.example.stas.homeproj.db.GoodLocalDBHelper;
+import com.example.stas.homeproj.db.DBHelper;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
@@ -45,11 +46,11 @@ public class GoodLocalContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, PATH + "/#", URI_LOCALGOOD_BY_ID);
     }
 
-    GoodLocalDBHelper dbHelper;
+    DBHelper dbHelper;
 
     @Override
     public boolean onCreate() {
-        dbHelper = new GoodLocalDBHelper(getContext());
+        dbHelper = new DBHelper(getContext());
         return true;
     }
 
@@ -62,13 +63,13 @@ public class GoodLocalContentProvider extends ContentProvider {
             // retrieve tv shows list
             case URI_LOCALGOODS: {
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(GoodLocalDBHelper.TABLE_NAME);
+                builder.setTables(DBHelper.GOODLOCAL_TABLE_NAME);
                 return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
             }
             case URI_LOCALGOOD_BY_ID: {
                 int id = (int) ContentUris.parseId(uri);
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-                builder.setTables(GoodLocalDBHelper.TABLE_NAME);
+                builder.setTables(DBHelper.GOODLOCAL_TABLE_NAME);
                 builder.appendWhere(GoodLocalHolder.COL_ID + "=" + id);
                 return builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
             }
@@ -96,7 +97,7 @@ public class GoodLocalContentProvider extends ContentProvider {
         int token = uriMatcher.match(uri);
         switch (token) {
             case URI_LOCALGOODS: {
-                long id = db.insert(GoodLocalDBHelper.TABLE_NAME, null, values);
+                long id = db.insert(DBHelper.GOODLOCAL_TABLE_NAME, null, values);
                 if (id != -1)
                     getContext().getContentResolver().notifyChange(uri, null);
                 return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
@@ -114,13 +115,13 @@ public class GoodLocalContentProvider extends ContentProvider {
         int rowsDeleted = -1;
         switch (token) {
             case (URI_LOCALGOODS):
-                rowsDeleted = db.delete(GoodLocalDBHelper.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(DBHelper.GOODLOCAL_TABLE_NAME, selection, selectionArgs);
                 break;
             case (URI_LOCALGOOD_BY_ID):
                 String tvShowIdWhereClause = GoodLocalHolder.COL_ID + "=" + uri.getLastPathSegment();
                 if (!TextUtils.isEmpty(selection))
                     tvShowIdWhereClause += " AND " + selection;
-                rowsDeleted = db.delete(GoodLocalDBHelper.TABLE_NAME, tvShowIdWhereClause, selectionArgs);
+                rowsDeleted = db.delete(DBHelper.GOODLOCAL_TABLE_NAME, tvShowIdWhereClause, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
