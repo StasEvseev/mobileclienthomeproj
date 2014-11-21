@@ -32,6 +32,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Define a variable to contain a content resolver instance
     ContentResolver mContentResolver;
 
+    public final static String LOG = SyncAdapter.class.getName();
+
     /**
      * Set up the sync adapter
      */
@@ -41,7 +43,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * If your app uses a content resolver, get an instance of it
          * from the incoming Context
          */
-        Log.d("SyncAdapter", "2 argument");
+        Log.d(LOG, "2 argument");
         mContentResolver = context.getContentResolver();
     }
 
@@ -50,24 +52,24 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * constructor maintains compatibility with Android 3.0
      * and later platform versions
      */
-    public SyncAdapter(
-            Context context,
-            boolean autoInitialize,
-            boolean allowParallelSyncs) {
-        super(context, autoInitialize, allowParallelSyncs);
-        /*
-         * If your app uses a content resolver, get an instance of it
-         * from the incoming Context
-         */
-        Log.d("SyncAdapter", "3 argument");
-        mContentResolver = context.getContentResolver();
-    }
+//    public SyncAdapter(
+//            Context context,
+//            boolean autoInitialize,
+//            boolean allowParallelSyncs) {
+//        super(context, autoInitialize, allowParallelSyncs);
+//        /*
+//         * If your app uses a content resolver, get an instance of it
+//         * from the incoming Context
+//         */
+//        Log.d(LOG, "3 argument");
+//        mContentResolver = context.getContentResolver();
+//    }
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
 
-        Log.d("onPerformSync", "SYNC! SYNC! SYNC!");
+        Log.d(LOG, "SYNC! SYNC! SYNC!");
 
         InvoiceSync.sync(getContext());
 
