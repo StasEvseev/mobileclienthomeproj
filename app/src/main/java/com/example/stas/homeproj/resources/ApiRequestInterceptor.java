@@ -13,7 +13,6 @@ import retrofit.RequestInterceptor;
  */
 public class ApiRequestInterceptor implements RequestInterceptor {
 
-
     private User user;
     private Token token;
 

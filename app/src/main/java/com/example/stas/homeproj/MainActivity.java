@@ -3,6 +3,7 @@ package com.example.stas.homeproj;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         AuthHelper auth = new AuthHelper(getApplicationContext());
+
+        ContentResolver.setSyncAutomatically(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, true);
+        ContentResolver.addPeriodicSync(
+                AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY,
+                new Bundle(Bundle.EMPTY),
+                60 * 2);
 
         //Если пользователь на авторизован, вежливо попросим сделать это
         if (auth.checkAuth()) {

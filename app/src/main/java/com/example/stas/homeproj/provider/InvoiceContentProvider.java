@@ -11,11 +11,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-//import com.example.stas.homeproj.db.GoodBuyApiDBHelper;
 import com.example.stas.homeproj.db.DBHelper;
-//import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
-//import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
@@ -65,14 +62,19 @@ public class InvoiceContentProvider extends ContentProvider {
             case URI_INVOICES: {
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
                 builder.setTables(DBHelper.INVOICE_TABLE_NAME);
-                return builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+                Cursor cursor = builder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+                return cursor;
             }
             case URI_INVOICE_BY_ID: {
                 int id = (int) ContentUris.parseId(uri);
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
                 builder.setTables(DBHelper.INVOICE_TABLE_NAME);
                 builder.appendWhere(InvoiceBuyApiHolder.COL_ID + "=" + id);
-                return builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
+                Cursor cursor;
+                cursor = builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+                return cursor;
             }
             default:
                 return null;
@@ -101,6 +103,7 @@ public class InvoiceContentProvider extends ContentProvider {
                 long id = db.insert(DBHelper.INVOICE_TABLE_NAME, null, values);
                 if (id != -1)
                     getContext().getContentResolver().notifyChange(uri, null);
+//                onContentChanged(getContext(), SQLiteOperation.INSERT, extras);
                 return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
             }
             default: {

@@ -2,6 +2,7 @@ package com.example.stas.homeproj.db.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 
@@ -12,8 +13,8 @@ import java.util.Date;
 /**
  * Created by user on 18.11.14.
  */
-public class InvoiceBuyApiHolder implements BaseHolder<InvoiceBuyApi> {
-    public static final String COL_ID = "id";
+public class InvoiceBuyApiHolder {
+    public static final String COL_ID = "_id";
     public static final String COL_NUMBER = "number";
     public static final String COL_DATE = "date";
 
@@ -26,7 +27,7 @@ public class InvoiceBuyApiHolder implements BaseHolder<InvoiceBuyApi> {
         return formatter;
     }
 
-    public InvoiceBuyApi fromCursor(Cursor cur) {
+    public static InvoiceBuyApi fromCursor(Cursor cur) {
         InvoiceBuyApi invoice = new InvoiceBuyApi();
         invoice.id = cur.getInt(cur.getColumnIndex(COL_ID));
         try {
@@ -40,7 +41,7 @@ public class InvoiceBuyApiHolder implements BaseHolder<InvoiceBuyApi> {
         return invoice;
     }
 
-    public ContentValues toCursor(InvoiceBuyApi invoice) {
+    public static ContentValues toCursor(InvoiceBuyApi invoice) {
         ContentValues cv = new ContentValues();
         cv.put(COL_ID, invoice.id);
         cv.put(COL_NUMBER, invoice.number);

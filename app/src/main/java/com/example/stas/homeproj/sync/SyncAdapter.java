@@ -1,14 +1,22 @@
 package com.example.stas.homeproj.sync;
 
 import android.accounts.Account;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+//import android.app.TaskStackBuilder;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.example.stas.homeproj.InvoicesActivity;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.sync.model.GoodsSync;
 import com.example.stas.homeproj.sync.model.InvoiceSync;
@@ -69,43 +77,24 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             GoodsSync.sync(getContext(), item);
         }
 
-
-
-
-//        try {
-//
-////            ContentValues cv = new ContentValues();
-////            cv.put(GoodBuyApiDBHelper.COL_ID, 1);
-////            cv.put(GoodBuyApiDBHelper.COL_NAME, "Stas");
-////            cv.put(GoodBuyApiDBHelper.COL_YEAR, 2014);
-////            provider.insert(GoodContentProvider.CONTENT_URI, cv);
-//
-//
-//
-////            GoodBuyApi good = new GoodBuyApi();
-////            good.id = 1;
-////            good.name = "Test";
-////
-////            provider.insert(GoodContentProvider.CONTENT_URI, new GoodBuyApiHolder().toCursor(good));
-////
-////            good.id = 2;
-////            good.name = "Test 2";
-////
-////            provider.insert(GoodContentProvider.CONTENT_URI, new GoodBuyApiHolder().toCursor(good));
-////
-////            Cursor curGood = provider.query(GoodContentProvider.CONTENT_URI, null, null, null, null);
-////
-////            if(curGood!= null) {
-////                while(curGood.moveToNext()) {
-////                    Log.d(SyncAdapter.class.getName(),
-////                    "ID" + curGood.getInt(curGood.getColumnIndex(GoodBuyApiHolder.COL_ID)) +
-////                    "NAME" + curGood.getString(curGood.getColumnIndex(GoodBuyApiHolder.COL_NAME)));
-////                }
-////            }
-//
-//        } catch (RemoteException e) {
-//            Log.d(this.getClass().getName(), "onPerformSync EXCEPTION");
-//            e.printStackTrace();
-//        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
+                .setSmallIcon(android.R.drawable.dialog_holo_dark_frame)
+                .setContentTitle("HomeProj")
+                .setContentText("Данные синхронизованы!");
+        Intent resultIntent = new Intent(getContext(), InvoicesActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+        stackBuilder.addParentStack(InvoicesActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        builder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notify = builder.build();
+        notify.tickerText = "";
+        mNotificationManager.notify(1, notify);
     }
 }

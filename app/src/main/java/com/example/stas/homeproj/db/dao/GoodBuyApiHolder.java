@@ -8,13 +8,13 @@ import com.example.stas.homeproj.models.GoodBuyApi;
 /**
  * Created by user on 18.11.14.
  */
-public class GoodBuyApiHolder implements BaseHolder<GoodBuyApi>{
+public class GoodBuyApiHolder{
     public static String COL_COUNT = "count";
     public static String COL_COUNT_ORDER = "count_order";
     public static String COL_COUNT_POSTORDER = "count_postorder";
     public static String COL_COUNT_WHOLE_PACK = "count_whole_pack";
     public static String COL_FULL_NAME = "full_name";
-    public static String COL_ID = "id";
+    public static String COL_ID = "_id";
     public static String COL_INVOICE_ID = "id_invoice";
     public static String COL_NAME = "name";
     public static String COL_NUMBER_GLOBAL = "number_global";
@@ -29,7 +29,7 @@ public class GoodBuyApiHolder implements BaseHolder<GoodBuyApi>{
     public static String COL_THEMATIC = "thematic";
     public static String COL_GOOD_ID = "id_good";
 
-    public GoodBuyApi fromCursor(Cursor cur) {
+    public static GoodBuyApi fromCursor(Cursor cur) {
         GoodBuyApi good = new GoodBuyApi();
         good.id = cur.getInt(cur.getColumnIndex(COL_ID));
         good.invoice_id = cur.getInt(cur.getColumnIndex(COL_INVOICE_ID));
@@ -54,7 +54,7 @@ public class GoodBuyApiHolder implements BaseHolder<GoodBuyApi>{
         return good;
     }
 
-    public ContentValues toCursor(GoodBuyApi good) {
+    public static ContentValues toCursor(GoodBuyApi good) {
 
         ContentValues cv = new ContentValues();
         cv.put(COL_ID, good.id);

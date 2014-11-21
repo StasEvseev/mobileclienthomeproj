@@ -18,6 +18,9 @@ public interface IInvoiceItemRestAPI {
     @GET("/api/invoice/{id}/goods")
     void goods(@Path("id") int invId, Callback<GoodsBuyApi> cb);
 
+
+    @GET("/api/invoice/{id}/goods")
+    GoodsBuyApi goodsSync(@Path("id") int invId);
 //    @POST("/api/invoice/{id}/goods")
 //    void save_bulk(@Path("id") int invId, List<>)
 }

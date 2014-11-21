@@ -10,13 +10,13 @@ import com.example.stas.homeproj.models.GoodLocal;
  * @author StasEvseev
  * Класс для работы с GoodLocal в SQLite
  */
-public class GoodLocalHolder implements BaseHolder<GoodLocal> {
+public class GoodLocalHolder {
 
-    public static final String COL_ID = "id";
+    public static final String COL_ID = "_id";
     public static final String COL_FACT_COUNT = "fact_count";
     public static final String COL_BARCODE = "barcode";
 
-    public GoodLocal fromCursor(Cursor cur) {
+    public static GoodLocal fromCursor(Cursor cur) {
 
         GoodLocal good = new GoodLocal();
         good.id = cur.getInt(cur.getColumnIndex(COL_ID));
@@ -26,7 +26,7 @@ public class GoodLocalHolder implements BaseHolder<GoodLocal> {
         return good;
     }
 
-    public ContentValues toCursor(GoodLocal goodl) {
+    public static ContentValues toCursor(GoodLocal goodl) {
         ContentValues cv = new ContentValues();
 
         cv.put(COL_ID, goodl.getId());

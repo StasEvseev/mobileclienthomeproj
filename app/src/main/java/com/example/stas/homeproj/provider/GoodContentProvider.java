@@ -94,7 +94,7 @@ public class GoodContentProvider extends ContentProvider {
         Log.d(LOG_TAG, "insert, " + uri.toString() + " { " + values.toString() + " } ");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int token = uriMatcher.match(uri);
-        Log.d(LOG_TAG, "TOKEN - " + token);
+//        Log.d(LOG_TAG, "TOKEN - " + token);
         switch (token) {
             case URI_GOODS: {
                 long id = db.insert(DBHelper.GOODBUY_TABLE_NAME, null, values);

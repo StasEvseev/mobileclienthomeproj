@@ -1,8 +1,12 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentResolver;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.content.SyncStatusObserver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 
-import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
+import com.example.stas.homeproj.widget.InvoiceCursorBinderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +31,22 @@ import java.util.List;
  * Активити выбора накладной
  **/
 
-public class InvoicesActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class InvoicesActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
+        SyncStatusObserver, AdapterView.OnItemClickListener, View.OnClickListener {
 
-    public ArrayAdapter<InvoiceBuyApi> adapter;
+    public final String LOG = InvoicesActivity.class.getName();
+
     public ListView lv;
     public List<InvoiceBuyApi> lstr;
     private Button btnSync;
 
+    private Object mSyncMonitor;
+
+    private CursorAdapter mListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoices);
 
@@ -45,26 +56,33 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
         lstr = new ArrayList<InvoiceBuyApi>();
 
         lv = (ListView)findViewById(R.id.listView);
-        adapter = new ArrayAdapter<InvoiceBuyApi>(
-                this , android.R.layout.simple_list_item_1);
 
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(this);
+        mListAdapter = new InvoiceCursorBinderAdapter(this, R.layout.li_invoice);
 
-        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null, null, null, null);
+        lv.setAdapter(mListAdapter);
 
-        if (cur != null) {
-            while(cur.moveToNext()) {
-                InvoiceBuyApi invoice = new InvoiceBuyApiHolder().fromCursor(cur);
-                lstr.add(invoice);
-            }
-            adapter.addAll(lstr);
-        }
+        getLoaderManager().initLoader(1, null, this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSyncMonitor = ContentResolver.addStatusChangeListener(
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE
+                        | ContentResolver.SYNC_OBSERVER_TYPE_PENDING,
+                this
+        );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ContentResolver.removeStatusChangeListener(mSyncMonitor);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(LOG, "onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.invoices, menu);
         return true;
@@ -72,6 +90,7 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG, "onOptionsItemSelected");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -95,31 +114,39 @@ public class InvoicesActivity extends Activity implements AdapterView.OnItemClic
 
     @Override
     public void onClick(View v) {
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+//        ContentResolver.requestSync(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, settingsBundle);
+    }
 
-//                IInvoiceRestAPI invoice_api = RestApiHelper.createResource(IInvoiceRestAPI.class, this);
-//        invoice_api.invoices(new Callback<InvoicesBuyApi>() {
-//            @Override
-//            public void success(InvoicesBuyApi invs, Response response) {
-//
-//                for(int i = 0; i < invs.items.size(); i++) {
-//                    InvoiceBuyApi inv = invs.items.get(i);
-//                    getContentResolver().insert(InvoiceContentProvider.CONTENT_URI, new InvoiceBuyApiHolder().toCursor(inv));
-//                    lstr.add(inv);
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError retrofitError) {
-//                Log.d("DEBUGGG!!!", retrofitError.toString());
-//            }
-//        });
-                    Bundle settingsBundle = new Bundle();
-            settingsBundle.putBoolean(
-                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
-            settingsBundle.putBoolean(
-                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, settingsBundle);
+    @Override
+    public void onStatusChanged(int which) {
+        Log.d(LOG, "onStatusChanged - " + which);
 
+        lv.deferNotifyDataSetChanged();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG, "onCreateLoader");
+        return new CursorLoader(
+                getApplicationContext(),
+                InvoiceContentProvider.CONTENT_URI, null, null, null, null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(LOG, "onLoadFinished");
+        mListAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(LOG, "onLoadReset");
+        mListAdapter.swapCursor(null);
     }
 }
