@@ -135,7 +135,7 @@ public class GoodListActivity extends Activity
     @Override
     public void onClick(View v) {
         Log.d("GoodListActivity", "Click");
-        Account mAccount = AccountSyncHelper.CreateSyncAccount(this);
+//        Account mAccount = AccountSyncHelper.CreateSyncAccount(this);
         // Pass the settings flags by inserting them in a bundle
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(
@@ -149,6 +149,6 @@ public class GoodListActivity extends Activity
 //            mResolver = getContentResolver();
 //            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
 
-        ContentResolver.requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
+        ContentResolver.requestSync(MyApplication.sAccount, MyApplication.AUTHORITY, settingsBundle);
     }
 }

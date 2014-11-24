@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Титл" />
+
+    <PreferenceScreen
+        android:key="com.example.stas.homeproj.KEY_ACCOUNT_SYNC"
+        android:summary="Setting summary"
+        android:title="Синхронизация">
+        <intent
+            android:action="com.example.stas.homeproj.ACTION_SYNC_SETTINGS"
+            android:targetClass="com.example.stas.homeproj.SyncSettingsActivity"
+            android:targetPackage="com.example.stas.homeproj" />
+    </PreferenceScreen>
+
+</PreferenceScreen>

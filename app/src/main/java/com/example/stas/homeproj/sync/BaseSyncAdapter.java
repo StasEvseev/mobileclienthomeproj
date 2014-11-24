@@ -11,11 +11,11 @@ import android.util.Log;
 /**
  * Created by user on 21.11.14.
  */
-public abstract class BaseSync extends AbstractThreadedSyncAdapter {
+public abstract class BaseSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final String LOG = BaseSync.class.getName();
+    public static final String LOG = BaseSyncAdapter.class.getName();
 
-    public BaseSync(Context context, boolean autoInitialize) {
+    public BaseSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 

@@ -20,7 +20,7 @@ import com.example.stas.homeproj.sync.AccountSyncHelper;
 public class ActionsActivity extends Activity implements View.OnClickListener {
 
     Button btnGood;
-    Account mAccount;
+//    Account mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
 
         btnGood.setOnClickListener(this);
 
-        mAccount = AccountSyncHelper.CreateSyncAccount(this);
+//        mAccount = AccountSyncHelper.CreateSyncAccount(this);
     }
 
 
@@ -46,6 +46,7 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SyncSettingsActivity.class));
             return true;
         } else if (id == R.id.action_logout) {
             logout();

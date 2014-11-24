@@ -40,9 +40,8 @@ public class GoodLocalSync {
                     }
                 }
             }
+            cur.close();
         }
-
-        cur.close();
 
         Log.d(TAG, "Sync end");
 

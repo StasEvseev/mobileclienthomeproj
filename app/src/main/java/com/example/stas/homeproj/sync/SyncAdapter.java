@@ -17,6 +17,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.example.stas.homeproj.InvoicesActivity;
+import com.example.stas.homeproj.library.AuthHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.sync.model.GoodLocalSync;
 import com.example.stas.homeproj.sync.model.GoodsSync;
@@ -69,6 +70,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
+
+        AuthHelper auth = new AuthHelper(getContext());
+
+        if(!auth.checkAuth()) {
+            Log.d(LOG, "Faulire auth");
+            return;
+        }
 
         Log.d(LOG, "SYNC! SYNC! SYNC!");
 

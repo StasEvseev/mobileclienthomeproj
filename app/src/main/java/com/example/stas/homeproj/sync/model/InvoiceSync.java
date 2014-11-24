@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by user on 20.11.14.
+ * @author StasEvseev
+ * Синхронизатор накладных
  */
 public class InvoiceSync extends BaseSync {
 
@@ -27,7 +28,6 @@ public class InvoiceSync extends BaseSync {
         int max_id = getLastIdInvoice(context);
 
         Log.d(TAG, String.valueOf(max_id));
-//        final InvoiceBuyApiHolder holder = new InvoiceBuyApiHolder();
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("from", String.valueOf(max_id));
@@ -43,7 +43,6 @@ public class InvoiceSync extends BaseSync {
     }
 
     public static List<InvoiceBuyApi> getInvoices(Context context) {
-//        final InvoiceBuyApiHolder holder = new InvoiceBuyApiHolder();
         List<InvoiceBuyApi> list = new ArrayList<InvoiceBuyApi>();
         Cursor curinvs = context.getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null, null, null, null);
 
@@ -51,9 +50,8 @@ public class InvoiceSync extends BaseSync {
             while(curinvs.moveToNext()) {
                 list.add(InvoiceBuyApiHolder.fromCursor(curinvs));
             }
+            curinvs.close();
         }
-
-        curinvs.close();
 
         return list;
     }

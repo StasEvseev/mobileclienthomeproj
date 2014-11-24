@@ -6,6 +6,7 @@
     <!-- android:maxSdkVersion="20" /> -->
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -39,16 +40,16 @@
             android:syncable="true"/>
 
         <provider
-            android:authorities="com.example.stas.homeproj.sync.invoice"
+            android:authorities="com.example.stas.homeproj.invoice"
             android:name=".provider.InvoiceContentProvider"
             android:exported="false"/>
 
         <provider
-            android:authorities="com.example.stas.homeproj.sync.good_local"
+            android:authorities="com.example.stas.homeproj.good_local"
             android:name=".provider.GoodLocalContentProvider"
             android:exported="false"/>
 
-        <provider android:authorities="com.example.stas.homeproj.sync.good"
+        <provider android:authorities="com.example.stas.homeproj.good"
             android:name=".provider.GoodContentProvider"
             android:label="BLABAL MY CONTENT PROVIDER"
             android:exported="false"/>
@@ -57,6 +58,13 @@
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
+
+        <activity
+            android:name=".SyncSettingsActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:label="Настройки"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >

@@ -11,21 +11,20 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-//import com.example.stas.homeproj.db.GoodLocalDBHelper;
+import com.example.stas.homeproj.MyApplication;
 import com.example.stas.homeproj.db.DBHelper;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
-//import retrofit.http.PATCH;
-
 /**
- * Created by user on 19.11.14.
+ * @author StasEvseev
+ * Провайдер для работы с товаром хранящимся в локальной базе.
  */
 public class GoodLocalContentProvider extends ContentProvider {
     public static String LOG_TAG = GoodLocalContentProvider.class.getName();
 
     public static String PATH = "good_local";
-    public static String AUTHORITY = AccountSyncHelper.AUTHORITY + '.' + PATH;
+    public static String AUTHORITY = MyApplication.AUTHORITY + '.' + PATH;
     public static String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY;
     public static String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY;
 

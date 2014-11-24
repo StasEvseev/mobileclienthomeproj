@@ -11,7 +11,8 @@ import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Created by Stanislav on 24.11.2014.
+ * @author StasEvseev
+ * Класс помощник различных вспомогательных функций для работы с провайдерами.
  */
 public class Provider {
 
@@ -40,11 +41,9 @@ public class Provider {
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
-//                inst = GoodLocalHolder.fromCursor(cur);
             }
+            cur.close();
         }
-
-        cur.close();
 
         return inst;
     }

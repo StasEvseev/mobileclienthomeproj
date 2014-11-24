@@ -29,9 +29,9 @@ public class MainActivity extends Activity {
 
         AuthHelper auth = new AuthHelper(getApplicationContext());
 
-        ContentResolver.setSyncAutomatically(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(MyApplication.sAccount, MyApplication.AUTHORITY, true);
         ContentResolver.addPeriodicSync(
-                AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY,
+                MyApplication.sAccount, MyApplication.AUTHORITY,
                 new Bundle(Bundle.EMPTY),
                 60 * 2);
 

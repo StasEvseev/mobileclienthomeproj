@@ -11,19 +11,21 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.stas.homeproj.MyApplication;
 import com.example.stas.homeproj.db.DBHelper;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
- * Created by user on 19.11.14.
+ * @author StasEvseev
+ * Провайдер накладных.
  */
 public class InvoiceContentProvider extends ContentProvider {
 
     public static String LOG_TAG = InvoiceContentProvider.class.getName();
 
     public static String PATH = "invoice";
-    public static String AUTHORITY = AccountSyncHelper.AUTHORITY + '.' + PATH;
+    public static String AUTHORITY = MyApplication.AUTHORITY + '.' + PATH;
     public static String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY;
     public static String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY;
 
