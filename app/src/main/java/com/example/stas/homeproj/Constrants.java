@@ -5,7 +5,7 @@ package com.example.stas.homeproj;
  * Класс констант.
  */
 public final class Constrants {
-    public static final String URL_BUY_API = "http://192.168.0.105:5000";
+    public static final String URL_BUY_API = "http://192.168.3.18:5000";
 
     public static final String TOKEN_NAME = "BUY_API_TOKEN";
 }

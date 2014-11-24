@@ -2,10 +2,13 @@ package com.example.stas.homeproj;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.provider.GoodContentProvider;
 import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.provider.helper.Provider;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -34,6 +38,8 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
      */
     //имя аргумента от активити для отображения
     public static final String ARG_ITEM_ID = "item_id";
+
+    public static final String LOG_TAG = GoodDetailFragment.class.getName();
 
     /**
      * Моделька товара
@@ -76,47 +82,37 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(LOG_TAG, "onCreate");
+
         if (getArguments().containsKey(ARG_ITEM_ID)) {
+            Log.d(LOG_TAG, "onCreate is ARGUMENT");
             //Извлекаем товар по переданному id в аргументы
 //            mItem = GoodContent.getItem(getArguments().getInt(ARG_ITEM_ID));
 
-            ContentResolver resolver = getActivity().getContentResolver();
+//            ContentResolver resolver = getActivity().getContentResolver();
+            Context context = getActivity().getApplicationContext();
 
-            Cursor cur = resolver.query(
-                    GoodLocalContentProvider.CONTENT_URI, null, GoodLocalHolder.COL_ID + "=?",
-                    new String[]{String.valueOf(getArguments().getInt(ARG_ITEM_ID))}, null);
+            GoodLocal goodLocal= (GoodLocal)Provider.getById(context, GoodLocalContentProvider.CONTENT_URI,
+                    GoodLocalHolder.COL_ID, getArguments().getInt(ARG_ITEM_ID), GoodLocal.class, GoodLocalHolder.class);
 
-//            GoodLocal goodLocal = new GoodLocal();
+            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(context, GoodContentProvider.CONTENT_URI,
+                    GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
 
-            if(cur!=null) {
-                while (cur.moveToNext()) {
-                    mItem = GoodLocalHolder.fromCursor(cur);
-                }
-            }
-//            cur.close();
+//            goodLocal.good = goodBuyApi;
+            goodLocal.setGood(goodBuyApi);
 
-            cur = resolver.query(
-                    GoodContentProvider.CONTENT_URI, null, GoodHolder.COL_ID + "=?",
-                    new String[]{ String.valueOf(mItem.id_good) }, null);
-
-            GoodBuyApi goodBuyApi = new GoodBuyApi();
-
-            if(cur!=null) {
-                while (cur.moveToNext()) {
-                    goodBuyApi = GoodHolder.fromCursor(cur);
-                }
-            }
-            mItem.good = goodBuyApi;
-
+            mItem = goodLocal;
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_good_detail, container, false);
 
         if (mItem != null) {
+            Log.d(LOG_TAG, "onCreateView mITEM");
             ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.getFullname());
             ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.getCount()));
             if(mItem.factCount != 0) {
@@ -163,10 +159,20 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
             gfc_field.setError("Поле обязательное");
             dCallback.onFailure();
         } else {
-            GoodContent.update(mItem, rawFactCount, rawBarcode);
+
+            mItem.factCount = Integer.parseInt(rawFactCount);
+
+            if (!TextUtils.isEmpty(rawBarcode)) {
+                mItem.barcode = Integer.parseInt(rawBarcode);
+            }
+
+//            mItem.barcode = Integer.parseInt(rawBarcode);
+//            mItem.factCount = Integer.parseInt(rawFactCount);
+            mItem.is_sync = false;
+            getActivity().getContentResolver().update(GoodLocalContentProvider.CONTENT_URI,
+                    GoodLocalHolder.toCursor(mItem), GoodLocalHolder.COL_ID + "=?", new String[] { String.valueOf(mItem.id) });
+//            GoodContent.update(mItem, rawFactCount, rawBarcode);
             dCallback.onSuccess();
         }
-
-
     }
 }

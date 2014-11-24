@@ -134,6 +134,26 @@ public class GoodLocalContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int token = uriMatcher.match(uri);
+
+        int rowsUpdated = -1;
+        switch (token) {
+            case (URI_LOCALGOODS):
+                rowsUpdated = db.update(DBHelper.GOODLOCAL_TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case (URI_LOCALGOOD_BY_ID):
+                String tvShowIdWhereClause = GoodLocalHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.GOODLOCAL_TABLE_NAME, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
+        // Notifying the changes, if there are any
+        if (rowsUpdated != -1)
+            getContext().getContentResolver().notifyChange(uri, null);
+        return rowsUpdated;
     }
 }

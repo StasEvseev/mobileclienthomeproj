@@ -25,6 +25,7 @@ public class GoodBuyApi implements Serializable {
     public Double sum_with_NDS;
     public Double sum_without_NDS;
     public String thematic;
+    //ID Good into BUY_API
     public int good_id;
 
     @Override

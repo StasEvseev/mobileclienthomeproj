@@ -7,20 +7,31 @@ package com.example.stas.homeproj.models;
 public class GoodLocal {
     public GoodBuyApi good;
     public int id;
-    public int id_good;
+    //ID Good в локальной БД
+    public int id_good_buy_api;
     public int factCount;
     public int barcode;
+
+    public boolean is_sync;
 
     public GoodLocal(GoodBuyApi goodapi) {
         good = goodapi;
 //        id = getId();
-        id_good = goodapi.id;
+        id_good_buy_api = goodapi.id;
         factCount = 0;
         barcode = 0;
+
+        is_sync = true;
     }
 
     public GoodLocal() {
+        is_sync = true;
 
+    }
+
+    public void setGood(GoodBuyApi buyApi) {
+        good = buyApi;
+        id_good_buy_api = buyApi.id;
     }
 
     public int getId() {

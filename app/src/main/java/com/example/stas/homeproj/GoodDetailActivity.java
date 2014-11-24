@@ -11,6 +11,7 @@ import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.provider.GoodContentProvider;
 import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.provider.helper.Provider;
 
 
 /**
@@ -46,31 +47,13 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
 
-            Cursor cur = getContentResolver().query(
-                    GoodLocalContentProvider.CONTENT_URI, null, GoodLocalHolder.COL_ID + "=?",
-                    new String[]{ String.valueOf(id_good) }, null);
+            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
+                    GoodLocalHolder.COL_ID, id_good, GoodLocal.class, GoodLocalHolder.class);
 
-            GoodLocal goodLocal = new GoodLocal();
+            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(getApplicationContext(),
+                    GoodContentProvider.CONTENT_URI, GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
 
-            if(cur!=null) {
-                while (cur.moveToNext()) {
-                    goodLocal = GoodLocalHolder.fromCursor(cur);
-                }
-            }
-//            cur.close();
-
-            cur = getContentResolver().query(GoodContentProvider.CONTENT_URI, null,
-                    GoodHolder.COL_ID + "=?", new String[]{ String.valueOf(goodLocal.id_good) }, null);
-
-            GoodBuyApi goodBuyApi = new GoodBuyApi();
-
-            if(cur!=null) {
-                while (cur.moveToNext()) {
-                    goodBuyApi = GoodHolder.fromCursor(cur);
-                }
-            }
             goodLocal.good = goodBuyApi;
-//            GoodLocal goodLocal = GoodContent.getItem(id_good);
             setTitle(goodLocal.toString());
             Bundle arguments = new Bundle();
             arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,

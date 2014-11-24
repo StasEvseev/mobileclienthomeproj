@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.example.stas.homeproj.InvoicesActivity;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
+import com.example.stas.homeproj.sync.model.GoodLocalSync;
 import com.example.stas.homeproj.sync.model.GoodsSync;
 import com.example.stas.homeproj.sync.model.InvoiceSync;
 
@@ -71,20 +72,24 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.d(LOG, "SYNC! SYNC! SYNC!");
 
-        InvoiceSync.sync(getContext());
+        Context context = getContext();
 
-        List<InvoiceBuyApi> list = InvoiceSync.getInvoices(getContext());
+        InvoiceSync.sync(context);
+
+        List<InvoiceBuyApi> list = InvoiceSync.getInvoices(context);
 
         for (InvoiceBuyApi item : list) {
-            GoodsSync.sync(getContext(), item);
+            GoodsSync.sync(context, item);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
+        GoodLocalSync.sync(context);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(android.R.drawable.btn_star_big_off)
                 .setContentTitle("HomeProj")
                 .setContentText("Данные синхронизованы!");
-        Intent resultIntent = new Intent(getContext(), InvoicesActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+        Intent resultIntent = new Intent(context, InvoicesActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(InvoicesActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
@@ -94,7 +99,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 );
         builder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
-                (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notify = builder.build();
         notify.tickerText = "";
         mNotificationManager.notify(1, notify);
