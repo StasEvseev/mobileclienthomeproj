@@ -1,6 +1,8 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
@@ -12,7 +14,12 @@ import android.widget.TextView;
 
 
 import com.example.stas.homeproj.data.GoodContent;
+import com.example.stas.homeproj.db.dao.GoodHolder;
+import com.example.stas.homeproj.db.dao.GoodLocalHolder;
+import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
+import com.example.stas.homeproj.provider.GoodContentProvider;
+import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -71,7 +78,36 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             //Извлекаем товар по переданному id в аргументы
-            mItem = GoodContent.getItem(getArguments().getInt(ARG_ITEM_ID));
+//            mItem = GoodContent.getItem(getArguments().getInt(ARG_ITEM_ID));
+
+            ContentResolver resolver = getActivity().getContentResolver();
+
+            Cursor cur = resolver.query(
+                    GoodLocalContentProvider.CONTENT_URI, null, GoodLocalHolder.COL_ID + "=?",
+                    new String[]{String.valueOf(getArguments().getInt(ARG_ITEM_ID))}, null);
+
+//            GoodLocal goodLocal = new GoodLocal();
+
+            if(cur!=null) {
+                while (cur.moveToNext()) {
+                    mItem = GoodLocalHolder.fromCursor(cur);
+                }
+            }
+//            cur.close();
+
+            cur = resolver.query(
+                    GoodContentProvider.CONTENT_URI, null, GoodHolder.COL_ID + "=?",
+                    new String[]{ String.valueOf(mItem.id_good) }, null);
+
+            GoodBuyApi goodBuyApi = new GoodBuyApi();
+
+            if(cur!=null) {
+                while (cur.moveToNext()) {
+                    goodBuyApi = GoodHolder.fromCursor(cur);
+                }
+            }
+            mItem.good = goodBuyApi;
+
         }
     }
 

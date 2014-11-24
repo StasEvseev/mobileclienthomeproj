@@ -80,7 +80,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
-                .setSmallIcon(android.R.drawable.dialog_holo_dark_frame)
+                .setSmallIcon(android.R.drawable.btn_star_big_off)
                 .setContentTitle("HomeProj")
                 .setContentText("Данные синхронизованы!");
         Intent resultIntent = new Intent(getContext(), InvoicesActivity.class);

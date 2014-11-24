@@ -8,7 +8,7 @@ import com.example.stas.homeproj.models.GoodBuyApi;
 /**
  * Created by user on 18.11.14.
  */
-public class GoodBuyApiHolder{
+public class GoodHolder {
     public static String COL_COUNT = "count";
     public static String COL_COUNT_ORDER = "count_order";
     public static String COL_COUNT_POSTORDER = "count_postorder";

@@ -1,11 +1,16 @@
 package com.example.stas.homeproj;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.MenuItem;
 
-import com.example.stas.homeproj.data.GoodContent;
+import com.example.stas.homeproj.db.dao.GoodHolder;
+import com.example.stas.homeproj.db.dao.GoodLocalHolder;
+import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
+import com.example.stas.homeproj.provider.GoodContentProvider;
+import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 
 
 /**
@@ -40,7 +45,32 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
-            GoodLocal goodLocal = GoodContent.getItem(id_good);
+
+            Cursor cur = getContentResolver().query(
+                    GoodLocalContentProvider.CONTENT_URI, null, GoodLocalHolder.COL_ID + "=?",
+                    new String[]{ String.valueOf(id_good) }, null);
+
+            GoodLocal goodLocal = new GoodLocal();
+
+            if(cur!=null) {
+                while (cur.moveToNext()) {
+                    goodLocal = GoodLocalHolder.fromCursor(cur);
+                }
+            }
+//            cur.close();
+
+            cur = getContentResolver().query(GoodContentProvider.CONTENT_URI, null,
+                    GoodHolder.COL_ID + "=?", new String[]{ String.valueOf(goodLocal.id_good) }, null);
+
+            GoodBuyApi goodBuyApi = new GoodBuyApi();
+
+            if(cur!=null) {
+                while (cur.moveToNext()) {
+                    goodBuyApi = GoodHolder.fromCursor(cur);
+                }
+            }
+            goodLocal.good = goodBuyApi;
+//            GoodLocal goodLocal = GoodContent.getItem(id_good);
             setTitle(goodLocal.toString());
             Bundle arguments = new Bundle();
             arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,

@@ -1,6 +1,7 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -9,19 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.example.stas.homeproj.data.GoodContent;
-import com.example.stas.homeproj.library.RestApiHelper;
-import com.example.stas.homeproj.models.GoodLocal;
+import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.models.GoodsBuyApi;
-import com.example.stas.homeproj.resources.IInvoiceItemRestAPI;
+import com.example.stas.homeproj.provider.GoodContentProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -35,6 +29,8 @@ import retrofit.client.Response;
 public class GoodListFragment extends ListFragment {
 
     private List<GoodBuyApi> lgood;
+
+//    private CursorAdapter listAdapter;
 
 //    private HashMap<Integer, GoodBuyApi> keyV;
 
@@ -88,33 +84,43 @@ public class GoodListFragment extends ListFragment {
 
         Log.d("loadGood", String.valueOf(id));
 
-        IInvoiceItemRestAPI good_api = RestApiHelper.createResource(IInvoiceItemRestAPI.class, getActivity());
+        Cursor curGood = getActivity().getContentResolver().query(
+                GoodContentProvider.CONTENT_URI, null,
+                GoodHolder.COL_INVOICE_ID + " = ?", new String[] { String.valueOf(id) }, null, null);
 
-        good_api.goods(id, new Callback<GoodsBuyApi>() {
-            @Override
-            public void success(GoodsBuyApi lgoods, Response response) {
-                Log.d("DEBUGGG!!!", "SUCCESS");
-                for (int i = 0; i < lgoods.items.size(); i++) {
-                    GoodBuyApi goodBuyApi = lgoods.items.get(i);
-                    lgood.add(goodBuyApi);
-
-                    GoodContent.addItem(new GoodLocal(goodBuyApi));
-//                    keyV.put(goodBuyApi.id, goodBuyApi);
-                }
-
-                setListAdapter(new ArrayAdapter<GoodBuyApi>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_activated_1,
-                        lgood));
-
-//                adapter.addAll(lgood);
+        if(curGood != null) {
+            while(curGood.moveToNext()) {
+                lgood.add(GoodHolder.fromCursor(curGood));
             }
+        }
 
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.d("DEBUGGG!!!", retrofitError.toString());
-            }
-        });
+//        IInvoiceItemRestAPI good_api = RestApiHelper.createResource(IInvoiceItemRestAPI.class, getActivity());
+//
+//        good_api.goods(id, new Callback<GoodsBuyApi>() {
+//            @Override
+//            public void success(GoodsBuyApi lgoods, Response response) {
+//                Log.d("DEBUGGG!!!", "SUCCESS");
+//                for (int i = 0; i < lgoods.items.size(); i++) {
+//                    GoodBuyApi goodBuyApi = lgoods.items.get(i);
+//                    lgood.add(goodBuyApi);
+//
+//                    GoodContent.addItem(new GoodLocal(goodBuyApi));
+////                    keyV.put(goodBuyApi.id, goodBuyApi);
+//                }
+//
+//                setListAdapter(new ArrayAdapter<GoodBuyApi>(
+//                        getActivity(),
+//                        android.R.layout.simple_list_item_activated_1,
+//                        lgood));
+//
+////                adapter.addAll(lgood);
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError retrofitError) {
+//                Log.d("DEBUGGG!!!", retrofitError.toString());
+//            }
+//        });
     }
 
     @Override
@@ -122,6 +128,8 @@ public class GoodListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         lgood = new ArrayList<GoodBuyApi>();
+
+//        listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, new String());
 
 //        keyV = new HashMap<Integer, GoodBuyApi>();
 

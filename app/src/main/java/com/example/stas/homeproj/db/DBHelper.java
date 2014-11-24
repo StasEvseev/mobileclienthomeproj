@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
+import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 
@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String LOG = DBHelper.class.getName();
 
     private static final String DATABASE_NAME = "homeproj.db";
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
 
     public final static String INVOICE_TABLE_NAME = "invoice_buy_api";
 
@@ -32,25 +32,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final static String GOODBUY_DATABASE_CREATE = "create table "
             + GOODBUY_TABLE_NAME + "(" +
-            GoodBuyApiHolder.COL_ID + " integer   primary key autoincrement, " +
-            GoodBuyApiHolder.COL_INVOICE_ID + " integer, " +
-            GoodBuyApiHolder.COL_NAME + " text not null, " +
-            GoodBuyApiHolder.COL_FULL_NAME + " text not null, " +
-            GoodBuyApiHolder.COL_COUNT + " integer, " +
-            GoodBuyApiHolder.COL_COUNT_ORDER + " integer, " +
-            GoodBuyApiHolder.COL_COUNT_POSTORDER + " integer, " +
-            GoodBuyApiHolder.COL_COUNT_WHOLE_PACK + " integer, " +
-            GoodBuyApiHolder.COL_NUMBER_GLOBAL + " text, " +
-            GoodBuyApiHolder.COL_NUMBER_LOCAL + " text, " +
-            GoodBuyApiHolder.COL_PLACER + " integer, " +
-            GoodBuyApiHolder.COL_PRICE_WITH_NDS + " real, " +
-            GoodBuyApiHolder.COL_PRICE_WITHOUT_NDS + " real, " +
-            GoodBuyApiHolder.COL_RATE_NDS + " real, " +
-            GoodBuyApiHolder.COL_SUM_NDS + " real, " +
-            GoodBuyApiHolder.COL_SUM_WITH_NDS + " real, " +
-            GoodBuyApiHolder.COL_SUM_WITHOUT_NDS + " real, " +
-            GoodBuyApiHolder.COL_THEMATIC + " text, " +
-            GoodBuyApiHolder.COL_GOOD_ID + " integer " +
+            GoodHolder.COL_ID + " integer   primary key autoincrement, " +
+            GoodHolder.COL_INVOICE_ID + " integer, " +
+            GoodHolder.COL_NAME + " text not null, " +
+            GoodHolder.COL_FULL_NAME + " text not null, " +
+            GoodHolder.COL_COUNT + " integer, " +
+            GoodHolder.COL_COUNT_ORDER + " integer, " +
+            GoodHolder.COL_COUNT_POSTORDER + " integer, " +
+            GoodHolder.COL_COUNT_WHOLE_PACK + " integer, " +
+            GoodHolder.COL_NUMBER_GLOBAL + " text, " +
+            GoodHolder.COL_NUMBER_LOCAL + " text, " +
+            GoodHolder.COL_PLACER + " integer, " +
+            GoodHolder.COL_PRICE_WITH_NDS + " real, " +
+            GoodHolder.COL_PRICE_WITHOUT_NDS + " real, " +
+            GoodHolder.COL_RATE_NDS + " real, " +
+            GoodHolder.COL_SUM_NDS + " real, " +
+            GoodHolder.COL_SUM_WITH_NDS + " real, " +
+            GoodHolder.COL_SUM_WITHOUT_NDS + " real, " +
+            GoodHolder.COL_THEMATIC + " text, " +
+            GoodHolder.COL_GOOD_ID + " integer " +
             ");";
 
     public final static String GOODLOCAL_TABLE_NAME = "good_local";
@@ -59,7 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + GOODLOCAL_TABLE_NAME + "(" +
             GoodLocalHolder.COL_ID + " integer   primary key autoincrement, " +
             GoodLocalHolder.COL_FACT_COUNT + " integer, " +
-            GoodLocalHolder.COL_BARCODE + " integer " +
+            GoodLocalHolder.COL_BARCODE + " integer, " +
+            GoodLocalHolder.COL_GOOD_ID + " integer " +
             ");";
 
     public DBHelper(Context context) {

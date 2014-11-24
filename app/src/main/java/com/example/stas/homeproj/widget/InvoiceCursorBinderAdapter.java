@@ -40,4 +40,9 @@ public class InvoiceCursorBinderAdapter extends CursorAdapter {
 
     }
 
+    @Override
+    public Object getItem(int position) {
+        return InvoiceBuyApiHolder.fromCursor((Cursor)super.getItem(position));
+//        return ;
+    }
 }

@@ -2,7 +2,9 @@ package com.example.stas.homeproj;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -10,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.stas.homeproj.data.InvoiceContent;
+import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
+import com.example.stas.homeproj.models.InvoiceBuyApi;
+import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 
@@ -53,8 +58,22 @@ public class GoodListActivity extends Activity
         btnSaveInvoice.setOnClickListener(this);
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
+//        Cursor cur = ContentUris.withAppendedId(InvoiceContentProvider.CONTENT_URI, id_invoice);
 
-        setTitle("Накладная №" + InvoiceContent.getItem(id_invoice).toString());
+        InvoiceBuyApi invoiceBuyApi = new InvoiceBuyApi();
+
+        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null,
+                InvoiceBuyApiHolder.COL_ID + "=?", new String[] { String.valueOf(id_invoice) }, null);
+
+        if(cur != null) {
+            while (cur.moveToNext()) {
+                invoiceBuyApi = InvoiceBuyApiHolder.fromCursor(cur);
+            }
+        }
+
+//        InvoiceContentProvider
+
+        setTitle("Накладная №" + invoiceBuyApi.toString());
 
         GoodListFragment glf = ((GoodListFragment) getFragmentManager()
                 .findFragmentById(R.id.item_list));

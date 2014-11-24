@@ -13,7 +13,7 @@ import android.util.Log;
 
 //import com.example.stas.homeproj.db.GoodBuyApiDBHelper;
 import com.example.stas.homeproj.db.DBHelper;
-import com.example.stas.homeproj.db.dao.GoodBuyApiHolder;
+import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
@@ -69,7 +69,7 @@ public class GoodContentProvider extends ContentProvider {
                 int id = (int) ContentUris.parseId(uri);
                 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
                 builder.setTables(DBHelper.GOODBUY_TABLE_NAME);
-                builder.appendWhere(GoodBuyApiHolder.COL_ID + "=" + id);
+                builder.appendWhere(GoodHolder.COL_ID + "=" + id);
                 return builder.query(db, projection, selection,selectionArgs, null, null, sortOrder);
             }
             default:
@@ -118,7 +118,7 @@ public class GoodContentProvider extends ContentProvider {
                 rowsDeleted = db.delete(DBHelper.GOODBUY_TABLE_NAME, selection, selectionArgs);
                 break;
             case (URI_GOOD_BY_ID):
-                String tvShowIdWhereClause = GoodBuyApiHolder.COL_ID + "=" + uri.getLastPathSegment();
+                String tvShowIdWhereClause = GoodHolder.COL_ID + "=" + uri.getLastPathSegment();
                 if (!TextUtils.isEmpty(selection))
                     tvShowIdWhereClause += " AND " + selection;
                 rowsDeleted = db.delete(DBHelper.GOODBUY_TABLE_NAME, tvShowIdWhereClause, selectionArgs);

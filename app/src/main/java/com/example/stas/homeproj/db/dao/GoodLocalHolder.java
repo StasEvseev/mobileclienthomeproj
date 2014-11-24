@@ -15,6 +15,7 @@ public class GoodLocalHolder {
     public static final String COL_ID = "_id";
     public static final String COL_FACT_COUNT = "fact_count";
     public static final String COL_BARCODE = "barcode";
+    public static final String COL_GOOD_ID = "id_good";
 
     public static GoodLocal fromCursor(Cursor cur) {
 
@@ -22,6 +23,7 @@ public class GoodLocalHolder {
         good.id = cur.getInt(cur.getColumnIndex(COL_ID));
         good.barcode = cur.getInt(cur.getColumnIndex(COL_BARCODE));
         good.factCount = cur.getInt(cur.getColumnIndex(COL_FACT_COUNT));
+        good.id_good = cur.getInt(cur.getColumnIndex(COL_GOOD_ID));
 
         return good;
     }
@@ -29,9 +31,10 @@ public class GoodLocalHolder {
     public static ContentValues toCursor(GoodLocal goodl) {
         ContentValues cv = new ContentValues();
 
-        cv.put(COL_ID, goodl.getId());
+        cv.put(COL_ID, goodl.id);
         cv.put(COL_FACT_COUNT, goodl.factCount);
         cv.put(COL_BARCODE, goodl.barcode);
+        cv.put(COL_GOOD_ID, goodl.getId());
 
         return cv;
     }

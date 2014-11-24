@@ -7,12 +7,14 @@ package com.example.stas.homeproj.models;
 public class GoodLocal {
     public GoodBuyApi good;
     public int id;
+    public int id_good;
     public int factCount;
     public int barcode;
 
     public GoodLocal(GoodBuyApi goodapi) {
         good = goodapi;
-        id = getId();
+//        id = getId();
+        id_good = goodapi.id;
         factCount = 0;
         barcode = 0;
     }
@@ -22,7 +24,7 @@ public class GoodLocal {
     }
 
     public int getId() {
-        return good.id;
+        return id;
     }
 
     @Override

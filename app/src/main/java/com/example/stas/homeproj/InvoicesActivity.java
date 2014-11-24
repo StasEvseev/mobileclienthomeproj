@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -61,6 +62,8 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
 
         lv.setAdapter(mListAdapter);
 
+        lv.setOnItemClickListener(this);
+
         getLoaderManager().initLoader(1, null, this);
     }
 
@@ -106,8 +109,13 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     * */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(LOG, "onItemClick");
+
+
+
         final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
         Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
+        Log.d(LOG, "INVOIC_ID - " + inv.id);
         intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
         startActivity(intent);
     }
