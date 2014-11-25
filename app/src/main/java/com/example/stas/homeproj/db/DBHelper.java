@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String LOG = DBHelper.class.getName();
 
     private static final String DATABASE_NAME = "homeproj.db";
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 22;
 
     public final static String INVOICE_TABLE_NAME = "invoice_buy_api";
 

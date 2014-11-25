@@ -14,6 +14,8 @@ import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 import com.example.stas.homeproj.resources.IGoodRestAPI;
 
+import retrofit.RetrofitError;
+
 /**
  * Created by user on 24.11.14.
  */
@@ -35,8 +37,20 @@ public class GoodLocalSync {
                 if (goodLocal.id_good_buy_api != 0) {
                     GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(context, GoodContentProvider.CONTENT_URI,
                             GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
-                    if(goodBuyApi.good_id != 0) {
-                        goodapi.save(goodBuyApi.good_id, goodLocal);
+                    goodLocal.setGood(goodBuyApi);
+                    if(goodBuyApi.id != 0) {
+                        Log.d(TAG, "PRE " + goodBuyApi.good_id + "  ");
+                        try {
+
+                            goodapi.save(goodBuyApi.good_id, goodLocal);
+                            Log.d(TAG, "Success - " + goodBuyApi.good_id);
+                        } catch (RetrofitError error) {
+                            Log.d(TAG, "FAIL - " + goodBuyApi.good_id + "");
+                            error.printStackTrace();
+//                            Log.d("ERROR", error.toString());
+
+                        }
+
                     }
                 }
             }

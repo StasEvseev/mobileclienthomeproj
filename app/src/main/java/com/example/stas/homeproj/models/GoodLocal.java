@@ -17,7 +17,7 @@ public class GoodLocal {
     public GoodLocal(GoodBuyApi goodapi) {
         good = goodapi;
 //        id = getId();
-        id_good_buy_api = goodapi.id;
+        id_good_buy_api = goodapi.good_id;
         factCount = 0;
         barcode = 0;
 
@@ -31,7 +31,7 @@ public class GoodLocal {
 
     public void setGood(GoodBuyApi buyApi) {
         good = buyApi;
-        id_good_buy_api = buyApi.id;
+        id_good_buy_api = buyApi.good_id;
     }
 
     public int getId() {

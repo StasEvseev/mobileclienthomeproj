@@ -19,13 +19,24 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
+import com.example.stas.homeproj.db.dao.GoodHolder;
+import com.example.stas.homeproj.db.dao.GoodLocalHolder;
+import com.example.stas.homeproj.library.RestApiHelper;
+import com.example.stas.homeproj.models.GoodBuyApi;
+import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
+import com.example.stas.homeproj.provider.GoodContentProvider;
+import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.helper.Provider;
+import com.example.stas.homeproj.resources.IGoodRestAPI;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 import com.example.stas.homeproj.widget.InvoiceCursorBinderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.RetrofitError;
 
 /**
  * @author StasEvseev
@@ -122,12 +133,40 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
 
     @Override
     public void onClick(View v) {
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-//        ContentResolver.requestSync(AccountSyncHelper.CreateSyncAccount(this), AccountSyncHelper.AUTHORITY, settingsBundle);
+        IGoodRestAPI goodapi = RestApiHelper.createResource(IGoodRestAPI.class, this);
+        Cursor cur = getContentResolver().query(GoodLocalContentProvider.CONTENT_URI, null,
+                GoodLocalHolder.COL_SYNC + "=?", new String[] { "0" }, null);
+
+        if(cur!=null) {
+            while (cur.moveToNext()) {
+                GoodLocal goodLocal = GoodLocalHolder.fromCursor(cur);
+                if (goodLocal.id_good_buy_api != 0) {
+                    GoodBuyApi goodBuyApi = (GoodBuyApi) Provider.getById(this, GoodContentProvider.CONTENT_URI,
+                            GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
+                    if(goodBuyApi.good_id != 0) {
+                        Log.d("INVOICESSSSS", "PRE " + goodBuyApi.good_id + "  ");
+                        try {
+
+                            goodapi.save(goodBuyApi.id, goodLocal);
+                            Log.d("INVOICESSSSS", "Success - " + goodBuyApi.id);
+                        } catch (RetrofitError error) {
+                            Log.d("INVOICESSSSS", "FAIL - " + goodBuyApi.id + "");
+                            error.printStackTrace();
+//                            Log.d("ERROR", error.toString());
+
+                        }
+
+                    }
+                }
+            }
+            cur.close();
+        }
+//        Bundle settingsBundle = new Bundle();
+//        settingsBundle.putBoolean(
+//                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+//        settingsBundle.putBoolean(
+//                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+//        ContentResolver.requestSync(MyApplication.sAccount, MyApplication.AUTHORITY, settingsBundle);
     }
 
     @Override

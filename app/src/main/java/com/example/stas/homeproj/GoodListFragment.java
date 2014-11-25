@@ -11,8 +11,12 @@ import android.widget.ListView;
 
 
 import com.example.stas.homeproj.db.dao.GoodHolder;
+import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.models.GoodBuyApi;
+import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.provider.GoodContentProvider;
+import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.provider.helper.Provider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +87,9 @@ public class GoodListFragment extends ListFragment {
     public void loadGood(int id) {
 
         Log.d("loadGood", String.valueOf(id));
+
+//        GoodLocal lgood = (GoodLocal) Provider.getById(getActivity(), GoodLocalContentProvider.CONTENT_URI,
+//                GoodLocalHolder.COL_ID, id, GoodLocal.class, GoodLocalHolder.class);
 
         Cursor curGood = getActivity().getContentResolver().query(
                 GoodContentProvider.CONTENT_URI, null,

@@ -15,7 +15,9 @@ import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.helper.Provider;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
+import com.google.android.gms.analytics.ecommerce.Product;
 
 
 /**
@@ -60,16 +62,19 @@ public class GoodListActivity extends Activity
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
 //        Cursor cur = ContentUris.withAppendedId(InvoiceContentProvider.CONTENT_URI, id_invoice);
 
-        InvoiceBuyApi invoiceBuyApi = new InvoiceBuyApi();
+//        InvoiceBuyApi invoiceBuyApi = new InvoiceBuyApi();
 
-        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null,
-                InvoiceBuyApiHolder.COL_ID + "=?", new String[] { String.valueOf(id_invoice) }, null);
+        InvoiceBuyApi invoiceBuyApi = (InvoiceBuyApi)Provider.getById(this, InvoiceContentProvider.CONTENT_URI,
+                InvoiceBuyApiHolder.COL_ID, id_invoice, InvoiceBuyApi.class, InvoiceBuyApiHolder.class);
 
-        if(cur != null) {
-            while (cur.moveToNext()) {
-                invoiceBuyApi = InvoiceBuyApiHolder.fromCursor(cur);
-            }
-        }
+//        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null,
+//                InvoiceBuyApiHolder.COL_ID + "=?", new String[] { String.valueOf(id_invoice) }, null);
+
+//        if(cur != null) {
+//            while (cur.moveToNext()) {
+//                invoiceBuyApi = InvoiceBuyApiHolder.fromCursor(cur);
+//            }
+//        }
 
 //        InvoiceContentProvider
 

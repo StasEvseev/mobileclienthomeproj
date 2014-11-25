@@ -3,7 +3,7 @@
 <sync-adapter
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:contentAuthority="com.example.stas.homeproj.sync"
-    android:accountType="example.com"
+    android:accountType="com.example.stas.homeproj"
     android:userVisible="false"
     android:supportsUploading="false"
     android:allowParallelSyncs="false"
