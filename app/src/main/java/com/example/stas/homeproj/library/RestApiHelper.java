@@ -1,14 +1,20 @@
 package com.example.stas.homeproj.library;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.util.Log;
 
 import com.example.stas.homeproj.Constrants;
+import com.example.stas.homeproj.Session;
 import com.example.stas.homeproj.models.Token;
 import com.example.stas.homeproj.resources.ApiRequestInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit.ErrorHandler;
@@ -25,11 +31,9 @@ import retrofit.converter.GsonConverter;
  */
 public class RestApiHelper {
 
-    public static <T> T createResource(Class<T> cl, Context context) {
-        AuthHelper auth = new AuthHelper(context);
-
+    public static <T> T createResource(Class<T> cl, Context context, String token) {
         ApiRequestInterceptor requestInterceptor = new ApiRequestInterceptor();
-        requestInterceptor.setToken(new Token(auth.getToken()));
+        requestInterceptor.setToken(new Token(token));
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();

@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -247,7 +248,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+    class Result {
+        public boolean success;
+        public Intent intent;
+        public Result(boolean s, Intent in) {
+            success = s;
+            intent = in;
+        }
+    }
+
+    public class UserLoginTask extends AsyncTask<Void, Void, Result> {
 
         private final String mEmail;
         private final String mPassword;
@@ -258,7 +269,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Result doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             User user = new User();
@@ -277,22 +288,32 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             try {
                 token = rest_api.auth();
             } catch (RetrofitError er) {
-                return false;
+                return new Result(false, new Intent());
+
             }
 
             AuthHelper auth = new AuthHelper(getApplicationContext());
             auth.setToken(token.token);
 
-            return true;
+            Bundle userData = new Bundle();
+            userData.putString(MainActivity.ACCOUNT_NAME, user.getUsername());
+            userData.putString(MainActivity.ACCOUNT_PASSWORD, user.getPassword());
+            userData.putString(MainActivity.ACCOUNT_TOKEN, token.token);
+//            data.putBundle(AccountManager.KEY_USERDATA, userData);
+
+            Intent in = new Intent();
+            in.putExtras(userData);
+
+            return new Result(true, in);
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Result res) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                setResult(RESULT_OK);
+            if (res.success) {
+                setResult(RESULT_OK, res.intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

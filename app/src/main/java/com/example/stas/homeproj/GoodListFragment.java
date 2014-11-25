@@ -88,9 +88,6 @@ public class GoodListFragment extends ListFragment {
 
         Log.d("loadGood", String.valueOf(id));
 
-//        GoodLocal lgood = (GoodLocal) Provider.getById(getActivity(), GoodLocalContentProvider.CONTENT_URI,
-//                GoodLocalHolder.COL_ID, id, GoodLocal.class, GoodLocalHolder.class);
-
         Cursor curGood = getActivity().getContentResolver().query(
                 GoodContentProvider.CONTENT_URI, null,
                 GoodHolder.COL_INVOICE_ID + " = ?", new String[] { String.valueOf(id) }, null, null);
@@ -100,34 +97,6 @@ public class GoodListFragment extends ListFragment {
                 lgood.add(GoodHolder.fromCursor(curGood));
             }
         }
-
-//        IInvoiceItemRestAPI good_api = RestApiHelper.createResource(IInvoiceItemRestAPI.class, getActivity());
-//
-//        good_api.goods(id, new Callback<GoodsBuyApi>() {
-//            @Override
-//            public void success(GoodsBuyApi lgoods, Response response) {
-//                Log.d("DEBUGGG!!!", "SUCCESS");
-//                for (int i = 0; i < lgoods.items.size(); i++) {
-//                    GoodBuyApi goodBuyApi = lgoods.items.get(i);
-//                    lgood.add(goodBuyApi);
-//
-//                    GoodContent.addItem(new GoodLocal(goodBuyApi));
-////                    keyV.put(goodBuyApi.id, goodBuyApi);
-//                }
-//
-//                setListAdapter(new ArrayAdapter<GoodBuyApi>(
-//                        getActivity(),
-//                        android.R.layout.simple_list_item_activated_1,
-//                        lgood));
-//
-////                adapter.addAll(lgood);
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError retrofitError) {
-//                Log.d("DEBUGGG!!!", retrofitError.toString());
-//            }
-//        });
     }
 
     @Override

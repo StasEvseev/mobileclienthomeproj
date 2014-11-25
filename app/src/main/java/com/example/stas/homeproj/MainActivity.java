@@ -21,13 +21,32 @@ public class MainActivity extends Activity {
 
     static final int REQUEST_LOGIN = 99;
     // Instance fields
-    Account mAccount;
+//    Account mAccount;
+//    AccountManager mAccountManager;
+
+    public static final String ACCOUNT_NAME = "ACCOUNT_NAME";
+    public static final String ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+    public static final String ACCOUNT_TOKEN = "ACCOUNT_TOKEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AuthHelper auth = new AuthHelper(getApplicationContext());
+//        AuthHelper auth = new AuthHelper(getApplicationContext());
+
+//        mAccountManager = AccountManager.get(this);
+
+//        Account[] accs = mAccountManager.getAccountsByType(MyApplication.ACCOUNT_TYPE);
+
+//        mAccountManager.removeAccount()
+
+//        if (accs.length > 0) {
+//
+//        } else {
+//
+//        }
+
+//        mAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
 
 
 //        ContentResolver.addPeriodicSync(
@@ -36,8 +55,12 @@ public class MainActivity extends Activity {
 //                60 * 2);
 
         //Если пользователь на авторизован, вежливо попросим сделать это
-        if (auth.checkAuth()) {
+        if (Session.checkAuth(this)) {
+//            mAccount = accs[0];
+//            mAccountManager.addAccountExplicitly(account, accountPassword, intent.getBundleExtra(AccountManager.KEY_USERDATA));
+//            mAccountManager.setAuthToken(account, authtokenType, authtoken);
 //            mAccount = AccountSyncHelper.CreateSyncAccount(this);
+            Session.signIn(this);
             startActivity(new Intent(this, ActionsActivity.class));
             finish();
         } else {
@@ -50,6 +73,17 @@ public class MainActivity extends Activity {
         switch (requestCode) {
             case REQUEST_LOGIN:
                 if (resultCode == RESULT_OK) {
+                    String accountName = data.getStringExtra(ACCOUNT_NAME);
+                    String pass = data.getStringExtra(ACCOUNT_PASSWORD);
+                    String token = data.getStringExtra(ACCOUNT_TOKEN);
+
+                    try {
+                        Session.registration(accountName, pass, token, this);
+                        Session.signIn(this);
+                    } catch (SingleRegistration singleRegistration) {
+                        singleRegistration.printStackTrace();
+                    }
+
                     startActivity(new Intent(this, ActionsActivity.class));
                     finish();
                 } else {

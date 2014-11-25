@@ -43,16 +43,16 @@ public class SyncSettings extends PreferenceFragment implements SharedPreference
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         Log.d("SyncSettings", "onSharedPreferenceChanged");
-        ContentResolver.setSyncAutomatically(MyApplication.sAccount, MyApplication.AUTHORITY, true);
+        ContentResolver.setSyncAutomatically(Session.mAccount, MyApplication.AUTHORITY, true);
         if (TextUtils.equals(KEY_AUTO_SYNC, key)) {
             if (prefs.getBoolean(key, false)) {
                 final long interval = Long.parseLong(prefs.getString(
                         KEY_AUTO_SYNC_INTERVAL,
                         getString(R.string.auto_sync_interval_default)
                 ));
-                ContentResolver.addPeriodicSync(MyApplication.sAccount, MyApplication.AUTHORITY, Bundle.EMPTY, interval);
+                ContentResolver.addPeriodicSync(Session.mAccount, MyApplication.AUTHORITY, Bundle.EMPTY, interval);
             } else {
-                ContentResolver.removePeriodicSync(MyApplication.sAccount, MyApplication.AUTHORITY, new Bundle());
+                ContentResolver.removePeriodicSync(Session.mAccount, MyApplication.AUTHORITY, new Bundle());
             }
         } else if (TextUtils.equals(KEY_AUTO_SYNC_INTERVAL, key)) {
 
@@ -60,7 +60,7 @@ public class SyncSettings extends PreferenceFragment implements SharedPreference
             interval.setSummary(interval.getEntry());
             Log.d("SyncSettings", "getValue - " + interval.getValue());
             ContentResolver.addPeriodicSync(
-                    MyApplication.sAccount, MyApplication.AUTHORITY,
+                    Session.mAccount, MyApplication.AUTHORITY,
                     Bundle.EMPTY, Long.parseLong(interval.getValue())
             );
         }

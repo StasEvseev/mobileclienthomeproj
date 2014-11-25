@@ -154,6 +154,6 @@ public class GoodListActivity extends Activity
 //            mResolver = getContentResolver();
 //            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
 
-        ContentResolver.requestSync(MyApplication.sAccount, MyApplication.AUTHORITY, settingsBundle);
+        ContentResolver.requestSync(Session.mAccount, MyApplication.AUTHORITY, settingsBundle);
     }
 }

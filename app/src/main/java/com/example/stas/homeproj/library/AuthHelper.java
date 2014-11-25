@@ -2,6 +2,7 @@ package com.example.stas.homeproj.library;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.stas.homeproj.Constrants;
 
@@ -21,11 +22,13 @@ public final class AuthHelper {
 
     public void setToken(String token) {
         SharedPreferences.Editor editor = context.getSharedPreferences(KEY, Context.MODE_PRIVATE).edit();
-        editor.putString(Constrants.TOKEN_NAME, token).apply();
+        editor.putString(Constrants.TOKEN_NAME, token);
+        editor.commit();
     }
 
     public String getToken() {
         SharedPreferences spref = context.getSharedPreferences(KEY, Context.MODE_PRIVATE);
+        Log.d("TOKEN", spref.getString(Constrants.TOKEN_NAME, ""));
         return spref.getString(Constrants.TOKEN_NAME, "");
     }
 

@@ -6,6 +6,7 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 /*
  * Implement AbstractAccountAuthenticator and stub out all
@@ -47,6 +48,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
             Account account,
             String s,
             Bundle bundle) throws NetworkErrorException {
+        Log.d("Authenticator", "getAuthToken");
         throw new UnsupportedOperationException();
     }
     // Getting a label for the auth token is not supported

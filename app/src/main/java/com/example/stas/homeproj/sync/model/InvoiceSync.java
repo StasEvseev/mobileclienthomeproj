@@ -1,9 +1,14 @@
 package com.example.stas.homeproj.sync.model;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.example.stas.homeproj.Session;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
@@ -11,6 +16,7 @@ import com.example.stas.homeproj.models.InvoicesBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,14 +30,15 @@ public class InvoiceSync extends BaseSync {
 
     public final static String TAG = InvoiceSync.class.getName();
 
-    public static boolean sync(final Context context) {
+    public static boolean sync(final Context context, String authToken) {
+
         int max_id = getLastIdInvoice(context);
 
         Log.d(TAG, String.valueOf(max_id));
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("from", String.valueOf(max_id));
-        IInvoiceRestAPI rest = RestApiHelper.createResource(IInvoiceRestAPI.class, context);
+        IInvoiceRestAPI rest = RestApiHelper.createResource(IInvoiceRestAPI.class, context, authToken);
 
         InvoicesBuyApi invoicesBuyApi = rest.invoices(params);
 

@@ -59,8 +59,9 @@ public class ActionsActivity extends Activity implements View.OnClickListener {
     * Логаут из системы
     * */
     public void logout() {
-        AuthHelper auth = new AuthHelper(getApplicationContext());
-        auth.setToken("");
+//        AuthHelper auth = new AuthHelper(getApplicationContext());
+//        auth.setToken("");
+        Session.signOut(this);
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

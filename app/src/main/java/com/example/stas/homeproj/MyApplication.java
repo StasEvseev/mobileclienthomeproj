@@ -17,19 +17,19 @@ public class MyApplication extends Application {
     // The account name
     public static final String ACCOUNT = "syncAccount";
 
-    public static Account sAccount;
+//    public static Account sAccount;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        final AccountManager am = AccountManager.get(this);
+//        final AccountManager am = AccountManager.get(this);
 
-        if (sAccount == null) {
-            sAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
-        }
-        if (am.addAccountExplicitly(sAccount, null, null)) {
-            ContentResolver.setSyncAutomatically(sAccount, AUTHORITY, true);
-        }
+//        if (sAccount == null) {
+//            sAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+//        }
+//        if (am.addAccountExplicitly(sAccount, null, null)) {
+//            ContentResolver.setSyncAutomatically(sAccount, AUTHORITY, true);
+//        }
     }
 
 }
