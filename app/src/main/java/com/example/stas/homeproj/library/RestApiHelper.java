@@ -32,8 +32,11 @@ import retrofit.converter.GsonConverter;
 public class RestApiHelper {
 
     public static <T> T createResource(Class<T> cl, Context context, String token) {
+
+//        OkHttpClient okHttpClient = new OkHttpClient();
         ApiRequestInterceptor requestInterceptor = new ApiRequestInterceptor();
         requestInterceptor.setToken(new Token(token));
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();
@@ -43,6 +46,8 @@ public class RestApiHelper {
                 .setEndpoint(Constrants.URL_BUY_API)
                 .setConverter(new GsonConverter(gson))
                 .setErrorHandler(new MyErrorHandler())
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setClient(new OkClient())
                 .build();
         return restAdapter.create(cl);
     }
