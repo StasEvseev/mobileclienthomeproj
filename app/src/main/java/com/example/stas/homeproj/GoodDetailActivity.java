@@ -47,17 +47,20 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
 
-            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
-                    GoodLocalHolder.COL_ID, id_good, GoodLocal.class, GoodLocalHolder.class);
+
 
             GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(getApplicationContext(),
-                    GoodContentProvider.CONTENT_URI, GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
+                    GoodContentProvider.CONTENT_URI, GoodHolder.COL_ID, id_good, GoodBuyApi.class, GoodHolder.class);
 
-            goodLocal.good = goodBuyApi;
+            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
+                    GoodLocalHolder.COL_GOOD_ID, goodBuyApi.id, GoodLocal.class, GoodLocalHolder.class);
+
+            goodLocal.setGood(goodBuyApi);
+//            goodLocal.good = goodBuyApi;
             setTitle(goodLocal.toString());
             Bundle arguments = new Bundle();
             arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,
-                    id_good);
+                    goodLocal.id);
             GoodDetailFragment fragment = new GoodDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()

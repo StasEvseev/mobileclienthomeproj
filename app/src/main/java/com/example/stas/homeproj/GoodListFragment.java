@@ -96,6 +96,7 @@ public class GoodListFragment extends ListFragment {
             while(curGood.moveToNext()) {
                 lgood.add(GoodHolder.fromCursor(curGood));
             }
+            curGood.close();
         }
     }
 
