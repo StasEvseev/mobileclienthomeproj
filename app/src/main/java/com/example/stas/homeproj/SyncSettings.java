@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Created by user on 24.11.14.
@@ -41,6 +42,8 @@ public class SyncSettings extends PreferenceFragment implements SharedPreference
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        Log.d("SyncSettings", "onSharedPreferenceChanged");
+        ContentResolver.setSyncAutomatically(MyApplication.sAccount, MyApplication.AUTHORITY, true);
         if (TextUtils.equals(KEY_AUTO_SYNC, key)) {
             if (prefs.getBoolean(key, false)) {
                 final long interval = Long.parseLong(prefs.getString(
@@ -52,8 +55,10 @@ public class SyncSettings extends PreferenceFragment implements SharedPreference
                 ContentResolver.removePeriodicSync(MyApplication.sAccount, MyApplication.AUTHORITY, new Bundle());
             }
         } else if (TextUtils.equals(KEY_AUTO_SYNC_INTERVAL, key)) {
+
             final ListPreference interval = (ListPreference) getPreferenceManager().findPreference(key);
             interval.setSummary(interval.getEntry());
+            Log.d("SyncSettings", "getValue - " + interval.getValue());
             ContentResolver.addPeriodicSync(
                     MyApplication.sAccount, MyApplication.AUTHORITY,
                     Bundle.EMPTY, Long.parseLong(interval.getValue())

@@ -15,9 +15,11 @@ public class GoodLocal {
     public boolean is_sync;
 
     public GoodLocal(GoodBuyApi goodapi) {
-        good = goodapi;
+
+        setGood(goodapi);
+//        good = goodapi;
 //        id = getId();
-        id_good_buy_api = goodapi.good_id;
+//        id_good_buy_api = goodapi.good_id;
         factCount = 0;
         barcode = 0;
 
@@ -31,7 +33,7 @@ public class GoodLocal {
 
     public void setGood(GoodBuyApi buyApi) {
         good = buyApi;
-        id_good_buy_api = buyApi.good_id;
+        id_good_buy_api = buyApi.id;
     }
 
     public int getId() {

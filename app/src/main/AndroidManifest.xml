@@ -35,7 +35,7 @@
 
         <provider
             android:name=".sync.StubProvider"
-            android:authorities="com.example.stas.homeproj.sync"
+            android:authorities="com.example.stas.homeproj"
             android:exported="false"
             android:syncable="true"/>
 

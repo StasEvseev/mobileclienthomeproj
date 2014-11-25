@@ -11,9 +11,9 @@ import android.os.Bundle;
  */
 public class MyApplication extends Application {
 
-    public static final String ACCOUNT_TYPE = "com.example.stas.homeproj";
-
     public static final String AUTHORITY = "com.example.stas.homeproj";
+
+    public static final String ACCOUNT_TYPE = "com.example.stas.homeproj.sync";
     // The account name
     public static final String ACCOUNT = "syncAccount";
 

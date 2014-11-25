@@ -39,17 +39,22 @@ public class GoodLocalSync {
                             GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
                     goodLocal.setGood(goodBuyApi);
                     if(goodBuyApi.id != 0) {
-                        Log.d(TAG, "PRE " + goodBuyApi.good_id + "  ");
-                        try {
+//                        Log.d(TAG, "PRE " + goodBuyApi.good_id + "  ");
+//                        try {
 
-                            goodapi.save(goodBuyApi.good_id, goodLocal);
-                            Log.d(TAG, "Success - " + goodBuyApi.good_id);
-                        } catch (RetrofitError error) {
-                            Log.d(TAG, "FAIL - " + goodBuyApi.good_id + "");
-                            error.printStackTrace();
-//                            Log.d("ERROR", error.toString());
+                        goodapi.save(goodBuyApi.good_id, goodLocal);
 
-                        }
+//                        context.getContentResolver().update();
+                        goodLocal.is_sync = true;
+                        context.getContentResolver().update(GoodLocalContentProvider.CONTENT_URI,
+                                GoodLocalHolder.toCursor(goodLocal), GoodLocalHolder.COL_ID + "=?", new String[] { String.valueOf(goodLocal.id) });
+//                            Log.d(TAG, "Success - " + goodBuyApi.good_id);
+//                        } catch (RetrofitError error) {
+//                            Log.d(TAG, "FAIL - " + goodBuyApi.good_id + "");
+//                            error.printStackTrace();
+////                            Log.d("ERROR", error.toString());
+//
+//                        }
 
                     }
                 }

@@ -2,21 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="com.elegion.newsfeed.KEY_SYNC"
+        android:key="com.example.stas.homeproj.KEY_SYNC"
         android:title="TITLE">
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="com.elegion.newsfeed.KEY_AUTO_SYNC"
+            android:key="com.example.stas.homeproj.KEY_AUTO_SYNC"
             android:summary="CHECK_SUMMARY"
             android:title="AutoSYNC" />
 
         <ListPreference
             android:defaultValue="@string/auto_sync_interval_default"
-            android:dependency="com.elegion.newsfeed.KEY_AUTO_SYNC"
+            android:dependency="com.example.stas.homeproj.KEY_AUTO_SYNC"
             android:entries="@array/auto_sync_intervals"
             android:entryValues="@array/auto_sync_interval_values"
-            android:key="com.elegion.newsfeed.KEY_AUTO_SYNC_INTERVAL"
+            android:key="com.example.stas.homeproj.KEY_AUTO_SYNC_INTERVAL"
             android:title="LISTPREF TITLE" />
 
     </PreferenceCategory>

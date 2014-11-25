@@ -29,11 +29,11 @@ public class MainActivity extends Activity {
 
         AuthHelper auth = new AuthHelper(getApplicationContext());
 
-        ContentResolver.setSyncAutomatically(MyApplication.sAccount, MyApplication.AUTHORITY, true);
-        ContentResolver.addPeriodicSync(
-                MyApplication.sAccount, MyApplication.AUTHORITY,
-                new Bundle(Bundle.EMPTY),
-                60 * 2);
+
+//        ContentResolver.addPeriodicSync(
+//                MyApplication.sAccount, MyApplication.AUTHORITY,
+//                new Bundle(Bundle.EMPTY),
+//                60 * 2);
 
         //Если пользователь на авторизован, вежливо попросим сделать это
         if (auth.checkAuth()) {

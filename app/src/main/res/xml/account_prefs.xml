@@ -2,11 +2,11 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Титл" />
+    <PreferenceCategory android:title="Товары" />
 
     <PreferenceScreen
         android:key="com.example.stas.homeproj.KEY_ACCOUNT_SYNC"
-        android:summary="Setting summary"
+        android:summary="HomeProj"
         android:title="Синхронизация">
         <intent
             android:action="com.example.stas.homeproj.ACTION_SYNC_SETTINGS"

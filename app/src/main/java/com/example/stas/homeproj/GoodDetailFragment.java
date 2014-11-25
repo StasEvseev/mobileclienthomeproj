@@ -113,6 +113,8 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 
         if (mItem != null) {
             Log.d(LOG_TAG, "onCreateView mITEM");
+            Log.d(LOG_TAG, "" + mItem.good);
+            Log.d(LOG_TAG, "fullname" + mItem.getFullname());
             ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.getFullname());
             ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.getCount()));
             if(mItem.factCount != 0) {
