@@ -20,20 +20,13 @@ public class InvoiceBuyApiHolder {
     public static final String COL_DATE = "date";
     public static final String COL_IS_ACCEPTANCE = "is_acceptance";
 
-    private static SimpleDateFormat formatter;
 
-    public static SimpleDateFormat getFormatter() {
-        if (formatter == null) {
-            formatter = new SimpleDateFormat("yyyy-MM-dd");
-        }
-        return formatter;
-    }
 
     public static InvoiceBuyApi fromCursor(Cursor cur) {
         InvoiceBuyApi invoice = new InvoiceBuyApi();
         invoice.id = cur.getInt(cur.getColumnIndex(COL_ID));
         try {
-            invoice.date = getFormatter().parse(cur.getString(cur.getColumnIndex(COL_DATE)));
+            invoice.date = Helper.getFormatter().parse(cur.getString(cur.getColumnIndex(COL_DATE)));
         } catch (ParseException e) {
             invoice.date = new Date();
         }
@@ -57,7 +50,7 @@ public class InvoiceBuyApiHolder {
         ContentValues cv = new ContentValues();
         cv.put(COL_ID, invoice.id);
         cv.put(COL_NUMBER, invoice.number);
-        cv.put(COL_DATE, getFormatter().format(invoice.date));
+        cv.put(COL_DATE, Helper.getFormatter().format(invoice.date));
 
         if (invoice.is_acceptance) {
             cv.put(COL_IS_ACCEPTANCE, 1);

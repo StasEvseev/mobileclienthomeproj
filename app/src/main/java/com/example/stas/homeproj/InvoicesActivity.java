@@ -1,9 +1,12 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SyncStatusObserver;
@@ -18,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
@@ -122,13 +126,44 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOG, "onItemClick");
 
-
-
         final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
-        Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
-        Log.d(LOG, "INVOIC_ID - " + inv.id);
-        intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
-        startActivity(intent);
+
+        AlertDialog.Builder ad;
+        final Context context = this;
+
+        ad = new AlertDialog.Builder(this);
+        ad.setTitle("Внимание");  // заголовок
+        ad.setMessage("У выбранной накладной уже есть приемка."); // сообщение
+        ad.setPositiveButton("Открыть прошлую приемку", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
+                Log.d(LOG, "INVOIC_ID - " + inv.id);
+                intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
+                startActivity(intent);
+//                Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
+//                        .show();
+            }
+        });
+        ad.setNegativeButton("Создать новую приемку", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+        ad.setCancelable(true);
+        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(context, "Вы ничего не выбрали",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        ad.show();
+
+//        final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
+//        Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
+//        Log.d(LOG, "INVOIC_ID - " + inv.id);
+//        intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
+//        startActivity(intent);
     }
 
     @Override

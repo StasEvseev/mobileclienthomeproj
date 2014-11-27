@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.stas.homeproj.db.dao.AcceptanceLocalHolder;
+import com.example.stas.homeproj.db.dao.AcceptanceHolder;
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
@@ -69,7 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String ACCEPTANCELOCAL_TABLE_NAME = "acceptance_local";
 
     private final static String ACCEPTANCELOCAL_DATABASE_CREATE = "create table "
-            + AcceptanceLocalHolder.COL_DATE
+            + AcceptanceHolder.COL_DATE
             ;
 
     public DBHelper(Context context) {

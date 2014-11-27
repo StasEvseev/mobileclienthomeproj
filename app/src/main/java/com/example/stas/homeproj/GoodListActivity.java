@@ -60,23 +60,9 @@ public class GoodListActivity extends Activity
         btnSaveInvoice.setOnClickListener(this);
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
-//        Cursor cur = ContentUris.withAppendedId(InvoiceContentProvider.CONTENT_URI, id_invoice);
-
-//        InvoiceBuyApi invoiceBuyApi = new InvoiceBuyApi();
 
         InvoiceBuyApi invoiceBuyApi = (InvoiceBuyApi)Provider.getById(this, InvoiceContentProvider.CONTENT_URI,
                 InvoiceBuyApiHolder.COL_ID, id_invoice, InvoiceBuyApi.class, InvoiceBuyApiHolder.class);
-
-//        Cursor cur = getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null,
-//                InvoiceBuyApiHolder.COL_ID + "=?", new String[] { String.valueOf(id_invoice) }, null);
-
-//        if(cur != null) {
-//            while (cur.moveToNext()) {
-//                invoiceBuyApi = InvoiceBuyApiHolder.fromCursor(cur);
-//            }
-//        }
-
-//        InvoiceContentProvider
 
         setTitle("Накладная №" + invoiceBuyApi.toString());
 
@@ -140,19 +126,11 @@ public class GoodListActivity extends Activity
     @Override
     public void onClick(View v) {
         Log.d("GoodListActivity", "Click");
-//        Account mAccount = AccountSyncHelper.CreateSyncAccount(this);
-        // Pass the settings flags by inserting them in a bundle
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        /*
-         * Request the sync for the default account, authority, and
-         * manual sync settings
-         */
-//            mResolver = getContentResolver();
-//            getContentResolver().requestSync(mAccount, AccountSyncHelper.AUTHORITY, settingsBundle);
 
         ContentResolver.requestSync(Session.mAccount, MyApplication.AUTHORITY, settingsBundle);
     }
