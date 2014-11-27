@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.example.stas.homeproj.InvoicesActivity;
 import com.example.stas.homeproj.Session;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.library.AuthHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.sync.model.GoodLocalSync;
@@ -74,13 +75,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             InvoiceSync.sync(context, authToken);
 
-            List<InvoiceBuyApi> list = InvoiceSync.getInvoices(context);
-
-            for (InvoiceBuyApi item : list) {
-                GoodsSync.sync(context, item, authToken);
-            }
-
-            GoodLocalSync.sync(context, authToken);
+//            InvoiceSync.sync(context, authToken);
+//
+//            List<InvoiceBuyApi> list = InvoiceSync.getInvoices(context);
+//
+//            for (InvoiceBuyApi item : list) {
+//                GoodsSync.sync(context, item, authToken);
+//            }
+//
+//            GoodLocalSync.sync(context, authToken);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setSmallIcon(android.R.drawable.btn_star_big_off)

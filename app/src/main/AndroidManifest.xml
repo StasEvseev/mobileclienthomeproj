@@ -40,19 +40,24 @@
             android:syncable="true"/>
 
         <provider
-            android:authorities="com.example.stas.homeproj.invoice"
-            android:name=".provider.InvoiceContentProvider"
+            android:authorities="com.example.stas.homeproj.main"
+            android:name=".provider.MainContentProvider"
             android:exported="false"/>
 
-        <provider
-            android:authorities="com.example.stas.homeproj.good_local"
-            android:name=".provider.GoodLocalContentProvider"
-            android:exported="false"/>
+        <!--<provider-->
+            <!--android:authorities="com.example.stas.homeproj.invoice"-->
+            <!--android:name=".provider.InvoiceContentProvider"-->
+            <!--android:exported="false"/>-->
 
-        <provider android:authorities="com.example.stas.homeproj.good"
-            android:name=".provider.GoodContentProvider"
-            android:label="BLABAL MY CONTENT PROVIDER"
-            android:exported="false"/>
+        <!--<provider-->
+            <!--android:authorities="com.example.stas.homeproj.good_local"-->
+            <!--android:name=".provider.GoodLocalContentProvider"-->
+            <!--android:exported="false"/>-->
+
+        <!--<provider android:authorities="com.example.stas.homeproj.good"-->
+            <!--android:name=".provider.GoodContentProvider"-->
+            <!--android:label="BLABAL MY CONTENT PROVIDER"-->
+            <!--android:exported="false"/>-->
 
         <activity
             android:name=".RegisterActivity"

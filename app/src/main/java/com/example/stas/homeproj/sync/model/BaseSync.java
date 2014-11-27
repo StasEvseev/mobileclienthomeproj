@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.MainContentProvider;
 
 /**
  * Created by user on 20.11.14.
@@ -12,7 +13,7 @@ import com.example.stas.homeproj.provider.InvoiceContentProvider;
 public class BaseSync {
 
     public static int getLastIdInvoice(Context context) {
-        Cursor curInv = context.getContentResolver().query(InvoiceContentProvider.CONTENT_URI, new String[] {"MAX(" + InvoiceBuyApiHolder.COL_ID +") AS id"}, null, null, null);
+        Cursor curInv = context.getContentResolver().query(MainContentProvider.CONTENT_URI_INVOICE, new String[] {"MAX(" + InvoiceBuyApiHolder.COL_ID +") AS id"}, null, null, null);
 
         curInv.moveToNext();
 

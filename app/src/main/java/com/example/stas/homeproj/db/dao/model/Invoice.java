@@ -9,4 +9,8 @@ public class Invoice extends BaseSyncModel {
     public int provider_id;
     public String number;
     public Date date;
+
+    public Invoice() {
+        is_sync = true;
+    }
 }

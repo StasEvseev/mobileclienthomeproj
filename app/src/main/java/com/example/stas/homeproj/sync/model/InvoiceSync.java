@@ -10,10 +10,13 @@ import android.util.Log;
 
 import com.example.stas.homeproj.Session;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
+import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.models.InvoicesBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.resources.IInvoiceRestAPI;
 
 import java.io.IOException;
@@ -32,7 +35,8 @@ public class InvoiceSync extends BaseSync {
 
     public static boolean sync(final Context context, String authToken) {
 
-        int max_id = getLastIdInvoice(context);
+//        int max_id = getLastIdInvoice(context);
+        int max_id = 1;
 
         Log.d(TAG, String.valueOf(max_id));
 
@@ -43,7 +47,14 @@ public class InvoiceSync extends BaseSync {
         InvoicesBuyApi invoicesBuyApi = rest.invoices(params);
 
         for(InvoiceBuyApi item : invoicesBuyApi.items) {
-            context.getContentResolver().insert(InvoiceContentProvider.CONTENT_URI, InvoiceBuyApiHolder.toCursor(item));
+
+            Invoice invoice = new Invoice();
+            invoice.id_buy_api = item.id;
+            invoice.number = item.number;
+            invoice.date = item.date;
+//            invoice.is_sync = false;
+
+            context.getContentResolver().insert(MainContentProvider.CONTENT_URI_INVOICE, InvoiceHolder.toCursor(invoice));
         }
 
         return true;
