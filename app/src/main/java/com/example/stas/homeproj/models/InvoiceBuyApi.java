@@ -12,6 +12,7 @@ public class InvoiceBuyApi {
     public int id;
     public String number;
     public Date date;
+    public boolean is_acceptance;
 
     @Override
     public String toString() {

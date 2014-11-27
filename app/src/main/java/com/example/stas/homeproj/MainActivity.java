@@ -32,34 +32,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        AuthHelper auth = new AuthHelper(getApplicationContext());
-
-//        mAccountManager = AccountManager.get(this);
-
-//        Account[] accs = mAccountManager.getAccountsByType(MyApplication.ACCOUNT_TYPE);
-
-//        mAccountManager.removeAccount()
-
-//        if (accs.length > 0) {
-//
-//        } else {
-//
-//        }
-
-//        mAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
-
-
-//        ContentResolver.addPeriodicSync(
-//                MyApplication.sAccount, MyApplication.AUTHORITY,
-//                new Bundle(Bundle.EMPTY),
-//                60 * 2);
-
         //Если пользователь на авторизован, вежливо попросим сделать это
         if (Session.checkAuth(this)) {
-//            mAccount = accs[0];
-//            mAccountManager.addAccountExplicitly(account, accountPassword, intent.getBundleExtra(AccountManager.KEY_USERDATA));
-//            mAccountManager.setAuthToken(account, authtokenType, authtoken);
-//            mAccount = AccountSyncHelper.CreateSyncAccount(this);
             Session.signIn(this);
             startActivity(new Intent(this, ActionsActivity.class));
             finish();

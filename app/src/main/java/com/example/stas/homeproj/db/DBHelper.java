@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.stas.homeproj.db.dao.AcceptanceLocalHolder;
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
@@ -17,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String LOG = DBHelper.class.getName();
 
     private static final String DATABASE_NAME = "homeproj.db";
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     public final static String INVOICE_TABLE_NAME = "invoice_buy_api";
 
@@ -25,7 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + INVOICE_TABLE_NAME + "(" +
             InvoiceBuyApiHolder.COL_ID + " integer   primary key autoincrement, " +
             InvoiceBuyApiHolder.COL_NUMBER + " text, " +
-            InvoiceBuyApiHolder.COL_DATE + " integer " +
+            InvoiceBuyApiHolder.COL_DATE + " integer, " +
+            InvoiceBuyApiHolder.COL_IS_ACCEPTANCE + " BOOL " +
             ");";
 
     public final static String GOODBUY_TABLE_NAME = "good_buy_api";
@@ -63,6 +65,12 @@ public class DBHelper extends SQLiteOpenHelper {
             GoodLocalHolder.COL_GOOD_ID + " integer, " +
             GoodLocalHolder.COL_SYNC + " BOOL " +
             ");";
+
+    public final static String ACCEPTANCELOCAL_TABLE_NAME = "acceptance_local";
+
+    private final static String ACCEPTANCELOCAL_DATABASE_CREATE = "create table "
+            + AcceptanceLocalHolder.COL_DATE
+            ;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
