@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
+import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.view.InvoiceListItem;
+
+import java.util.Objects;
 
 /**
  * @author StasEvseev
@@ -35,14 +39,19 @@ public class InvoiceCursorBinderAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
 //        InvoiceBuyApiHolder holder = new InvoiceBuyApiHolder();
+        Invoice inv = new Invoice();
+        InvoiceHolder.fromCursor(cursor, inv);
 
-        ((InvoiceListItem)view).bind(InvoiceBuyApiHolder.fromCursor(cursor));
+        ((InvoiceListItem)view).bind(inv);
 
     }
 
     @Override
     public Object getItem(int position) {
-        return InvoiceBuyApiHolder.fromCursor((Cursor)super.getItem(position));
+        Object obj = super.getItem(position);
+        Invoice inv = new Invoice();
+        InvoiceHolder.fromCursor((Cursor) obj, inv);
+        return inv;
 //        return ;
     }
 }

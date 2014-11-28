@@ -23,8 +23,11 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
+import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
@@ -32,6 +35,7 @@ import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.provider.GoodContentProvider;
 import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 import com.example.stas.homeproj.resources.IGoodRestAPI;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
@@ -53,7 +57,7 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     public final String LOG = InvoicesActivity.class.getName();
 
     public ListView lv;
-    public List<InvoiceBuyApi> lstr;
+    public List<Invoice> lstr;
     private Button btnSync;
 
     private Object mSyncMonitor;
@@ -69,7 +73,7 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
         btnSync = (Button)findViewById(R.id.btn_sync);
         btnSync.setOnClickListener(this);
 
-        lstr = new ArrayList<InvoiceBuyApi>();
+        lstr = new ArrayList<Invoice>();
 
         lv = (ListView)findViewById(R.id.listView);
 
@@ -126,7 +130,7 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOG, "onItemClick");
 
-        final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
+        final Invoice inv = (Invoice) parent.getItemAtPosition(position);
 
         AlertDialog.Builder ad;
         final Context context = this;
@@ -188,7 +192,7 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
         Log.d(LOG, "onCreateLoader");
         return new CursorLoader(
                 getApplicationContext(),
-                InvoiceContentProvider.CONTENT_URI, null, null, null, null
+                MainContentProvider.CONTENT_URI_INVOICE, null, null, null, null
         );
     }
 

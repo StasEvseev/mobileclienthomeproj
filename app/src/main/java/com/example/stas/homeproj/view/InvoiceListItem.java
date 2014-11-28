@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.stas.homeproj.R;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 
 
@@ -23,7 +24,7 @@ public class InvoiceListItem extends LinearLayout {
         super(context, attrs);
     }
 
-    public void bind(InvoiceBuyApi invoice) {
+    public void bind(Invoice invoice) {
         mTitle.setText(invoice.toString());
     }
 

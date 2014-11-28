@@ -33,7 +33,12 @@ public class BaseSyncHolder {
     public static ContentValues toCursor(BaseSyncModel obj) {
 
         ContentValues cv = new ContentValues();
-        cv.put(COL_ID, obj.id);
+//        cv.put(COL_ID, obj.id);
+
+        if (obj.id != 0) {
+            cv.put(COL_ID, obj.id);
+        }
+
         cv.put(COL_ID_BUY_API, obj.id_buy_api);
         if (obj.is_sync) {
             cv.put(COL_IS_SYNC, 1);
