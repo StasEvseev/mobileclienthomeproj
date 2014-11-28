@@ -18,4 +18,9 @@ public class InvoiceItem extends BaseSyncModel {
     public int count_whole_pack;
     public int factcount;
     public int barcode;
+
+    @Override
+    public String toString() {
+        return fullname;
+    }
 }

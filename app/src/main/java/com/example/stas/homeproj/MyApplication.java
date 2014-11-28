@@ -1,6 +1,9 @@
 package com.example.stas.homeproj;
 
 import android.app.Application;
+import android.content.res.Configuration;
+
+import java.util.Locale;
 
 /**
  * Created by user on 24.11.14.
@@ -18,6 +21,13 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Locale locale = new Locale("ru_RU");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getApplicationContext().getResources().updateConfiguration(config, null);
+
 //        final AccountManager am = AccountManager.get(this);
 
 //        if (sAccount == null) {

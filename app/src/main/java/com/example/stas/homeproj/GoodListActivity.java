@@ -1,18 +1,30 @@
 package com.example.stas.homeproj;
 
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
+import com.example.stas.homeproj.db.dao.Helper;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Acceptance;
 import com.example.stas.homeproj.db.dao.model.Invoice;
+import com.example.stas.homeproj.library.AlertHelper;
 import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * An activity representing a list of Items. This activity
@@ -31,7 +43,8 @@ import com.example.stas.homeproj.provider.helper.Provider;
  * to listen for item selections.
  */
 public class GoodListActivity extends Activity
-        implements GoodListFragment.Callbacks, GoodDetailFragment.CallbacksSave, View.OnClickListener {
+        implements GoodListFragment.Callbacks, GoodDetailFragment.CallbacksSave, View.OnClickListener,
+        DatePickerDialog.OnDateSetListener {
 
     public final static String KEY_INVOICE_ID = "invoice_id";
 
@@ -42,8 +55,13 @@ public class GoodListActivity extends Activity
     private boolean mTwoPane;
 
     private int id_invoice;
+    private Invoice invoice;
+    private Acceptance acceptance;
 
     private Button btnSaveInvoice;
+
+    private EditText dateInvoice;
+    private EditText dateAcceptance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +73,24 @@ public class GoodListActivity extends Activity
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
 
-        Invoice invoice = (Invoice)Provider.getById(this, MainContentProvider.CONTENT_URI_INVOICE,
+        invoice = (Invoice)Provider.getById(this, MainContentProvider.CONTENT_URI_INVOICE,
                 InvoiceHolder.COL_ID, id_invoice, Invoice.class, InvoiceHolder.class);
 
         setTitle("Накладная №" + invoice.toString());
 
         GoodListFragment glf = ((GoodListFragment) getFragmentManager()
                 .findFragmentById(R.id.item_list));
+
+        dateInvoice = (EditText)findViewById(R.id.date_invoice);
+        dateAcceptance = (EditText)findViewById(R.id.date_acceptance);
+
+        dateInvoice.setKeyListener(null);
+        dateAcceptance.setKeyListener(null);
+
+        dateInvoice.setText(invoice.getDateToString());
+
+        ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(this);
 
         if (findViewById(R.id.good_detail_container) != null) {
             // The detail container view will be present only in the
@@ -74,13 +103,6 @@ public class GoodListActivity extends Activity
             // 'activated' state when touched.
 
             glf.setActivateOnItemClick(true);
-
-            EditText dateInvoice = (EditText)findViewById(R.id.date_invoice);
-            EditText dateAcceptance = (EditText)findViewById(R.id.date_acceptance);
-
-            dateInvoice.setText(invoice.getDateToString());
-
-
         }
 
         glf.loadGood(id_invoice);
@@ -125,13 +147,59 @@ public class GoodListActivity extends Activity
 
     @Override
     public void onClick(View v) {
-        Log.d("GoodListActivity", "Click");
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
-        ContentResolver.requestSync(Session.mAccount, MyApplication.AUTHORITY, settingsBundle);
+        if(v.getId() == R.id.btn_save_invoice) {
+            Log.d("GoodListActivity", "Click");
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+            ContentResolver.requestSync(Session.mAccount, MyApplication.AUTHORITY, settingsBundle);
+        } else if (v.getId() == R.id.imageButton) {
+            showDatePicker();
+//            showDialog(1);
+        }
+
     }
+
+    public void showDatePicker() {
+
+        AlertHelper.showDatePicker(this, this);
+
+//        Calendar calender = Calendar.getInstance();
+//
+//        DatePickerDialog dialog = new DatePickerDialog(this, this, calender.get(Calendar.YEAR), calender.get(Calendar.MONTH), calender.get(Calendar.DAY_OF_MONTH));
+//
+//        if (Build.VERSION.SDK_INT >= 11) {
+//            dialog.getDatePicker().setCalendarViewShown(false);
+//        }
+//
+//        dialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        String date = new StringBuilder().append(year).append("-").append(monthOfYear + 1)
+                .append("-").append(dayOfMonth).toString();
+        dateAcceptance.setText(date);
+        try {
+            invoice.date = Helper.getFormatter().parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+//        @Override
+//        public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                              int dayOfMonth) {
+//            Toast.makeText(
+//                    MainActivity.this,
+//                    String.valueOf(year) + "-" + String.valueOf(monthOfYear)
+//                            + "-" + String.valueOf(dayOfMonth),
+//                    Toast.LENGTH_LONG).show();
+//        }
+//    }
 }

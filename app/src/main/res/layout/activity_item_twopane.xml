@@ -28,7 +28,7 @@
                 android:inputType="date"
                 android:ems="10"
                 android:id="@+id/date_invoice"
-                android:editable="false" />
+                android:editable="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,7 +98,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:layout="@android:layout/list_content" />
+            tools:layout="@android:layout/list_content"
+            android:layout_margin="5dp" />
 
         <FrameLayout
             android:id="@+id/good_detail_container"
