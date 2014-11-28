@@ -12,10 +12,13 @@ import android.widget.ListView;
 
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
+import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
+import com.example.stas.homeproj.db.dao.model.InvoiceItem;
 import com.example.stas.homeproj.models.GoodBuyApi;
 import com.example.stas.homeproj.models.GoodLocal;
 import com.example.stas.homeproj.provider.GoodContentProvider;
 import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ import java.util.List;
  */
 public class GoodListFragment extends ListFragment {
 
-    private List<GoodBuyApi> lgood;
+    private List<InvoiceItem> lgood;
 
 //    private CursorAdapter listAdapter;
 
@@ -89,12 +92,14 @@ public class GoodListFragment extends ListFragment {
         Log.d("loadGood", String.valueOf(id));
 
         Cursor curGood = getActivity().getContentResolver().query(
-                GoodContentProvider.CONTENT_URI, null,
-                GoodHolder.COL_INVOICE_ID + " = ?", new String[] { String.valueOf(id) }, null, null);
+                MainContentProvider.CONTENT_URI_INVOICEITEM, null,
+                InvoiceItemHolder.COL_INVOICE_ID + " = ?", new String[] { String.valueOf(id) }, null, null);
 
         if(curGood != null) {
             while(curGood.moveToNext()) {
-                lgood.add(GoodHolder.fromCursor(curGood));
+                InvoiceItem invoiceItem = new InvoiceItem();
+                InvoiceItemHolder.fromCursor(curGood, invoiceItem);
+                lgood.add(invoiceItem);
             }
             curGood.close();
         }
@@ -104,14 +109,14 @@ public class GoodListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lgood = new ArrayList<GoodBuyApi>();
+        lgood = new ArrayList<InvoiceItem>();
 
 //        listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, new String());
 
 //        keyV = new HashMap<Integer, GoodBuyApi>();
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<GoodBuyApi>(
+        setListAdapter(new ArrayAdapter<InvoiceItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 lgood));
@@ -154,9 +159,9 @@ public class GoodListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        GoodBuyApi goodBuyApi = lgood.get(position);
+        InvoiceItem invoiceItem = lgood.get(position);
 
-        mCallbacks.onItemSelected(goodBuyApi.id);
+        mCallbacks.onItemSelected(invoiceItem.id);
     }
 
     @Override

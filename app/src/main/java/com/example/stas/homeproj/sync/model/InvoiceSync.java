@@ -35,8 +35,8 @@ public class InvoiceSync extends BaseSync {
 
     public static boolean sync(final Context context, String authToken) {
 
-//        int max_id = getLastIdInvoice(context);
-        int max_id = 1;
+        int max_id = getLastIdInvoice(context);
+//        int max_id = 1;
 
         Log.d(TAG, String.valueOf(max_id));
 
@@ -60,13 +60,15 @@ public class InvoiceSync extends BaseSync {
         return true;
     }
 
-    public static List<InvoiceBuyApi> getInvoices(Context context) {
-        List<InvoiceBuyApi> list = new ArrayList<InvoiceBuyApi>();
-        Cursor curinvs = context.getContentResolver().query(InvoiceContentProvider.CONTENT_URI, null, null, null, null);
+    public static List<Invoice> getInvoices(Context context) {
+        List<Invoice> list = new ArrayList<Invoice>();
+        Cursor curinvs = context.getContentResolver().query(MainContentProvider.CONTENT_URI_INVOICE, null, null, null, null);
 
         if(curinvs!=null) {
             while(curinvs.moveToNext()) {
-                list.add(InvoiceBuyApiHolder.fromCursor(curinvs));
+                Invoice inv = new Invoice();
+                InvoiceHolder.fromCursor(curinvs, inv);
+                list.add(inv);
             }
             curinvs.close();
         }

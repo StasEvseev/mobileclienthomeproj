@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String LOG = DBHelper.class.getName();
 
     private static final String DATABASE_NAME = "homeproj.db";
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 29;
 
     public final static String INVOICE_TABLE = "invoice";
     public final static String INVOICEITEM_TABLE = "invoice_item";
@@ -54,7 +54,8 @@ public class DBHelper extends SQLiteOpenHelper {
             InvoiceItemHolder.COL_NUMBER_LOCAL + " text, " +
             InvoiceItemHolder.COL_NUMBER_GLOBAL + " text, " +
             InvoiceItemHolder.COL_FACTCOUNT + " integer, " +
-            InvoiceItemHolder.COL_BARCODE + " integer " +
+            InvoiceItemHolder.COL_BARCODE + " integer, " +
+            InvoiceItemHolder.COL_INVOICE_ID + " integer " +
             ");";
 
     private final static String ACCEPTANCE_TABLE_CREATE = "create table "

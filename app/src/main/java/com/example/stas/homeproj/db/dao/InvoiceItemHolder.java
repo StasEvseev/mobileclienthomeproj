@@ -12,6 +12,7 @@ import java.text.ParseException;
  */
 public class InvoiceItemHolder extends BaseSyncHolder {
 
+    public final static String COL_INVOICE_ID = "invoice_id";
     public final static String COL_COMMODITY_ID = "commodity_id";
     public final static String COL_PRICE_ID = "price_id";
     public final static String COL_FULLNAME = "fullname";
@@ -23,6 +24,7 @@ public class InvoiceItemHolder extends BaseSyncHolder {
     public static void fromCursor(Cursor cur, InvoiceItem obj) {
 
         BaseSyncHolder.fromCursor(cur, obj);
+        obj.invoice_id = cur.getInt(cur.getColumnIndex(COL_INVOICE_ID));
         obj.commodity_id = cur.getInt(cur.getColumnIndex(COL_COMMODITY_ID));
         obj.price_id = cur.getInt(cur.getColumnIndex(COL_PRICE_ID));
         obj.fullname = cur.getString(cur.getColumnIndex(COL_FULLNAME));
@@ -36,6 +38,7 @@ public class InvoiceItemHolder extends BaseSyncHolder {
 
         ContentValues cv = BaseSyncHolder.toCursor(obj);
 
+        cv.put(COL_INVOICE_ID, obj.invoice_id);
         cv.put(COL_COMMODITY_ID, obj.commodity_id);
         cv.put(COL_PRICE_ID, obj.price_id);
         cv.put(COL_FULLNAME, obj.fullname);

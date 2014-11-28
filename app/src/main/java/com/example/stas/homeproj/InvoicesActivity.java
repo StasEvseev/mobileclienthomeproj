@@ -27,6 +27,7 @@ import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.db.dao.GoodHolder;
 import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Acceptance;
 import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.GoodBuyApi;
@@ -132,42 +133,54 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
 
         final Invoice inv = (Invoice) parent.getItemAtPosition(position);
 
-        AlertDialog.Builder ad;
-        final Context context = this;
+        if (inv.is_handle(this)) {
+            AlertDialog.Builder ad;
+            final Context context = this;
 
-        ad = new AlertDialog.Builder(this);
-        ad.setTitle("Внимание");  // заголовок
-        ad.setMessage("У выбранной накладной уже есть приемка."); // сообщение
-        ad.setPositiveButton("Открыть прошлую приемку", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
-                Log.d(LOG, "INVOIC_ID - " + inv.id);
-                intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
-                startActivity(intent);
-//                Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
-//                        .show();
-            }
-        });
-        ad.setNegativeButton("Создать новую приемку", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
-        ad.setCancelable(true);
-        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-                Toast.makeText(context, "Вы ничего не выбрали",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-        ad.show();
+            ad = new AlertDialog.Builder(this);
+            ad.setTitle("Внимание");  // заголовок
+            ad.setMessage("У выбранной накладной уже есть приемка."); // сообщение
+            ad.setPositiveButton("Открыть прошлую приемку", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    nextStep(inv, false);
+                }
+            });
+            ad.setNegativeButton("Создать новую приемку", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    nextStep(inv, true);
+//                    Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
+//                            .show();
+                }
+            });
+            ad.setCancelable(true);
+            ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                public void onCancel(DialogInterface dialog) {
+                    Toast.makeText(context, "Вы ничего не выбрали",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            ad.show();
+        } else {
+            nextStep(inv, true);
+        }
 
 //        final InvoiceBuyApi inv = (InvoiceBuyApi) parent.getItemAtPosition(position);
 //        Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
 //        Log.d(LOG, "INVOIC_ID - " + inv.id);
 //        intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
 //        startActivity(intent);
+    }
+
+    public void nextStep(Invoice inv, boolean create_new) {
+
+        if(create_new) {
+//            Acceptance acceptance = inv.createAcceptance(this);
+        }
+
+        Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
+        Log.d(LOG, "INVOIC_ID - " + inv.id);
+        intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
+        startActivity(intent);
     }
 
     @Override

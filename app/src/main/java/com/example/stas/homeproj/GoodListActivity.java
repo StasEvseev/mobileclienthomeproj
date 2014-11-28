@@ -13,8 +13,11 @@ import android.widget.Button;
 
 import com.example.stas.homeproj.data.InvoiceContent;
 import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
+import com.example.stas.homeproj.db.dao.InvoiceHolder;
+import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.models.InvoiceBuyApi;
 import com.example.stas.homeproj.provider.InvoiceContentProvider;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 import com.example.stas.homeproj.sync.AccountSyncHelper;
 import com.google.android.gms.analytics.ecommerce.Product;
@@ -61,10 +64,10 @@ public class GoodListActivity extends Activity
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
 
-        InvoiceBuyApi invoiceBuyApi = (InvoiceBuyApi)Provider.getById(this, InvoiceContentProvider.CONTENT_URI,
-                InvoiceBuyApiHolder.COL_ID, id_invoice, InvoiceBuyApi.class, InvoiceBuyApiHolder.class);
+        Invoice invoice = (Invoice)Provider.getById(this, MainContentProvider.CONTENT_URI_INVOICE,
+                InvoiceHolder.COL_ID, id_invoice, Invoice.class, InvoiceHolder.class);
 
-        setTitle("Накладная №" + invoiceBuyApi.toString());
+        setTitle("Накладная №" + invoice.toString());
 
         GoodListFragment glf = ((GoodListFragment) getFragmentManager()
                 .findFragmentById(R.id.item_list));

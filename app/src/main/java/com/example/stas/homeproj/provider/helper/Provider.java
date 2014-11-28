@@ -22,15 +22,15 @@ public class Provider {
                 new String[]{ String.valueOf(id) }, null);
 
         Object inst = null;
-        try {
-            inst = cl.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
 
         if(cur!=null) {
+            try {
+                inst = cl.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             while (cur.moveToNext()) {
                 try {
                     inst = holder.getMethod("fromCursor", Cursor.class).invoke(null, cur);

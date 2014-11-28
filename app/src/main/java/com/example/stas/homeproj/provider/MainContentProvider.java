@@ -15,7 +15,6 @@ import com.example.stas.homeproj.MyApplication;
 import com.example.stas.homeproj.db.DBHelper;
 import com.example.stas.homeproj.db.dao.AcceptanceHolder;
 import com.example.stas.homeproj.db.dao.CommodityHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
 import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
 import com.example.stas.homeproj.db.dao.PriceHolder;
@@ -35,7 +34,6 @@ public class MainContentProvider extends ContentProvider{
     public static String PATH_PRICE = "price";
     public static String PATH_PROVIDER = "provider";
 
-    //    public static String PATH = "invoice";
     public static String AUTHORITY = MyApplication.AUTHORITY + ".main";
     public static String CONTENT_TYPE_INVOICE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + PATH_INVOICE;
     public static String CONTENT_TYPE_INVOICE_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + PATH_INVOICE;
@@ -55,8 +53,6 @@ public class MainContentProvider extends ContentProvider{
     public static String CONTENT_TYPE_PROVIDER = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + PATH_PROVIDER;
     public static String CONTENT_TYPE_PROVIDER_ITEM = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + PATH_PROVIDER;
 
-
-
     public static final Uri CONTENT_URI_INVOICE = Uri.parse("content://"
             + AUTHORITY + "/" + PATH_INVOICE);
     public static final Uri CONTENT_URI_INVOICEITEM = Uri.parse("content://"
@@ -71,9 +67,7 @@ public class MainContentProvider extends ContentProvider{
             + AUTHORITY + "/" + PATH_PROVIDER);
 
     //// UriMatcher
-    // общий Uri
     static final int URI_INVOICE = 1;
-    // Uri с указанным ID
     static final int URI_INVOICE_BY_ID = 2;
 
     static final int URI_INVOICEITEM = 3;
@@ -92,13 +86,6 @@ public class MainContentProvider extends ContentProvider{
     static final int URI_PROVIDER_BY_ID = 12;
 
     // описание и создание UriMatcher
-//    private static final UriMatcher uriMatcher;
-//    static {
-//        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-//        uriMatcher.addURI(AUTHORITY, PATH, URI_INVOICES);
-//        uriMatcher.addURI(AUTHORITY, PATH + "/#", URI_INVOICE_BY_ID);
-//    }
-
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -122,6 +109,38 @@ public class MainContentProvider extends ContentProvider{
     public boolean onCreate() {
         dbHelper = new DBHelper(getContext());
         return true;
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        Log.d(LOG_TAG, "getType, " + uri.toString());
+        switch (uriMatcher.match(uri)) {
+            case URI_INVOICE:
+                return CONTENT_TYPE_INVOICE;
+            case URI_INVOICE_BY_ID:
+                return CONTENT_TYPE_INVOICE_ITEM;
+            case URI_INVOICEITEM:
+                return CONTENT_TYPE_INVOICEITEM;
+            case URI_INVOICEITEM_BY_ID:
+                return CONTENT_TYPE_INVOICEITEM_ITEM;
+            case URI_ACCEPTANCE:
+                return CONTENT_TYPE_ACCEPTANCE;
+            case URI_ACCEPTANCE_BY_ID:
+                return CONTENT_TYPE_ACCEPTANCE_ITEM;
+            case URI_COMMODITY:
+                return CONTENT_TYPE_COMMODITY;
+            case URI_COMMODITY_BY_ID:
+                return CONTENT_TYPE_COMMODITY_ITEM;
+            case URI_PRICE:
+                return CONTENT_TYPE_PRICE;
+            case URI_PRICE_BY_ID:
+                return CONTENT_TYPE_PRICE_ITEM;
+            case URI_PROVIDER:
+                return CONTENT_TYPE_PROVIDER;
+            case URI_PROVIDER_BY_ID:
+                return CONTENT_TYPE_PROVIDER_ITEM;
+        }
+        return null;
     }
 
     @Override
@@ -209,38 +228,6 @@ public class MainContentProvider extends ContentProvider{
     }
 
     @Override
-    public String getType(Uri uri) {
-        Log.d(LOG_TAG, "getType, " + uri.toString());
-        switch (uriMatcher.match(uri)) {
-            case URI_INVOICE:
-                return CONTENT_TYPE_INVOICE;
-            case URI_INVOICE_BY_ID:
-                return CONTENT_TYPE_INVOICE_ITEM;
-            case URI_INVOICEITEM:
-                return CONTENT_TYPE_INVOICEITEM;
-            case URI_INVOICEITEM_BY_ID:
-                return CONTENT_TYPE_INVOICEITEM_ITEM;
-            case URI_ACCEPTANCE:
-                return CONTENT_TYPE_ACCEPTANCE;
-            case URI_ACCEPTANCE_BY_ID:
-                return CONTENT_TYPE_ACCEPTANCE_ITEM;
-            case URI_COMMODITY:
-                return CONTENT_TYPE_COMMODITY;
-            case URI_COMMODITY_BY_ID:
-                return CONTENT_TYPE_COMMODITY_ITEM;
-            case URI_PRICE:
-                return CONTENT_TYPE_PRICE;
-            case URI_PRICE_BY_ID:
-                return CONTENT_TYPE_PRICE_ITEM;
-            case URI_PROVIDER:
-                return CONTENT_TYPE_PROVIDER;
-            case URI_PROVIDER_BY_ID:
-                return CONTENT_TYPE_PROVIDER_ITEM;
-        }
-        return null;
-    }
-
-    @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d(LOG_TAG, "insert, " + uri.toString() + values.toString());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -293,23 +280,69 @@ public class MainContentProvider extends ContentProvider{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int token = uriMatcher.match(uri);
         int rowsDeleted = -1;
+        String tvShowIdWhereClause = "";
         switch (token) {
-//            case (URI_LOCALGOODS):
-//                rowsDeleted = db.delete(DBHelper.GOODLOCAL_TABLE_NAME, selection, selectionArgs);
-//                break;
-//            case (URI_LOCALGOOD_BY_ID):
-//                String tvShowIdWhereClause = GoodLocalHolder.COL_ID + "=" + uri.getLastPathSegment();
-//                if (!TextUtils.isEmpty(selection))
-//                    tvShowIdWhereClause += " AND " + selection;
-//                rowsDeleted = db.delete(DBHelper.GOODLOCAL_TABLE_NAME, tvShowIdWhereClause, selectionArgs);
-//                break;
+            case (URI_INVOICE):
+                rowsDeleted = db.delete(DBHelper.INVOICE_TABLE, selection, selectionArgs);
+                break;
+            case (URI_INVOICE_BY_ID):
+                tvShowIdWhereClause = InvoiceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.INVOICE_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_INVOICEITEM):
+                rowsDeleted = db.delete(DBHelper.INVOICEITEM_TABLE, selection, selectionArgs);
+                break;
+            case (URI_INVOICEITEM_BY_ID):
+                tvShowIdWhereClause = InvoiceItemHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.INVOICEITEM_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_ACCEPTANCE):
+                rowsDeleted = db.delete(DBHelper.ACCEPTANCE_TABLE, selection, selectionArgs);
+                break;
+            case (URI_ACCEPTANCE_BY_ID):
+                tvShowIdWhereClause = AcceptanceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.ACCEPTANCE_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_COMMODITY):
+                rowsDeleted = db.delete(DBHelper.COMMODITY_TABLE, selection, selectionArgs);
+                break;
+            case (URI_COMMODITY_BY_ID):
+                tvShowIdWhereClause = CommodityHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.COMMODITY_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_PRICE):
+                rowsDeleted = db.delete(DBHelper.PRICE_TABLE, selection, selectionArgs);
+                break;
+            case (URI_PRICE_BY_ID):
+                tvShowIdWhereClause = PriceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.PRICE_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_PROVIDER):
+                rowsDeleted = db.delete(DBHelper.PROVIDER_TABLE, selection, selectionArgs);
+                break;
+            case (URI_PROVIDER_BY_ID):
+                tvShowIdWhereClause = ProviderHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsDeleted = db.delete(DBHelper.PROVIDER_TABLE, tvShowIdWhereClause, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-        // Notifying the changes, if there are any
-//        if (rowsDeleted != -1)
-//            getContext().getContentResolver().notifyChange(uri, null);
-//        return rowsDeleted;
+//        Notifying the changes, if there are any
+        if (rowsDeleted != -1)
+            getContext().getContentResolver().notifyChange(uri, null);
+        return rowsDeleted;
     }
 
     @Override
