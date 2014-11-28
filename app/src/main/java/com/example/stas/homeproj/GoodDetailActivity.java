@@ -1,16 +1,12 @@
 package com.example.stas.homeproj;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.MenuItem;
 
-import com.example.stas.homeproj.db.dao.GoodHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
-import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.models.GoodLocal;
-import com.example.stas.homeproj.provider.GoodContentProvider;
-import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
+import com.example.stas.homeproj.db.dao.model.InvoiceItem;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 
 
@@ -47,20 +43,19 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
 
+            InvoiceItem invoiceItem = (InvoiceItem)Provider.getById(getApplicationContext(),
+                    MainContentProvider.CONTENT_URI_INVOICEITEM, InvoiceItemHolder.COL_ID, id_good, InvoiceItem.class,
+                    InvoiceItemHolder.class);
 
+//            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
+//                    GoodLocalHolder.COL_GOOD_ID, goodBuyApi.id, GoodLocal.class, GoodLocalHolder.class);
 
-            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(getApplicationContext(),
-                    GoodContentProvider.CONTENT_URI, GoodHolder.COL_ID, id_good, GoodBuyApi.class, GoodHolder.class);
-
-            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
-                    GoodLocalHolder.COL_GOOD_ID, goodBuyApi.id, GoodLocal.class, GoodLocalHolder.class);
-
-            goodLocal.setGood(goodBuyApi);
+//            goodLocal.setGood(goodBuyApi);
 //            goodLocal.good = goodBuyApi;
-            setTitle(goodLocal.toString());
+            setTitle(invoiceItem.toString());
             Bundle arguments = new Bundle();
             arguments.putInt(GoodDetailFragment.ARG_ITEM_ID,
-                    goodLocal.id);
+                    invoiceItem.id);
             GoodDetailFragment fragment = new GoodDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()

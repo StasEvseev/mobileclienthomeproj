@@ -9,5 +9,4 @@ public class AcceptanceBuyApi {
     public int id;
     public String id_invoice;
     public Date date;
-//    public boolean is_acceptance;
 }

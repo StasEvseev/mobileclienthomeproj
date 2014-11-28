@@ -10,6 +10,7 @@ public class InvoiceItem extends BaseSyncModel {
     public String fullname;
     public String number_local;
     public String number_global;
+//    количество по заказу
     public int count;
 //    Россыпь
     public int placer;

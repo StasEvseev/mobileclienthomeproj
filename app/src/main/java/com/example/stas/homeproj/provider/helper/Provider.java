@@ -4,10 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
-import com.example.stas.homeproj.models.GoodLocal;
-import com.example.stas.homeproj.provider.GoodLocalContentProvider;
-
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -33,7 +29,7 @@ public class Provider {
             }
             while (cur.moveToNext()) {
                 try {
-                    inst = holder.getMethod("fromCursor", Cursor.class).invoke(null, cur);
+                    holder.getMethod("fromCursor", Cursor.class, cl).invoke(null, cur, inst);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {

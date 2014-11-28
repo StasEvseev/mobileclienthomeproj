@@ -22,10 +22,18 @@ public class Invoice extends BaseSyncModel {
         is_sync = true;
     }
 
+    public String getDateToString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String result = "";
+        if (date != null) {
+            return sdf.format(this.date);
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("%s от %s", this.number, sdf.format(this.date));
+        return number;
     }
 
     public boolean is_handle(Context context) {

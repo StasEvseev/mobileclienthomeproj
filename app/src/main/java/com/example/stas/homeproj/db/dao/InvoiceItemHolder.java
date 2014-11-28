@@ -5,8 +5,6 @@ import android.database.Cursor;
 
 import com.example.stas.homeproj.db.dao.model.InvoiceItem;
 
-import java.text.ParseException;
-
 /**
  * Created by user on 27.11.14.
  */
@@ -21,6 +19,10 @@ public class InvoiceItemHolder extends BaseSyncHolder {
     public final static String COL_FACTCOUNT = "factcount";
     public final static String COL_BARCODE = "barcode";
 
+    public final static String COL_COUNT = "count";
+    public final static String COL_COUNT_WHOLE_PACK = "count_whole_pack";
+    public final static String COL_PLACER = "placer";
+
     public static void fromCursor(Cursor cur, InvoiceItem obj) {
 
         BaseSyncHolder.fromCursor(cur, obj);
@@ -32,6 +34,9 @@ public class InvoiceItemHolder extends BaseSyncHolder {
         obj.number_global = cur.getString(cur.getColumnIndex(COL_NUMBER_GLOBAL));
         obj.factcount = cur.getInt(cur.getColumnIndex(COL_FACTCOUNT));
         obj.barcode = cur.getInt(cur.getColumnIndex(COL_BARCODE));
+        obj.count = cur.getInt(cur.getColumnIndex(COL_COUNT));
+        obj.count_whole_pack = cur.getInt(cur.getColumnIndex(COL_COUNT_WHOLE_PACK));
+        obj.placer = cur.getInt(cur.getColumnIndex(COL_PLACER));
     }
 
     public static ContentValues toCursor(InvoiceItem obj) {
@@ -46,6 +51,9 @@ public class InvoiceItemHolder extends BaseSyncHolder {
         cv.put(COL_NUMBER_GLOBAL, obj.number_global);
         cv.put(COL_FACTCOUNT, obj.factcount);
         cv.put(COL_BARCODE, obj.barcode);
+        cv.put(COL_COUNT, obj.count);
+        cv.put(COL_COUNT_WHOLE_PACK, obj.count_whole_pack);
+        cv.put(COL_PLACER, obj.placer);
 
         return cv;
     }

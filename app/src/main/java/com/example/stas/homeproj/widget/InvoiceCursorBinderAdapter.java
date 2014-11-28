@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
 import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.view.InvoiceListItem;
-
-import java.util.Objects;
 
 /**
  * @author StasEvseev

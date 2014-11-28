@@ -3,9 +3,7 @@ package com.example.stas.homeproj.sync.model;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
-import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.provider.MainContentProvider;
 
 /**

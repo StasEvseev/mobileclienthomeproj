@@ -2,11 +2,9 @@ package com.example.stas.homeproj.db.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.SyncStateContract;
 import android.util.Log;
 
 import com.example.stas.homeproj.db.dao.model.BaseSyncModel;
-import com.example.stas.homeproj.sync.model.BaseSync;
 
 /**
  * Created by user on 27.11.14.

@@ -17,9 +17,6 @@ public class GoodLocal {
     public GoodLocal(GoodBuyApi goodapi) {
 
         setGood(goodapi);
-//        good = goodapi;
-//        id = getId();
-//        id_good_buy_api = goodapi.good_id;
         factCount = 0;
         barcode = 0;
 

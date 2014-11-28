@@ -1,10 +1,7 @@
 package com.example.stas.homeproj;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
@@ -15,14 +12,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-import com.example.stas.homeproj.data.GoodContent;
-import com.example.stas.homeproj.db.dao.GoodHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
-import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.models.GoodLocal;
-import com.example.stas.homeproj.provider.GoodContentProvider;
-import com.example.stas.homeproj.provider.GoodLocalContentProvider;
+import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
+import com.example.stas.homeproj.db.dao.model.InvoiceItem;
+import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
 
 /**
@@ -44,7 +36,7 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
     /**
      * Моделька товара
      */
-    private GoodLocal mItem;
+    private InvoiceItem mItem;
 
     private CallbacksSave defaultCallback = new CallbacksSave() {
 
@@ -92,16 +84,16 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 //            ContentResolver resolver = getActivity().getContentResolver();
             Context context = getActivity().getApplicationContext();
 
-            GoodLocal goodLocal= (GoodLocal)Provider.getById(context, GoodLocalContentProvider.CONTENT_URI,
-                    GoodLocalHolder.COL_ID, getArguments().getInt(ARG_ITEM_ID), GoodLocal.class, GoodLocalHolder.class);
+            InvoiceItem invoiceItem = (InvoiceItem)Provider.getById(context, MainContentProvider.CONTENT_URI_INVOICEITEM,
+                    InvoiceItemHolder.COL_ID, getArguments().getInt(ARG_ITEM_ID), InvoiceItem.class, InvoiceItemHolder.class);
 
-            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(context, GoodContentProvider.CONTENT_URI,
-                    GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
+//            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(context, GoodContentProvider.CONTENT_URI,
+//                    GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
 
 //            goodLocal.good = goodBuyApi;
-            goodLocal.setGood(goodBuyApi);
+//            goodLocal.setGood(goodBuyApi);
 
-            mItem = goodLocal;
+            mItem = invoiceItem;
         }
     }
 
@@ -113,12 +105,12 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 
         if (mItem != null) {
             Log.d(LOG_TAG, "onCreateView mITEM");
-            Log.d(LOG_TAG, "" + mItem.good);
-            Log.d(LOG_TAG, "fullname" + mItem.getFullname());
-            ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.getFullname());
-            ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.getCount()));
-            if(mItem.factCount != 0) {
-                ((EditText) rootView.findViewById(R.id.good_factcount)).setText(String.valueOf(mItem.factCount));
+//            Log.d(LOG_TAG, "" + mItem.good);
+            Log.d(LOG_TAG, "fullname" + mItem.fullname);
+            ((TextView) rootView.findViewById(R.id.good_fullname)).setText(mItem.fullname);
+            ((TextView) rootView.findViewById(R.id.good_count)).setText(String.valueOf(mItem.count));
+            if(mItem.factcount != 0) {
+                ((EditText) rootView.findViewById(R.id.good_factcount)).setText(String.valueOf(mItem.factcount));
             }
             if(mItem.barcode != 0) {
                 ((EditText) rootView.findViewById(R.id.good_barcode)).setText(String.valueOf(mItem.barcode));
@@ -162,7 +154,7 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
             dCallback.onFailure();
         } else {
 
-            mItem.factCount = Integer.parseInt(rawFactCount);
+            mItem.factcount = Integer.parseInt(rawFactCount);
 
             if (!TextUtils.isEmpty(rawBarcode)) {
                 mItem.barcode = Integer.parseInt(rawBarcode);
@@ -171,8 +163,8 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 //            mItem.barcode = Integer.parseInt(rawBarcode);
 //            mItem.factCount = Integer.parseInt(rawFactCount);
             mItem.is_sync = false;
-            getActivity().getContentResolver().update(GoodLocalContentProvider.CONTENT_URI,
-                    GoodLocalHolder.toCursor(mItem), GoodLocalHolder.COL_ID + "=?", new String[] { String.valueOf(mItem.id) });
+            getActivity().getContentResolver().update(MainContentProvider.CONTENT_URI_INVOICEITEM,
+                    InvoiceItemHolder.toCursor(mItem), InvoiceItemHolder.COL_ID + "=?", new String[] { String.valueOf(mItem.id) });
 //            GoodContent.update(mItem, rawFactCount, rawBarcode);
             dCallback.onSuccess();
         }

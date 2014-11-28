@@ -11,22 +11,22 @@ import android.util.Log;
 /**
  * Created by user on 21.11.14.
  */
-public abstract class BaseSyncAdapter extends AbstractThreadedSyncAdapter {
-
-    public static final String LOG = BaseSyncAdapter.class.getName();
-
-    public BaseSyncAdapter(Context context, boolean autoInitialize) {
-        super(context, autoInitialize);
-    }
-
-    public void prePerformSync() {
-
-    }
-
-    @Override
-    public void onPerformSync(Account account, Bundle extras, String authority,
-                              ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(LOG, "onPerformSync");
-//        super.onPerformSync(account, extras, authority, provider, syncResult);
-    }
-}
+//public abstract class BaseSyncAdapter extends AbstractThreadedSyncAdapter {
+//
+//    public static final String LOG = BaseSyncAdapter.class.getName();
+//
+//    public BaseSyncAdapter(Context context, boolean autoInitialize) {
+//        super(context, autoInitialize);
+//    }
+//
+//    public void prePerformSync() {
+//
+//    }
+//
+//    @Override
+//    public void onPerformSync(Account account, Bundle extras, String authority,
+//                              ContentProviderClient provider, SyncResult syncResult) {
+//        Log.d(LOG, "onPerformSync");
+////        super.onPerformSync(account, extras, authority, provider, syncResult);
+//    }
+//}

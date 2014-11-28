@@ -28,13 +28,13 @@ public class InvoiceItemSync extends BaseSync {
 
         Log.d(TAG, "start");
 
-        Cursor curGood = context.getContentResolver().query(MainContentProvider.CONTENT_URI_INVOICEITEM, null,
+        Cursor curItems = context.getContentResolver().query(MainContentProvider.CONTENT_URI_INVOICEITEM, null,
                 InvoiceItemHolder.COL_INVOICE_ID + "= ?", new String[] {String.valueOf(inv.id)}, null);
 
-        curGood.moveToNext();
-        int countLocal = curGood.getCount();
+        curItems.moveToNext();
+        int countLocal = curItems.getCount();
 
-        curGood.close();
+        curItems.close();
 
         IInvoiceItemCountRestAPI restCount = RestApiHelper.createResource(IInvoiceItemCountRestAPI.class, context, authToken);
 

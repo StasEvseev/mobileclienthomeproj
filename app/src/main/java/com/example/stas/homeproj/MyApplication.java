@@ -1,10 +1,6 @@
 package com.example.stas.homeproj;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Application;
-import android.content.ContentResolver;
-import android.os.Bundle;
 
 /**
  * Created by user on 24.11.14.

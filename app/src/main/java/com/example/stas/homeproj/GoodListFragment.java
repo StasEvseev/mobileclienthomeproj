@@ -9,17 +9,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
-import com.example.stas.homeproj.db.dao.GoodHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
 import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
 import com.example.stas.homeproj.db.dao.model.InvoiceItem;
-import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.models.GoodLocal;
-import com.example.stas.homeproj.provider.GoodContentProvider;
-import com.example.stas.homeproj.provider.GoodLocalContentProvider;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
 
 import java.util.ArrayList;
 import java.util.List;

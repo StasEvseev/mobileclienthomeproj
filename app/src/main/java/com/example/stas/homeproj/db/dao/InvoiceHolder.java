@@ -2,14 +2,11 @@ package com.example.stas.homeproj.db.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.example.stas.homeproj.db.dao.model.BaseSyncModel;
 import com.example.stas.homeproj.db.dao.model.Invoice;
-import com.example.stas.homeproj.sync.model.BaseSync;
 
 import java.text.ParseException;
-import java.util.Date;
+
 
 /**
  * Created by user on 27.11.14.
@@ -39,7 +36,6 @@ public class InvoiceHolder extends BaseSyncHolder {
 
         cv.put(COL_PROVIDER_ID, obj.provider_id);
         cv.put(COL_NUMBER, obj.number);
-//        cv.put(COL_DATE, '');
 
         if (obj.date != null) {
             cv.put(COL_DATE, Helper.getFormatter().format(obj.date));

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.example.stas.homeproj.db.dao.model.Commodity;
-import com.example.stas.homeproj.db.dao.model.Provider;
 
 /**
  * Created by user on 27.11.14.

@@ -1,27 +1,18 @@
 package com.example.stas.homeproj;
 
-import android.accounts.Account;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.stas.homeproj.data.InvoiceContent;
-import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
 import com.example.stas.homeproj.db.dao.model.Invoice;
-import com.example.stas.homeproj.models.InvoiceBuyApi;
-import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.provider.MainContentProvider;
 import com.example.stas.homeproj.provider.helper.Provider;
-import com.example.stas.homeproj.sync.AccountSyncHelper;
-import com.google.android.gms.analytics.ecommerce.Product;
-
 
 /**
  * An activity representing a list of Items. This activity
@@ -83,6 +74,12 @@ public class GoodListActivity extends Activity
             // 'activated' state when touched.
 
             glf.setActivateOnItemClick(true);
+
+            EditText dateInvoice = (EditText)findViewById(R.id.date_invoice);
+            EditText dateAcceptance = (EditText)findViewById(R.id.date_acceptance);
+
+            dateInvoice.setText(invoice.getDateToString());
+
 
         }
 

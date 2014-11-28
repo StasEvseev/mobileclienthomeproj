@@ -7,14 +7,10 @@ import android.util.Log;
 
 import com.example.stas.homeproj.db.dao.AcceptanceHolder;
 import com.example.stas.homeproj.db.dao.CommodityHolder;
-import com.example.stas.homeproj.db.dao.GoodHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
-import com.example.stas.homeproj.db.dao.InvoiceBuyApiHolder;
 import com.example.stas.homeproj.db.dao.InvoiceHolder;
 import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
 import com.example.stas.homeproj.db.dao.PriceHolder;
 import com.example.stas.homeproj.db.dao.ProviderHolder;
-import com.example.stas.homeproj.db.dao.model.InvoiceItem;
 
 /**
  * Created by user on 19.11.14.
@@ -24,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final static String LOG = DBHelper.class.getName();
 
     private static final String DATABASE_NAME = "homeproj.db";
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 30;
 
     public final static String INVOICE_TABLE = "invoice";
     public final static String INVOICEITEM_TABLE = "invoice_item";
@@ -55,7 +51,11 @@ public class DBHelper extends SQLiteOpenHelper {
             InvoiceItemHolder.COL_NUMBER_GLOBAL + " text, " +
             InvoiceItemHolder.COL_FACTCOUNT + " integer, " +
             InvoiceItemHolder.COL_BARCODE + " integer, " +
-            InvoiceItemHolder.COL_INVOICE_ID + " integer " +
+            InvoiceItemHolder.COL_INVOICE_ID + " integer, " +
+
+            InvoiceItemHolder.COL_COUNT + " integer, " +
+            InvoiceItemHolder.COL_COUNT_WHOLE_PACK + " integer, " +
+            InvoiceItemHolder.COL_PLACER + " integer " +
             ");";
 
     private final static String ACCEPTANCE_TABLE_CREATE = "create table "

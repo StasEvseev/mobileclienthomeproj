@@ -1,16 +1,9 @@
 package com.example.stas.homeproj;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.stas.homeproj.library.AuthHelper;
-import com.example.stas.homeproj.sync.AccountSyncHelper;
 
 /**
  * @author StasEvseev

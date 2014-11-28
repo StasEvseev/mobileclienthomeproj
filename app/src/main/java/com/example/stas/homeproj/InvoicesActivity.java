@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,29 +22,12 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.stas.homeproj.data.InvoiceContent;
-import com.example.stas.homeproj.db.dao.GoodHolder;
-import com.example.stas.homeproj.db.dao.GoodLocalHolder;
-import com.example.stas.homeproj.db.dao.InvoiceHolder;
-import com.example.stas.homeproj.db.dao.model.Acceptance;
 import com.example.stas.homeproj.db.dao.model.Invoice;
-import com.example.stas.homeproj.library.RestApiHelper;
-import com.example.stas.homeproj.models.GoodBuyApi;
-import com.example.stas.homeproj.models.GoodLocal;
-import com.example.stas.homeproj.models.InvoiceBuyApi;
-import com.example.stas.homeproj.provider.GoodContentProvider;
-import com.example.stas.homeproj.provider.GoodLocalContentProvider;
-import com.example.stas.homeproj.provider.InvoiceContentProvider;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
-import com.example.stas.homeproj.resources.IGoodRestAPI;
-import com.example.stas.homeproj.sync.AccountSyncHelper;
 import com.example.stas.homeproj.widget.InvoiceCursorBinderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit.RetrofitError;
 
 /**
  * @author StasEvseev

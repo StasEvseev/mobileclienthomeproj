@@ -349,25 +349,70 @@ public class MainContentProvider extends ContentProvider{
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int token = uriMatcher.match(uri);
-
+        String tvShowIdWhereClause = "";
         int rowsUpdated = -1;
         switch (token) {
-//            case (URI_LOCALGOODS):
-//                rowsUpdated = db.update(DBHelper.GOODLOCAL_TABLE_NAME, values, selection, selectionArgs);
-//                break;
-//            case (URI_LOCALGOOD_BY_ID):
-//                String tvShowIdWhereClause = GoodLocalHolder.COL_ID + "=" + uri.getLastPathSegment();
-//                if (!TextUtils.isEmpty(selection))
-//                    tvShowIdWhereClause += " AND " + selection;
-//                rowsUpdated = db.update(DBHelper.GOODLOCAL_TABLE_NAME, values, tvShowIdWhereClause, selectionArgs);
-//                break;
+            case (URI_INVOICE):
+                rowsUpdated = db.update(DBHelper.INVOICE_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_INVOICE_BY_ID):
+                tvShowIdWhereClause = InvoiceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.INVOICE_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_INVOICEITEM):
+                rowsUpdated = db.update(DBHelper.INVOICEITEM_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_INVOICEITEM_BY_ID):
+                tvShowIdWhereClause = InvoiceItemHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.INVOICEITEM_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_ACCEPTANCE):
+                rowsUpdated = db.update(DBHelper.ACCEPTANCE_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_ACCEPTANCE_BY_ID):
+                tvShowIdWhereClause = AcceptanceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.ACCEPTANCE_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_COMMODITY):
+                rowsUpdated = db.update(DBHelper.COMMODITY_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_COMMODITY_BY_ID):
+                tvShowIdWhereClause = CommodityHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.COMMODITY_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_PRICE):
+                rowsUpdated = db.update(DBHelper.PRICE_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_PRICE_BY_ID):
+                tvShowIdWhereClause = PriceHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.PRICE_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
+            case (URI_PROVIDER):
+                rowsUpdated = db.update(DBHelper.PROVIDER_TABLE, values, selection, selectionArgs);
+                break;
+            case (URI_PROVIDER_BY_ID):
+                tvShowIdWhereClause = ProviderHolder.COL_ID + "=" + uri.getLastPathSegment();
+                if (!TextUtils.isEmpty(selection))
+                    tvShowIdWhereClause += " AND " + selection;
+                rowsUpdated = db.update(DBHelper.PROVIDER_TABLE, values, tvShowIdWhereClause, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
         // Notifying the changes, if there are any
-//        if (rowsUpdated != -1)
-//            getContext().getContentResolver().notifyChange(uri, null);
-//        return rowsUpdated;
+        if (rowsUpdated != -1)
+            getContext().getContentResolver().notifyChange(uri, null);
+        return rowsUpdated;
     }
 
 }
