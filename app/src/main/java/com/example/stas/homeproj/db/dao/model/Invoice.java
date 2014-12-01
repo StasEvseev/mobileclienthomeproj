@@ -1,11 +1,11 @@
 package com.example.stas.homeproj.db.dao.model;
 
-import android.content.ContentProvider;
 import android.content.Context;
 
 import com.example.stas.homeproj.db.dao.AcceptanceHolder;
+import com.example.stas.homeproj.db.dao.ProviderHolder;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
+import com.example.stas.homeproj.provider.helper.ProviderContent;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,9 +17,10 @@ public class Invoice extends BaseSyncModel {
     public int provider_id;
     public String number;
     public Date date;
+    public String emails;
 
     public Invoice() {
-        is_sync = true;
+//        is_sync = true;
     }
 
     public String getDateToString() {
@@ -36,6 +37,16 @@ public class Invoice extends BaseSyncModel {
         return number;
     }
 
+    public String getProviderString(Context context) {
+        Provider provider = (Provider)ProviderContent.getById(context, MainContentProvider.CONTENT_URI_PROVIDER,
+                ProviderHolder.COL_ID, provider_id, Provider.class, ProviderHolder.class);
+        if (provider != null) {
+            return provider.name;
+        } else {
+            return "";
+        }
+    }
+
     public boolean is_handle(Context context) {
         Acceptance acc = getAcceptance(context);
         if (acc != null) {
@@ -45,8 +56,8 @@ public class Invoice extends BaseSyncModel {
     }
 
     public Acceptance getAcceptance(Context context) {
-        return (Acceptance)Provider.getById(context, MainContentProvider.CONTENT_URI_ACCEPTANCE,
-            AcceptanceHolder.COL_INVOICE_ID, id, Acceptance.class, AcceptanceHolder.class);
+        return (Acceptance) ProviderContent.getById(context, MainContentProvider.CONTENT_URI_ACCEPTANCE,
+                AcceptanceHolder.COL_INVOICE_ID, id, Acceptance.class, AcceptanceHolder.class);
     }
 
     public Acceptance createAcceptance(Context context) {

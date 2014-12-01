@@ -2,6 +2,7 @@ package com.example.stas.homeproj.models;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -12,11 +13,16 @@ public class InvoiceBuyApi {
     public int id;
     public String number;
     public Date date;
-    public boolean is_acceptance;
+//    public String emails;
+    public int provider_id;
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return String.format("%s от %s", this.number, sdf.format(this.date));
+    }
+
+    public class InvoiceItemsBuyApi {
+        public List<InvoiceBuyApi> items;
     }
 }

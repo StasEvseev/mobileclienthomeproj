@@ -16,4 +16,7 @@ import retrofit.http.QueryMap;
 public interface IInvoiceRestAPI {
     @GET("/api/invoice")
     InvoicesBuyApi invoices(@QueryMap Map<String, String> options);
+
+    @GET("/api/invoice")
+    InvoiceBuyApi.InvoiceItemsBuyApi invoiceSync();
 }

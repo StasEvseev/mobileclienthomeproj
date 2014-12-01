@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
 import com.example.stas.homeproj.db.dao.model.InvoiceItem;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
+import com.example.stas.homeproj.provider.helper.ProviderContent;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -84,10 +84,10 @@ public class GoodDetailFragment extends Fragment implements View.OnClickListener
 //            ContentResolver resolver = getActivity().getContentResolver();
             Context context = getActivity().getApplicationContext();
 
-            InvoiceItem invoiceItem = (InvoiceItem)Provider.getById(context, MainContentProvider.CONTENT_URI_INVOICEITEM,
+            InvoiceItem invoiceItem = (InvoiceItem) ProviderContent.getById(context, MainContentProvider.CONTENT_URI_INVOICEITEM,
                     InvoiceItemHolder.COL_ID, getArguments().getInt(ARG_ITEM_ID), InvoiceItem.class, InvoiceItemHolder.class);
 
-//            GoodBuyApi goodBuyApi = (GoodBuyApi)Provider.getById(context, GoodContentProvider.CONTENT_URI,
+//            GoodBuyApi goodBuyApi = (GoodBuyApi)ProviderContent.getById(context, GoodContentProvider.CONTENT_URI,
 //                    GoodHolder.COL_ID, goodLocal.id_good_buy_api, GoodBuyApi.class, GoodHolder.class);
 
 //            goodLocal.good = goodBuyApi;

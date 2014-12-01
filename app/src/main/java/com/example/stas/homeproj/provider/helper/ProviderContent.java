@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author StasEvseev
  * Класс помощник различных вспомогательных функций для работы с провайдерами.
  */
-public class Provider {
+public class ProviderContent {
 
     public static Object getById(Context context, Uri uri, String col, int id, Class<?> cl, Class<?> holder) {
         Cursor cur = context.getContentResolver().query(

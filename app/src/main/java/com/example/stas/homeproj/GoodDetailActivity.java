@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import com.example.stas.homeproj.db.dao.InvoiceItemHolder;
 import com.example.stas.homeproj.db.dao.model.InvoiceItem;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
+import com.example.stas.homeproj.provider.helper.ProviderContent;
 
 
 /**
@@ -43,11 +43,11 @@ public class GoodDetailActivity extends Activity implements GoodDetailFragment.C
             // using a fragment transaction.
             int id_good = getIntent().getIntExtra(GoodDetailFragment.ARG_ITEM_ID, 0);
 
-            InvoiceItem invoiceItem = (InvoiceItem)Provider.getById(getApplicationContext(),
+            InvoiceItem invoiceItem = (InvoiceItem) ProviderContent.getById(getApplicationContext(),
                     MainContentProvider.CONTENT_URI_INVOICEITEM, InvoiceItemHolder.COL_ID, id_good, InvoiceItem.class,
                     InvoiceItemHolder.class);
 
-//            GoodLocal goodLocal= (GoodLocal)Provider.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
+//            GoodLocal goodLocal= (GoodLocal)ProviderContent.getById(getApplicationContext(), GoodLocalContentProvider.CONTENT_URI,
 //                    GoodLocalHolder.COL_GOOD_ID, goodBuyApi.id, GoodLocal.class, GoodLocalHolder.class);
 
 //            goodLocal.setGood(goodBuyApi);

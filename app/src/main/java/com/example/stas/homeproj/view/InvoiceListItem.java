@@ -2,6 +2,7 @@ package com.example.stas.homeproj.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.example.stas.homeproj.models.InvoiceBuyApi;
 public class InvoiceListItem extends LinearLayout {
 
     private TextView mTitle;
+    private TextView mDate;
+    private TextView mAcceptance;
 
     public InvoiceListItem(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,12 +29,17 @@ public class InvoiceListItem extends LinearLayout {
 
     public void bind(Invoice invoice) {
         mTitle.setText(invoice.toString());
+//        mDate.setText(invoice.getDateToString());
+//        mAcceptance.setText(invoice.getProviderString(getContext()));
     }
 
     @Override
     protected void onFinishInflate() {
+        Log.d("InvoiceLListItem", "INFLATE");
         super.onFinishInflate();
-        mTitle = (TextView) findViewById(R.id.title);
+        mTitle = (TextView) findViewById(R.id.number);
+        mDate = (TextView) findViewById(R.id.date_invoice);
+        mAcceptance = (TextView) findViewById(R.id.date_acceptance);
     }
 
 }

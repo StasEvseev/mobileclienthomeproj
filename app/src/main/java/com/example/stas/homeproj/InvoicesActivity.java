@@ -160,7 +160,7 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
         }
 
         Intent intent = new Intent(InvoicesActivity.this, GoodListActivity.class);
-        Log.d(LOG, "INVOIC_ID - " + inv.id);
+        Log.d(LOG, "INVOIC_ID - " + inv.id_buy_api);
         intent.putExtra(GoodListActivity.KEY_INVOICE_ID, inv.id);
         startActivity(intent);
     }

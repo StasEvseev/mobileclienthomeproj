@@ -1,10 +1,8 @@
 package com.example.stas.homeproj;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -20,11 +18,9 @@ import com.example.stas.homeproj.db.dao.model.Acceptance;
 import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.library.AlertHelper;
 import com.example.stas.homeproj.provider.MainContentProvider;
-import com.example.stas.homeproj.provider.helper.Provider;
+import com.example.stas.homeproj.provider.helper.ProviderContent;
 
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * An activity representing a list of Items. This activity
@@ -73,7 +69,7 @@ public class GoodListActivity extends Activity
 
         id_invoice = getIntent().getIntExtra(KEY_INVOICE_ID, 0);
 
-        invoice = (Invoice)Provider.getById(this, MainContentProvider.CONTENT_URI_INVOICE,
+        invoice = (Invoice) ProviderContent.getById(this, MainContentProvider.CONTENT_URI_INVOICE,
                 InvoiceHolder.COL_ID, id_invoice, Invoice.class, InvoiceHolder.class);
 
         setTitle("Накладная №" + invoice.toString());
