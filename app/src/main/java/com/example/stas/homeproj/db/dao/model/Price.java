@@ -12,7 +12,7 @@ public class Price extends BaseSyncModel {
     public double price_post;
     public String number_local;
     public String number_global;
-    public double price_gross;
-    public double price_retail;
+    public Double price_gross;
+    public Double price_retail;
     public Date date_from;
 }

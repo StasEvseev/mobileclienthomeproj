@@ -61,6 +61,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     ContentResolver mContentResolver;
     AccountManager mAccountManager;
 
+    public static String SYNC_FINISHED = "finishSync";
+
     public final static String LOG = SyncAdapter.class.getName();
 
     /**
@@ -214,6 +216,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
             }
+
+            Intent i = new Intent(SYNC_FINISHED);
+            context.sendBroadcast(i);
 
 
 

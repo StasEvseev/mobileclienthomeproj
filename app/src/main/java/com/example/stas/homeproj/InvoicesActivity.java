@@ -3,11 +3,13 @@ package com.example.stas.homeproj;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.stas.homeproj.db.dao.model.Invoice;
 import com.example.stas.homeproj.provider.MainContentProvider;
+import com.example.stas.homeproj.sync.SyncAdapter;
 import com.example.stas.homeproj.widget.InvoiceCursorBinderAdapter;
 
 import java.util.ArrayList;
@@ -49,6 +52,15 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     private CursorAdapter mListAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private BroadcastReceiver syncFinishedReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mSwipeRefreshLayout.setRefreshing(false);
+//            Log.d(Const.TAG, "Sync finished, should refresh nao!!");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +98,15 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
                         | ContentResolver.SYNC_OBSERVER_TYPE_PENDING,
                 this
         );
+
+        registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.SYNC_FINISHED));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         ContentResolver.removeStatusChangeListener(mSyncMonitor);
+        unregisterReceiver(syncFinishedReceiver);
     }
 
     @Override
@@ -188,6 +203,14 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     public void onStatusChanged(int which) {
         Log.d(LOG, "onStatusChanged - " + which);
 
+//        mSwipeRefreshLayout.setOnRefreshListener();
+
+//        if (which == ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE) {
+//
+//        }
+
+
+
         lv.deferNotifyDataSetChanged();
     }
 
@@ -215,14 +238,22 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(Session.mAccount, MyApplication.AUTHORITY, settingsBundle);
         // ждем 3 секунды и прячем прогресс
-        mSwipeRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
+
+//        mSwipeRefreshLayout.post
+//        mSwipeRefreshLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+
                 // говорим о том, что собираемся закончить
 //                Toast.makeText(InvoicesActivity.this, R.string.refresh_finished, Toast.LENGTH_SHORT).show();
-            }
-        }, 3000);
+//            }
+//        }, 3000);
     }
 }
