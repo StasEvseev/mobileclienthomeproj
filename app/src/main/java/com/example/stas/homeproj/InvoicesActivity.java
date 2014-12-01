@@ -12,6 +12,7 @@ import android.content.Loader;
 import android.content.SyncStatusObserver;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +36,7 @@ import java.util.List;
  **/
 
 public class InvoicesActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>,
-        SyncStatusObserver, AdapterView.OnItemClickListener, View.OnClickListener {
+        SyncStatusObserver, AdapterView.OnItemClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public final String LOG = InvoicesActivity.class.getName();
 
@@ -47,14 +48,22 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
 
     private CursorAdapter mListAdapter;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoices);
 
-        btnSync = (Button)findViewById(R.id.btn_sync);
-        btnSync.setOnClickListener(this);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        // делаем повеселее
+        mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_dark,
+                android.R.color.primary_text_dark, android.R.color.holo_red_dark);
+
+//        btnSync = (Button)findViewById(R.id.btn_sync);
+//        btnSync.setOnClickListener(this);
 
         lstr = new ArrayList<Invoice>();
 
@@ -201,5 +210,19 @@ public class InvoicesActivity extends Activity implements LoaderManager.LoaderCa
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.d(LOG, "onLoadReset");
         mListAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        // ждем 3 секунды и прячем прогресс
+        mSwipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                // говорим о том, что собираемся закончить
+//                Toast.makeText(InvoicesActivity.this, R.string.refresh_finished, Toast.LENGTH_SHORT).show();
+            }
+        }, 3000);
     }
 }
