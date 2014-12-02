@@ -36,13 +36,13 @@ public class InvoiceItemSync extends BaseSync {
 
         curItems.close();
 
-        IInvoiceItemCountRestAPI restCount = RestApiHelper.createResource(IInvoiceItemCountRestAPI.class, context, authToken);
+        IInvoiceItemCountRestAPI restCount = RestApiHelper.createResource(IInvoiceItemCountRestAPI.class, context, authToken, null);
 
         InvoiceCountResult result = restCount.count(inv.id);
         int countRemote = result.result.count;
 
         Log.d(TAG, "REMOTE - " + countRemote + " LOCAL - " + countLocal);
-        IInvoiceItemRestAPI restItems = RestApiHelper.createResource(IInvoiceItemRestAPI.class, context, authToken);
+        IInvoiceItemRestAPI restItems = RestApiHelper.createResource(IInvoiceItemRestAPI.class, context, authToken, null);
 
         if (countRemote != countLocal) {
             context.getContentResolver().delete(MainContentProvider.CONTENT_URI_INVOICEITEM,

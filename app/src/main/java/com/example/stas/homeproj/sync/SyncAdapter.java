@@ -96,7 +96,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Context context = getContext();
 
             IPriceRestAPI priceRestAPI = RestApiHelper.createResource(IPriceRestAPI.class,
-                    context, authToken);
+                    context, authToken, null);
 
             PriceBuyApi.PriceItemsBuyApi priceItemsBuyApi = priceRestAPI.priceSync();
 
@@ -118,7 +118,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             ICommodityRestAPI commodityRestAPI = RestApiHelper.createResource(ICommodityRestAPI.class,
-                    context, authToken);
+                    context, authToken, null);
 
             CommodityBuyApi.CommodityItemsBuyApi commodityItemsBuyApi = commodityRestAPI.commoditySync();
 
@@ -133,7 +133,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             IAcceptanceRestAPI acceptanceRestAPI = RestApiHelper.createResource(IAcceptanceRestAPI.class,
-                    context, authToken);
+                    context, authToken, null);
 
             AcceptanceBuyApi.AcceptanceItemsBuyApi acceptanceItemsBuyApi = acceptanceRestAPI.acceptanceSync();
 
@@ -148,7 +148,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             IProviderRestApi providerRestApi = RestApiHelper.createResource(IProviderRestApi.class,
-                    context, authToken);
+                    context, authToken, null);
 
             ProviderBuyApi.ProviderItemsBuyApi providerItemsBuyApi = providerRestApi.providerSync();
 
@@ -164,7 +164,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
 
-            IInvoiceRestAPI invoiceRestAPI = RestApiHelper.createResource(IInvoiceRestAPI.class, context, authToken);
+            IInvoiceRestAPI invoiceRestAPI = RestApiHelper.createResource(IInvoiceRestAPI.class, context, authToken, null);
 
             InvoiceBuyApi.InvoiceItemsBuyApi invoiceItemsBuyApi = invoiceRestAPI.invoiceSync();
 
@@ -180,7 +180,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             IInvoiceItemRestAPI invoiceItemRestAPI = RestApiHelper.createResource(IInvoiceItemRestAPI.class,
-                    context, authToken);
+                    context, authToken, null);
 
             Cursor curInvoice = context.getContentResolver().query(MainContentProvider.CONTENT_URI_INVOICE, null,
                     null, null, null);

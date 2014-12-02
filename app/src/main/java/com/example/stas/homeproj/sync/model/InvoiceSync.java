@@ -33,7 +33,7 @@ public class InvoiceSync extends BaseSync {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("from", String.valueOf(max_id));
-        IInvoiceRestAPI rest = RestApiHelper.createResource(IInvoiceRestAPI.class, context, authToken);
+        IInvoiceRestAPI rest = RestApiHelper.createResource(IInvoiceRestAPI.class, context, authToken, null);
 
         InvoicesBuyApi invoicesBuyApi = rest.invoices(params);
 

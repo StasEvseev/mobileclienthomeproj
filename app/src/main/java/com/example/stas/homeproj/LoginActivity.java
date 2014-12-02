@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.stas.homeproj.library.AuthHelper;
+import com.example.stas.homeproj.library.RestApiHelper;
 import com.example.stas.homeproj.models.Token;
 import com.example.stas.homeproj.models.User;
 import com.example.stas.homeproj.resources.ApiRequestInterceptor;
@@ -140,7 +143,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password, this);
             mAuthTask.execute((Void) null);
         }
     }
@@ -262,10 +265,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         private final String mEmail;
         private final String mPassword;
+        private Context context;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password, Context context) {
             mEmail = email;
             mPassword = password;
+            this.context = context;
         }
 
         @Override
@@ -276,18 +281,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             user.username = mEmail;
             user.password = mPassword;
 
-            ApiRequestInterceptor requestInterceptor = new ApiRequestInterceptor();
-            requestInterceptor.setUser(user); // I pass the user from my model
+//            ApiRequestInterceptor requestInterceptor = new ApiRequestInterceptor();
+//            requestInterceptor.setUser(user); // I pass the user from my model
 
-            RestAdapter.Builder restAdapter = new RestAdapter.Builder();
-            restAdapter.setRequestInterceptor(requestInterceptor);
-            RestAdapter adapter = restAdapter.setEndpoint(Constrants.URL_BUY_API).build();
-            IAuthSetRestAPI rest_api = adapter.create(IAuthSetRestAPI.class);
+//            RestAdapter.Builder restAdapter = new RestAdapter.Builder();
+//            restAdapter.setRequestInterceptor(requestInterceptor);
+//            RestAdapter adapter = restAdapter.setEndpoint(Constrants.URL_BUY_API).build();
+
+            IAuthSetRestAPI rest_api = RestApiHelper.createResource(IAuthSetRestAPI.class, context, null, user);
             Token token;
 
             try {
                 token = rest_api.auth();
             } catch (RetrofitError er) {
+                Log.d("ERROR", er.toString());
                 return new Result(false, new Intent());
 
             }

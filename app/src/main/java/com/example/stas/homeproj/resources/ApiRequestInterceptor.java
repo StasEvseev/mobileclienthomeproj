@@ -1,6 +1,7 @@
 package com.example.stas.homeproj.resources;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.example.stas.homeproj.models.Token;
 import com.example.stas.homeproj.models.User;
@@ -29,9 +30,12 @@ public class ApiRequestInterceptor implements RequestInterceptor {
         String userAndPassword = "";
         if (user != null) {
             userAndPassword = user.getUsername() + ":" + user.getPassword();
+            Log.d("TOKEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", userAndPassword);
         } else if (token != null) {
             userAndPassword = token.token + ":unused";
         }
+
+        Log.d("TOKEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "Basic " + Base64.encodeToString(userAndPassword.getBytes(), Base64.NO_WRAP));
 
         return "Basic " + Base64.encodeToString(userAndPassword.getBytes(), Base64.NO_WRAP);
     }
